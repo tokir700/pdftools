@@ -1,226 +1,196 @@
-:root {
-    /* Color Palette */
-    --clr-bg-dark: #0f172a; /* Slate 900 */
-    --clr-card-bg: #1e293b; /* Slate 800 */
-    --clr-text-light: #f1f5f9; /* Slate 100 */
-    --clr-text-subtle: #94a3b8; /* Slate 400 */
-    --clr-primary: #3b82f6; /* Blue 500 */
-    --clr-primary-hover: #2563eb; /* Blue 600 */
-    --clr-success: #22c55e; /* Green 500 */
-    --clr-border: #334155; /* Slate 700 */
+// REQUIRED for pdf.js on GitHub Pages
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+const fileInput = document.getElementById("fileInput");
+const compressBtn = document.getElementById("compressBtn");
+const qualitySelect = document.getElementById("quality");
+const bar = document.getElementById("bar");
+const statusElement = document.getElementById("status");
+const fileLabel = document.getElementById("fileLabel");
+
+// --- UI Helper Functions ---
+
+/** Updates the status message and progress bar. */
+function updateStatus(message, progressPercentage = 0, type = 'info') {
+    statusElement.innerText = message;
+    
+    // Set appropriate class and icon based on type
+    let iconClass = 'fa-info-circle';
+    let barColor = '#22c55e'; // Green for success/progress (default)
+    
+    statusElement.className = ''; // Clear existing classes
+
+    if (type === 'success') {
+        iconClass = 'fa-check-circle';
+        statusElement.classList.add('success-message');
+    } else if (type === 'error') {
+        iconClass = 'fa-exclamation-circle';
+        barColor = '#ef4444'; // Red for error
+        statusElement.classList.add('error-message');
+    }
+
+    statusElement.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
+    
+    bar.style.backgroundColor = barColor;
+    bar.style.width = `${Math.min(100, Math.max(0, progressPercentage))}%`;
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    background: var(--clr-bg-dark);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Inter', system-ui, sans-serif; /* Use a modern font stack */
-    color: var(--clr-text-light);
-    padding: 20px;
+/** Resets UI to initial state */
+function resetUI() {
+    fileInput.value = ''; // Clear file input
+    updateStatus("Waiting for file selection...");
+    fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><span>Click to select or drag & drop a PDF</span>';
+    fileLabel.classList.remove('file-selected');
+    compressBtn.disabled = true;
+    updateStatus("Waiting for file selection...", 0, 'info');
 }
 
-.card {
-    background: var(--clr-card-bg);
-    padding: 40px;
-    width: 100%;
-    max-width: 420px;
-    border-radius: 18px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--clr-border);
+// --- File Selection & Drag/Drop Logic ---
+
+// Handles file selection via click or drop
+function handleFileSelection() {
+    const file = fileInput.files[0];
+    if (file && file.type === 'application/pdf') {
+        fileLabel.innerHTML = `<i class="fas fa-file-pdf"></i><span>File Selected: **${file.name}**</span>`;
+        fileLabel.classList.add('file-selected');
+        compressBtn.disabled = false;
+        updateStatus(`File ready: ${file.name}`, 0, 'info');
+    } else {
+        resetUI();
+        if (file) {
+            updateStatus("Invalid file type. Please select a PDF.", 0, 'error');
+        }
+    }
 }
 
-h1 {
-    font-size: 28px;
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-weight: 700;
+fileInput.addEventListener('change', handleFileSelection);
+
+// Drag and Drop implementation
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    fileLabel.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
 }
 
-h1 .fas {
-    color: var(--clr-primary);
-    margin-right: 8px;
+['dragenter', 'dragover'].forEach(eventName => {
+    fileLabel.addEventListener(eventName, () => fileLabel.classList.add('dragging'), false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    fileLabel.addEventListener(eventName, () => fileLabel.classList.remove('dragging'), false);
+});
+
+fileLabel.addEventListener('drop', handleDrop, false);
+
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    
+    if (dt.files.length) {
+        const pdfFile = Array.from(dt.files).find(f => f.type === 'application/pdf');
+        
+        if (pdfFile) {
+            // Create a DataTransfer object to assign the file(s) to the hidden input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(pdfFile);
+            fileInput.files = dataTransfer.files;
+            
+            fileInput.dispatchEvent(new Event('change', { bubbles: true })); 
+        } else {
+            updateStatus("Please drop a valid PDF file (.pdf).", 0, 'error');
+        }
+    }
 }
 
-.sub {
-    font-size: 15px;
-    color: var(--clr-text-subtle);
-    margin-bottom: 30px;
+
+// --- Compression Logic ---
+
+compressBtn.addEventListener("click", compress);
+
+async function compress() {
+    const file = fileInput.files[0];
+    const quality = parseFloat(qualitySelect.value);
+
+    if (!file) {
+        updateStatus("No file selected.", 0, 'error');
+        return;
+    }
+    
+    // Disable button to prevent re-pressing and start processing
+    compressBtn.disabled = true;
+
+    try {
+        updateStatus("Loading PDF data…", 5);
+
+        const buffer = await file.arrayBuffer();
+        
+        // Use a hidden canvas for rendering
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Load PDF using pdf.js
+        const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+        const newPdf = await PDFLib.PDFDocument.create();
+        const total = pdf.numPages;
+
+        for (let i = 1; i <= total; i++) {
+            const pageIndex = i - 1;
+            // Progress goes from 5% (loading) to 90% (just before finalizing)
+            const progress = 5 + (i / total) * 85; 
+            updateStatus(`Compressing page ${i} of ${total}…`, progress);
+
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 1 }); 
+
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            // Render page to canvas
+            await page.render({ canvasContext: ctx, viewport }).promise;
+
+            // Convert canvas content to JPEG with specified quality
+            const imgData = canvas.toDataURL("image/jpeg", quality); 
+            const img = await newPdf.embedJpg(imgData);
+
+            // Add new page to PDF-LIB document and draw the compressed image
+            const pdfPage = newPdf.addPage([canvas.width, canvas.height]);
+            pdfPage.drawImage(img, {
+                x: 0,
+                y: 0,
+                width: canvas.width,
+                height: canvas.height
+            });
+        }
+
+        updateStatus("Finalizing and saving compressed PDF…", 95);
+
+        const finalPdf = await newPdf.save();
+        download(finalPdf, file.name);
+
+        updateStatus(`Compression Complete! File saved as 'compressed_${file.name}'.`, 100, 'success');
+        
+        // Reset UI after a short delay for the user to see the success message
+        setTimeout(resetUI, 3000);
+        
+    } catch (e) {
+        console.error("Compression Error:", e);
+        updateStatus(`Compression failed. Error: ${e.message}`, 100, 'error');
+        compressBtn.disabled = false; 
+    }
 }
 
-/* --- Input Styling --- */
-
-.settings-group {
-    text-align: left;
-    margin-bottom: 20px;
+function download(bytes, originalName) {
+    const blob = new Blob([bytes], { type: "application/pdf" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "compressed_" + originalName.replace(/\.pdf$/i, '') + ".pdf";
+    link.click();
+    // Clean up the object URL
+    URL.revokeObjectURL(link.href);
 }
 
-.settings-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--clr-text-subtle);
-}
-
-.settings-group label .fas {
-    margin-right: 5px;
-}
-
-select {
-    width: 100%;
-    padding: 12px 15px;
-    margin: 0;
-    background: var(--clr-bg-dark); /* Darker background for inputs */
-    color: var(--clr-text-light);
-    border: 1px solid var(--clr-border);
-    border-radius: 10px;
-    font-size: 16px;
-    -webkit-appearance: none; /* Remove default arrow on select */
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    transition: border-color 0.2s;
-}
-
-select:focus {
-    border-color: var(--clr-primary);
-    outline: none;
-}
-
-/* --- File Upload Area --- */
-.file-upload-area {
-    margin-bottom: 25px;
-}
-
-#fileLabel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
-    border: 2px dashed var(--clr-border);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-
-#fileLabel:hover {
-    background-color: rgba(59, 130, 246, 0.1); /* Blue-tint on hover */
-    border-color: var(--clr-primary);
-}
-
-#fileLabel .fas {
-    font-size: 30px;
-    color: var(--clr-text-subtle);
-    margin-bottom: 10px;
-}
-
-#fileLabel span {
-    font-size: 14px;
-    color: var(--clr-text-subtle);
-}
-
-/* File name display (when a file is selected) */
-#fileLabel.file-selected {
-    border-style: solid; /* change from dashed to solid */
-}
-
-#fileLabel.file-selected .fas {
-    color: var(--clr-success); /* Icon turns green */
-}
-
-#fileLabel.file-selected span {
-    color: var(--clr-text-light); /* Text becomes bright */
-    font-weight: 600;
-}
-
-/* --- Button Styling --- */
-button {
-    width: 100%;
-    padding: 14px;
-    background: var(--clr-primary);
-    border: none;
-    border-radius: 10px;
-    font-size: 17px;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-}
-
-button .fas {
-    margin-right: 8px;
-}
-
-button:hover:not(:disabled) {
-    background: var(--clr-primary-hover);
-    transform: translateY(-1px);
-}
-
-button:disabled {
-    background: var(--clr-border);
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-/* --- Status and Progress --- */
-.status-area {
-    margin-top: 25px;
-    min-height: 50px; /* Ensure space even when progress is small */
-}
-
-.progress {
-    height: 8px;
-    background: var(--clr-border);
-    border-radius: 4px;
-    margin-top: 10px;
-    overflow: hidden;
-}
-
-#bar {
-    height: 100%;
-    width: 0%;
-    background: var(--clr-success);
-    transition: width 0.3s ease-in-out;
-    border-radius: 4px;
-}
-
-#status {
-    margin-top: 0;
-    font-size: 15px;
-    text-align: left;
-    font-weight: 500;
-    color: var(--clr-text-subtle);
-}
-
-#status .fas {
-    margin-right: 6px;
-    color: var(--clr-primary);
-}
-
-#status.success-message .fas {
-    color: var(--clr-success);
-}
-
-/* --- Privacy Message --- */
-.privacy {
-    margin-top: 30px;
-    font-size: 13px;
-    color: var(--clr-text-subtle);
-    border-top: 1px solid var(--clr-border);
-    padding-top: 20px;
-}
-
-.privacy .fas {
-    margin-right: 5px;
-}
-
-.privacy strong {
-    color: var(--clr-text-light);
-}
+// Set initial state when the script loads
+resetUI();
