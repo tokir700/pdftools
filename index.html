@@ -2,30 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  < title>Free PDF Compressor</title>
+  <title>PDF Compressor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <h2>Free PDF Compressor</h2>
+<div class="card">
+  <h2>PDF Compressor</h2>
+  <p class="sub">Compress PDFs safely in your browser</p>
 
-    <input type="file" id="pdfInput" accept="application/pdf">
+  <input type="file" id="fileInput" accept="application/pdf">
 
-    <button onclick="compressPDF()">Compress PDF</button>
+  <select id="quality">
+    <option value="0.6">Medium Compression</option>
+    <option value="0.4">High Compression</option>
+    <option value="0.8">Low Compression</option>
+  </select>
 
-    <p id="status"></p>
+  <button onclick="compress()">Compress PDF</button>
 
-    <p class="privacy">
-      Files are processed locally in your browser.<br>
-      No upload • No storage • 100% private
-    </p>
+  <div class="progress">
+    <div id="bar"></div>
   </div>
 
-  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-  <script src="script.js"></script>
+  <p id="status"></p>
+
+  <p class="privacy">
+    No upload • No storage • 100% private
+  </p>
+</div>
+
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/pdfjs-dist/build/pdf.min.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
-
