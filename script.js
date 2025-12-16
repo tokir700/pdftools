@@ -1,43 +1,51 @@
+// REQUIRED for pdf.js on GitHub Pages
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+document.getElementById("compressBtn").addEventListener("click", compress);
+
 async function compress() {
-  const file = document.getElementById("fileInput").files[0];
+  const fileInput = document.getElementById("fileInput");
   const quality = parseFloat(document.getElementById("quality").value);
   const bar = document.getElementById("bar");
   const status = document.getElementById("status");
 
-  if (!file) return alert("Select a PDF");
+  if (!fileInput.files.length) {
+    alert("Please select a PDF file");
+    return;
+  }
 
-  status.innerText = "Reading PDF...";
-  bar.style.width = "10%";
+  const file = fileInput.files[0];
 
-  const bytes = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+  status.innerText = "Loading PDF…";
+  bar.style.width = "5%";
+
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
 
   const newPdf = await PDFLib.PDFDocument.create();
   const total = pdf.numPages;
 
   for (let i = 1; i <= total; i++) {
     status.innerText = `Compressing page ${i} of ${total}`;
-    bar.style.width = `${10 + (i / total) * 70}%`;
+    bar.style.width = `${5 + (i / total) * 80}%`;
 
     const page = await pdf.getPage(i);
-    const viewport = page.getViewport({ scale: 1 });
+    const viewport = page.getViewport({ scale: quality });
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    canvas.width = viewport.width * quality;
-    canvas.height = viewport.height * quality;
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
 
-    await page.render({
-      canvasContext: ctx,
-      viewport: page.getViewport({ scale: quality })
-    }).promise;
+    await page.render({ canvasContext: ctx, viewport }).promise;
 
-    const img = canvas.toDataURL("image/jpeg", quality);
-    const imgEmbed = await newPdf.embedJpg(img);
+    const imgData = canvas.toDataURL("image/jpeg", quality);
+    const img = await newPdf.embedJpg(imgData);
 
     const pdfPage = newPdf.addPage([canvas.width, canvas.height]);
-    pdfPage.drawImage(imgEmbed, {
+    pdfPage.drawImage(img, {
       x: 0,
       y: 0,
       width: canvas.width,
@@ -45,8 +53,8 @@ async function compress() {
     });
   }
 
+  status.innerText = "Finalizing…";
   bar.style.width = "95%";
-  status.innerText = "Finalizing PDF...";
 
   const finalPdf = await newPdf.save();
   download(finalPdf, file.name);
