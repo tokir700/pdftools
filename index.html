@@ -1,45 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PDF Compressor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>⚡ PDF Compressor (Local & Private)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
 <div class="card">
-  <h2>PDF Compressor</h2>
-  <p class="sub">Compress PDFs locally in your browser</p>
+    <h1><i class="fas fa-file-pdf"></i> PDF Compressor</h1>
+    <p class="sub">Fast, local compression using your browser.</p>
 
-  <input type="file" id="fileInput" accept="application/pdf">
+    <div class="input-group file-upload-area">
+        <label for="fileInput" id="fileLabel">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>Click to select or drag & drop a PDF</span>
+        </label>
+        <input type="file" id="fileInput" accept="application/pdf" hidden>
+    </div>
+    
+    <div class="settings-group">
+        <label for="quality"><i class="fas fa-sliders-h"></i> Compression Quality:</label>
+        <select id="quality">
+            <option value="0.8">Low Compression (Best Quality)</option>
+            <option value="0.6" selected>Medium Compression (Good Balance)</option>
+            <option value="0.4">High Compression (Smaller Size)</option>
+        </select>
+    </div>
 
-  <select id="quality">
-    <option value="0.6">Medium Compression</option>
-    <option value="0.4">High Compression</option>
-    <option value="0.8">Low Compression</option>
-  </select>
+    <button id="compressBtn" disabled>
+        <i class="fas fa-compress-alt"></i> Compress PDF
+    </button>
+    
+    <div class="status-area">
+        <p id="status"><i class="fas fa-info-circle"></i> Waiting for file selection...</p>
+        <div class="progress">
+            <div id="bar"></div>
+        </div>
+    </div>
 
-  <button id="compressBtn">Compress PDF</button>
-
-  <div class="progress">
-    <div id="bar"></div>
-  </div>
-
-  <p id="status"></p>
-
-  <p class="privacy">
-    No upload • No storage • 100% private
-  </p>
+    <p class="privacy">
+        <i class="fas fa-lock"></i> **No Upload** • **No Storage** • 100% Private
+    </p>
 </div>
 
-<!-- pdf.js -->
 <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-
-<!-- pdf-lib -->
 <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-
-<!-- your script -->
 <script src="script.js"></script>
 
 </body>
