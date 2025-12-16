@@ -1,31 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><link rel="icon" type="image/png" href="favicon.png">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Split PDF Online - Extract Pages for Free | MintPDF</title>
-    <meta name="description" content="Extract specific pages from a PDF file. Select pages visually and split them into a new document securely.">
-    <meta name="keywords" content="split pdf, extract pdf pages, separate pdf, cut pdf, free pdf splitter, mintpdf">
+    <meta name="description" content="Split specific pages from a PDF document. Select pages visually and extract them into a new file. Free, secure, and fast.">
+    <meta name="keywords" content="split pdf, extract pages, separate pdf, cut pdf pages, free pdf splitter, remove pages from pdf">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#10b981">
     <link rel="canonical" href="https://pdftools-5un.pages.dev/split.html">
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
 
-    <meta property="og:site_name" content="MintPDF">
     <meta property="og:title" content="Split PDF Online - Free & Secure">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://pdftools-5un.pages.dev/og-image.jpg">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "MintPDF Splitter",
-      "applicationCategory": "ProductivityApplication",
-      "operatingSystem": "Web Browser",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "A free tool to extract pages from PDF files client-side."
-    }
-    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -54,20 +43,11 @@
                     <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
                 </a>
                 <div class="hidden md:flex items-center space-x-1">
-                    <a href="/" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Compress</a>
-                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge</a>
+                    <a href="/" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Compress PDF</a>
+                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge PDF</a>
                     <a href="/split.html" class="nav-item active px-4 py-2 rounded-full text-sm transition">Split PDF</a>
                     <a href="/jpg-to-pdf.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">JPG to PDF</a>
                 </div>
-                <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"><i class="fa-solid fa-bars text-xl"></i></button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
-            <div class="flex flex-col p-2 gap-1">
-                <a href="/" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Compress PDF</a>
-                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
-                <a href="/split.html" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">Split PDF</a>
-                <a href="/jpg-to-pdf.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">JPG to PDF</a>
             </div>
         </div>
     </nav>
@@ -75,8 +55,11 @@
     <main class="flex-grow w-full max-w-6xl mx-auto p-4 md:p-12 flex flex-col items-center">
         <article class="w-full flex flex-col items-center">
             <header class="text-center mb-10 max-w-2xl">
-                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Split PDF File</h1>
-                <p class="text-slate-500 text-lg md:text-xl leading-relaxed">Select pages to extract and save as a new PDF document. <br class="hidden md:block">Secure, client-side, and free.</p>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Split PDF Online</h1>
+                <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
+                    Extract specific pages from your PDF file. 
+                    <br class="hidden md:block">Secure, client-side, and free.
+                </p>
             </header>
 
             <section id="split-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 hover:shadow-xl transition-all duration-300 group">
@@ -101,12 +84,21 @@
             </section>
         </article>
 
-        <section class="max-w-4xl w-full mt-20 prose prose-slate">
-            <h2 class="text-3xl font-bold text-slate-900 text-center mb-8">How to Split PDF Pages?</h2>
-            <div class="grid md:grid-cols-3 gap-6 text-center mb-12">
-                <div class="p-4"><div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">1</div><h3 class="font-bold">Upload</h3><p class="text-sm text-slate-600">Open your PDF file.</p></div>
-                <div class="p-4"><div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">2</div><h3 class="font-bold">Select</h3><p class="text-sm text-slate-600">Click pages you want to keep.</p></div>
-                <div class="p-4"><div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">3</div><h3 class="font-bold">Download</h3><p class="text-sm text-slate-600">Save the new split file.</p></div>
+        <section class="max-w-4xl w-full mt-24 prose prose-slate">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-10">How to Extract Pages from PDF?</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-center mb-16">
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-lg mb-2">1. Upload</h3>
+                    <p class="text-sm text-slate-500">Choose your PDF document.</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-lg mb-2">2. Select</h3>
+                    <p class="text-sm text-slate-500">Click the pages you want to keep.</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold text-lg mb-2">3. Extract</h3>
+                    <p class="text-sm text-slate-500">Download your new split file.</p>
+                </div>
             </div>
         </section>
     </main>
@@ -125,7 +117,7 @@
     <div id="modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Success!</h3>
-            <p id="modal-msg" class="text-slate-500 mb-6">Split Successfully</p>
+            <p id="modal-msg" class="text-slate-500 mb-6">Pages Extracted</p>
             <a id="modal-dl" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3.5 rounded-xl shadow-lg mb-3">Download File</a>
             <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-slate-400 text-sm">Close</button>
         </div>
@@ -180,7 +172,7 @@
         document.getElementById('btn-split-action').addEventListener('click', async () => {
             if(!selPages.size) return alert('Select at least one page');
             const btn = document.getElementById('btn-split-action');
-            btn.innerText = 'Splitting...';
+            btn.innerText = 'Processing...';
             try {
                 const src = await PDFDocument.load(await splitFile.arrayBuffer());
                 const newDoc = await PDFDocument.create();
@@ -193,7 +185,7 @@
                 document.getElementById('modal-dl').href = url;
                 document.getElementById('modal-dl').download = 'split_document.pdf';
                 document.getElementById('modal').classList.remove('hidden');
-            } catch(e) { alert('Error splitting'); }
+            } catch(e) { alert('Error'); }
             btn.innerText = 'Split PDF Now';
         });
     </script>
