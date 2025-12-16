@@ -4,28 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>MintPDF | Free Online PDF Tools - Compress, Merge, Split & Convert</title>
-    <meta name="description" content="Secure, fast, and free online PDF tools. Compress PDF size, merge documents, split pages, and convert JPG/JPEG to PDF without uploading.">
-    <meta name="keywords" content="jpg to pdf, image to pdf, compress pdf, merge pdf, free pdf tools, client side pdf, mintpdf">
+    <title>Compress PDF Online - Reduce File Size for Free | MintPDF</title>
+    <meta name="description" content="The best free online PDF compressor. Reduce PDF file size significantly while maintaining quality. Secure, client-side, and no file limits.">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#10b981">
+    
     <link rel="canonical" href="https://pdftools-5un.pages.dev/">
-    <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
-
+    
     <meta property="og:site_name" content="MintPDF">
-    <meta property="og:title" content="MintPDF - Secure Online PDF Tools">
-    <meta property="og:description" content="Compress, Merge, and Convert PDFs directly in your browser. 100% Free & Private.">
+    <meta property="og:title" content="Compress PDF Online - Free & Secure">
+    <meta property="og:description" content="Reduce PDF size locally in your browser. No uploads.">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="https://pdftools-5un.pages.dev/og-image.jpg">
+    
+    <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "MintPDF",
+      "name": "MintPDF Compressor",
       "applicationCategory": "ProductivityApplication",
-      "operatingSystem": "Any",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "A suite of high-performance, client-side PDF manipulation tools."
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "A free tool to compress PDF files directly in the browser using WebAssembly."
     }
     </script>
 
@@ -35,22 +41,14 @@
 
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-        
-        /* Colors & UI */
         .text-mint-600 { color: #059669; }
         .bg-mint-600 { background-color: #059669; }
         .bg-mint-50 { background-color: #ecfdf5; }
-        .border-mint-500 { border-color: #10b981; }
         .nav-item.active { color: #059669; background-color: #ecfdf5; font-weight: 600; }
-        .tool-panel { display: none; }
-        .tool-panel.active { display: flex; animation: fadeUp 0.4s ease-out forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .drag-hover { border-color: #10b981 !important; background-color: #ecfdf5 !important; transform: scale(1.01); }
-        
-        /* Split PDF Highlights */
-        .page-selected { border-color: #10b981 !important; background-color: #ecfdf5 !important; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3); }
-        .page-selected .chk-icon { display: block !important; }
-        .page-selected .chk-circle { background-color: #10b981 !important; border-color: #10b981 !important; }
+        /* Loader */
+        .spinner { width: 24px; height: 24px; border: 3px solid #e5e7eb; border-top-color: #059669; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-white text-slate-800 min-h-screen flex flex-col">
@@ -58,18 +56,20 @@
     <nav class="border-b border-gray-100 sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <a href="#" onclick="location.reload()" class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 bg-mint-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 bg-mint-600 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition">
                         <i class="fa-solid fa-leaf"></i>
                     </div>
                     <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
                 </a>
+
                 <div class="hidden md:flex items-center space-x-1">
-                    <button onclick="switchTool('compress')" id="nav-compress" class="nav-item active px-4 py-2 rounded-full text-sm transition">Compress</button>
-                    <button onclick="switchTool('merge')" id="nav-merge" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge</button>
-                    <button onclick="switchTool('split')" id="nav-split" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Split</button>
-                    <button onclick="switchTool('img2pdf')" id="nav-img2pdf" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">JPG to PDF</button>
+                    <a href="/" class="nav-item active px-4 py-2 rounded-full text-sm transition">Compress PDF</a>
+                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge</a>
+                    <a href="/split.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Split</a>
+                    <a href="/jpg-to-pdf.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">JPG to PDF</a>
                 </div>
+
                 <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
@@ -77,26 +77,34 @@
         </div>
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
             <div class="flex flex-col p-2 gap-1">
-                <button onclick="switchTool('compress')" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium">Compress PDF</button>
-                <button onclick="switchTool('merge')" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium">Merge PDF</button>
-                <button onclick="switchTool('split')" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium">Split PDF</button>
-                <button onclick="switchTool('img2pdf')" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium">JPG to PDF</button>
+                <a href="/" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">Compress PDF</a>
+                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
+                <a href="/split.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Split PDF</a>
+                <a href="/jpg-to-pdf.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">JPG to PDF</a>
             </div>
         </div>
     </nav>
 
     <main class="flex-grow w-full max-w-6xl mx-auto p-4 md:p-12 flex flex-col items-center">
-
-        <article id="tool-compress" class="tool-panel w-full flex-col items-center active">
+        
+        <article class="w-full flex flex-col items-center">
             <header class="text-center mb-10 max-w-2xl">
-                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Compress PDF File</h1>
-                <p class="text-slate-500 text-lg">Reduce file size while optimizing for maximal PDF quality.</p>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Compress PDF Online</h1>
+                <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
+                    Significantly reduce PDF file size without losing quality. 
+                    <br class="hidden md:block">Secure, client-side, and free.
+                </p>
             </header>
+
             <section id="comp-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 hover:shadow-xl transition-all duration-300 group">
                 <input type="file" id="comp-input" class="hidden" accept="application/pdf">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-solid fa-compress text-4xl text-mint-600"></i></div>
-                <h2 class="text-xl font-bold text-slate-800 mb-2">Choose PDF File</h2>
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-compress text-4xl text-mint-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-slate-800 mb-2">Select PDF File</h2>
+                <p class="text-slate-400">or drag and drop here</p>
             </section>
+
             <section id="comp-options" class="hidden w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 mt-4">
                 <div class="flex items-center gap-5 mb-8 border-b border-gray-100 pb-6">
                     <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-500 shadow-inner"><i class="fa-solid fa-file-pdf text-2xl"></i></div>
@@ -110,356 +118,136 @@
             </section>
         </article>
 
-        <article id="tool-merge" class="tool-panel w-full flex-col items-center">
-            <header class="text-center mb-10 max-w-2xl">
-                <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Merge PDF Files</h1>
-                <p class="text-slate-500 text-lg">Combine multiple PDFs securely. Drag to reorder.</p>
-            </header>
-            <section id="merge-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 transition-all group">
-                <input type="file" id="merge-input" class="hidden" accept="application/pdf" multiple>
-                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-solid fa-layer-group text-3xl text-mint-600"></i></div>
-                <h2 class="text-xl font-bold text-slate-800">Select PDFs</h2>
-            </section>
-            <section id="merge-workspace" class="hidden w-full max-w-2xl mt-6">
-                <div id="merge-list" class="space-y-3 mb-6"></div>
-                <button id="btn-merge-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-4 rounded-xl shadow-lg">Merge Files</button>
-            </section>
-        </article>
-
-        <article id="tool-split" class="tool-panel w-full flex-col items-center">
-            <header class="text-center mb-10 max-w-2xl">
-                <h1 class="text-4xl font-extrabold text-slate-900 mb-4">Split PDF File</h1>
-                <p class="text-slate-500 text-lg">Click pages to select. Extract pages instantly.</p>
-            </header>
-            <section id="split-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 transition-all group">
-                <input type="file" id="split-input" class="hidden" accept="application/pdf">
-                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-solid fa-scissors text-3xl text-mint-600"></i></div>
-                <h2 class="text-xl font-bold text-slate-800">Select PDF</h2>
-            </section>
-            <section id="split-workspace" class="hidden w-full max-w-5xl mt-6 flex flex-col md:flex-row gap-6">
-                <div class="flex-grow bg-white border border-gray-200 rounded-2xl p-4 h-[500px] overflow-y-auto">
-                    <div id="split-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3"></div>
+        <section class="max-w-4xl w-full mt-20 prose prose-slate">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-8">How to Compress PDF Files Online?</h2>
+            <div class="grid md:grid-cols-3 gap-6 text-center mb-12">
+                <div class="p-4">
+                    <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">1</div>
+                    <h3 class="font-bold">Upload PDF</h3>
+                    <p class="text-sm text-slate-600">Drag and drop your file into the box above.</p>
                 </div>
-                <div class="w-full md:w-80 flex-shrink-0">
-                    <div class="bg-white border border-gray-200 p-6 rounded-2xl sticky top-24 shadow-lg">
-                        <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Selected Pages</label>
-                        <input type="text" id="split-range" class="w-full border rounded-lg p-3 text-sm mb-4 bg-gray-50 text-slate-600" readonly placeholder="e.g. 1, 3-5">
-                        <button id="btn-split-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3 rounded-xl">Split PDF</button>
-                    </div>
+                <div class="p-4">
+                    <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">2</div>
+                    <h3 class="font-bold">Choose Level</h3>
+                    <p class="text-sm text-slate-600">Select Balanced or Extreme compression.</p>
                 </div>
-            </section>
-        </article>
-
-        <article id="tool-img2pdf" class="tool-panel w-full flex-col items-center">
-            <header class="text-center mb-10 max-w-2xl">
-                <h1 class="text-4xl font-extrabold text-slate-900 mb-4">JPG to PDF</h1>
-                <p class="text-slate-500 text-lg">Convert images (JPEG, PNG, WebP) to PDF. Fully customizable.</p>
-            </header>
-            
-            <section id="img-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 transition-all group">
-                <input type="file" id="img-input" class="hidden" accept="image/png, image/jpeg, image/jpg, image/webp" multiple>
-                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-regular fa-images text-3xl text-mint-600"></i></div>
-                <h2 class="text-xl font-bold text-slate-800">Select Images</h2>
-            </section>
-
-            <section id="img-workspace" class="hidden w-full max-w-6xl mt-6 flex flex-col lg:flex-row gap-8">
-                <div class="flex-grow">
-                    <div id="img-list" class="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-4"></div>
-                    <button onclick="document.getElementById('img-input').click()" class="text-mint-600 font-bold text-sm hover:underline">+ Add More Images</button>
+                <div class="p-4">
+                    <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">3</div>
+                    <h3 class="font-bold">Download</h3>
+                    <p class="text-sm text-slate-600">Get your smaller PDF instantly.</p>
                 </div>
+            </div>
 
-                <div class="w-full lg:w-80 flex-shrink-0">
-                    <div class="bg-white border border-gray-200 p-6 rounded-2xl sticky top-24 shadow-lg">
-                        <h3 class="font-bold text-lg mb-4 text-slate-800">PDF Settings</h3>
-                        
-                        <div class="mb-4">
-                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Page Size</label>
-                            <select id="img-size" class="w-full border rounded-lg p-2.5 text-sm bg-gray-50 focus:ring-2 focus:ring-mint-500 outline-none">
-                                <option value="a4">A4 (Standard)</option>
-                                <option value="letter">US Letter</option>
-                                <option value="fit">Fit to Image</option>
-                            </select>
-                        </div>
+            <div class="bg-slate-50 p-8 rounded-3xl border border-gray-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
+                
+                <details class="mb-4 bg-white p-4 rounded-xl shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-slate-800 list-none flex justify-between">
+                        Is my data safe?
+                        <i class="fa-solid fa-chevron-down text-mint-600 transition group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-2 text-slate-600 text-sm">Yes. MintPDF operates 100% client-side. Your files are processed by your browser and never uploaded to our servers.</p>
+                </details>
 
-                        <div class="mb-4">
-                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Orientation</label>
-                            <div class="flex gap-2">
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="img-orient" value="auto" checked class="peer hidden">
-                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Auto</div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="img-orient" value="p" class="peer hidden">
-                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Portrait</div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="img-orient" value="l" class="peer hidden">
-                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Landscape</div>
-                                </label>
-                            </div>
-                        </div>
+                <details class="mb-4 bg-white p-4 rounded-xl shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-slate-800 list-none flex justify-between">
+                        Does it reduce quality?
+                        <i class="fa-solid fa-chevron-down text-mint-600 transition group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-2 text-slate-600 text-sm">Our "Balanced" mode removes redundant data without visible quality loss. "Extreme" mode may lower image resolution for maximum size reduction.</p>
+                </details>
 
-                        <div class="mb-6">
-                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Margins</label>
-                            <div class="flex gap-2">
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="img-margin" value="none" class="peer hidden">
-                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">None</div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="img-margin" value="small" checked class="peer hidden">
-                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Small</div>
-                                </label>
-                                <label class="flex-1 cursor-pointer">
-                                    <input type="radio" name="img-margin" value="big" class="peer hidden">
-                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Big</div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button id="btn-img-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all">Convert to PDF</button>
-                    </div>
-                </div>
-            </section>
-        </article>
+                <details class="bg-white p-4 rounded-xl shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-slate-800 list-none flex justify-between">
+                        Is it free?
+                        <i class="fa-solid fa-chevron-down text-mint-600 transition group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-2 text-slate-600 text-sm">Yes, MintPDF is free forever. There are no daily limits and no watermarks.</p>
+                </details>
+            </div>
+        </section>
 
     </main>
 
-    <section class="bg-slate-50 py-20 px-4 border-t border-gray-200 mt-auto">
-        <div class="max-w-4xl mx-auto prose prose-slate text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-6">Why use MintPDF?</h2>
-            <div class="grid md:grid-cols-3 gap-8 text-left">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="w-10 h-10 bg-mint-50 rounded-lg flex items-center justify-center text-mint-600 mb-4"><i class="fa-solid fa-lock"></i></div>
-                    <h3 class="font-bold text-lg mb-2">100% Secure</h3>
-                    <p class="text-sm text-slate-600">Files are processed in your browser. No uploads.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="w-10 h-10 bg-mint-50 rounded-lg flex items-center justify-center text-mint-600 mb-4"><i class="fa-solid fa-bolt"></i></div>
-                    <h3 class="font-bold text-lg mb-2">Instant Speed</h3>
-                    <p class="text-sm text-slate-600">No waiting. Processing happens instantly.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="w-10 h-10 bg-mint-50 rounded-lg flex items-center justify-center text-mint-600 mb-4"><i class="fa-solid fa-infinity"></i></div>
-                    <h3 class="font-bold text-lg mb-2">Free Forever</h3>
-                    <p class="text-sm text-slate-600">No daily limits. No watermarks.</p>
-                </div>
-            </div>
+    <footer class="bg-white py-12 text-center border-t border-gray-200 mt-20">
+        <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
+        <div class="flex justify-center gap-6 mb-8 text-sm text-slate-500">
+            <a href="/" class="hover:text-mint-600">Compress</a>
+            <a href="/merge.html" class="hover:text-mint-600">Merge</a>
+            <a href="/split.html" class="hover:text-mint-600">Split</a>
+            <a href="/jpg-to-pdf.html" class="hover:text-mint-600">JPG to PDF</a>
         </div>
-    </section>
-
-    <footer class="bg-white py-8 text-center border-t border-gray-200">
-        <p class="font-bold text-2xl tracking-tight text-slate-900 mb-2">Mint<span class="text-mint-600">PDF</span></p>
-        <p class="text-slate-500 text-sm">&copy; 2025 MintPDF. All rights reserved.</p>
+        <p class="text-slate-400 text-xs">&copy; 2025 MintPDF. Secure Client-Side Tools.</p>
     </footer>
 
-    <div id="progress-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
-            <h3 class="text-xl font-bold text-slate-900 mb-2" id="progress-title">Processing...</h3>
-            <p class="text-slate-500 text-sm mb-6" id="progress-desc">Please wait.</p>
-            <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden"><div id="progress-bar" class="bg-mint-600 h-4 rounded-full transition-all duration-300" style="width: 0%"></div></div>
-            <p id="progress-text" class="text-xs font-bold text-mint-600 text-right">0%</p>
-        </div>
-    </div>
-    <div id="result-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl animate-fade-in">
-            <div class="w-16 h-16 bg-mint-50 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-check text-2xl text-mint-600"></i></div>
+    <div id="modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Success!</h3>
-            <p id="result-msg" class="text-slate-500 mb-8">Done</p>
-            <a id="result-dl" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all mb-3 flex justify-center items-center gap-2"><i class="fa-solid fa-download"></i> Download File</a>
-            <button onclick="document.getElementById('result-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-sm font-medium">Close</button>
+            <p id="modal-msg" class="text-slate-500 mb-6">Done</p>
+            <a id="modal-dl" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3.5 rounded-xl shadow-lg mb-3">Download File</a>
+            <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-slate-400 text-sm">Close</button>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        const { PDFDocument } = PDFLib;
+        const formatBytes = b => b ? `${(b/1024/1024).toFixed(2)} MB` : '0 MB';
 
-        // --- COMMON ---
-        function switchTool(id) {
-            document.querySelectorAll('.tool-panel').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tool-${id}`).classList.add('active');
-            document.getElementById(`nav-${id}`).classList.add('active');
-            document.getElementById('mobile-menu').classList.add('hidden');
+        // COMPRESSOR LOGIC ONLY
+        const drop = document.getElementById('comp-drop');
+        const input = document.getElementById('comp-input');
+        
+        drop.addEventListener('click', () => input.click());
+        drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-hover'); });
+        drop.addEventListener('dragleave', () => drop.classList.remove('drag-hover'));
+        drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag-hover'); if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+        input.addEventListener('change', e => { if(e.target.files.length) handleFile(e.target.files[0]); });
+
+        let currentFile = null;
+        function handleFile(f) {
+            if(f.type !== 'application/pdf') return alert('PDF only');
+            currentFile = f;
+            document.getElementById('comp-filename').innerText = f.name;
+            document.getElementById('comp-filesize').innerText = formatBytes(f.size);
+            document.getElementById('comp-drop').classList.add('hidden');
+            document.getElementById('comp-options').classList.remove('hidden');
         }
-        function formatBytes(b) { if(!b) return '0 B'; const i=Math.floor(Math.log(b)/Math.log(1024)); return `${(b/Math.pow(1024,i)).toFixed(2)} ${['B','KB','MB','GB'][i]}`; }
-        function setupDnD(areaId, inputId, cb) {
-            const area = document.getElementById(areaId), input = document.getElementById(inputId);
-            area.addEventListener('click', () => input.click());
-            input.addEventListener('change', e => e.target.files.length && cb(e.target.files));
-            area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-hover'); });
-            area.addEventListener('dragleave', () => area.classList.remove('drag-hover'));
-            area.addEventListener('drop', e => { e.preventDefault(); area.classList.remove('drag-hover'); if(e.dataTransfer.files.length) cb(e.dataTransfer.files); });
-        }
-        const progress = {
-            show: (t) => { document.getElementById('progress-title').innerText=t; document.getElementById('progress-bar').style.width='0%'; document.getElementById('progress-text').innerText='0%'; document.getElementById('progress-modal').classList.remove('hidden'); },
-            update: (p) => { document.getElementById('progress-bar').style.width=`${p}%`; document.getElementById('progress-text').innerText=`${p}%`; },
-            hide: () => { setTimeout(() => document.getElementById('progress-modal').classList.add('hidden'), 500); }
-        };
-        const showResult = (b, n, m) => { progress.hide(); const u=URL.createObjectURL(b), btn=document.getElementById('result-dl'); btn.href=u; btn.download=n; document.getElementById('result-msg').innerText=m; document.getElementById('result-modal').classList.remove('hidden'); };
 
-        // --- COMPRESSOR ---
-        let compFile=null;
-        setupDnD('comp-drop','comp-input', f=>{ if(f[0].type!=='application/pdf') return alert('PDF only'); compFile=f[0]; document.getElementById('comp-filename').innerText=compFile.name; document.getElementById('comp-filesize').innerText=formatBytes(compFile.size); document.getElementById('comp-drop').classList.add('hidden'); document.getElementById('comp-options').classList.remove('hidden'); });
-        document.getElementById('btn-comp-action').addEventListener('click', async()=>{
-            progress.show('Compressing...');
-            try{
-                const ab=await compFile.arrayBuffer(), pdf=await pdfjsLib.getDocument(ab).promise;
-                const { jsPDF } = window.jspdf; const newPdf = new jsPDF({ compress: true });
-                const mode = document.querySelector('input[name="comp-mode"]:checked').value;
-                const q = mode==='extreme'?0.4:0.6;
-                for(let i=1;i<=pdf.numPages;i++){
-                    progress.update(Math.round((i/pdf.numPages)*100)); await new Promise(r=>setTimeout(r,10));
-                    const p=await pdf.getPage(i), vp=p.getViewport({scale:1.5}), cvs=document.createElement('canvas');
-                    cvs.width=vp.width; cvs.height=vp.height; await p.render({canvasContext:cvs.getContext('2d'),viewport:vp}).promise;
-                    const img=cvs.toDataURL('image/jpeg',q), pW=vp.width/1.5, pH=vp.height/1.5;
-                    if(i>1) newPdf.addPage([pW,pH]); else { newPdf.deletePage(1); newPdf.addPage([pW,pH]); }
-                    newPdf.addImage(img,'JPEG',0,0,pW,pH);
-                }
-                showResult(newPdf.output('blob'), `compressed_${compFile.name}`, `Reduced ${formatBytes(compFile.size)}`);
-            }catch(e){console.error(e);alert('Error');progress.hide();}
-        });
-
-        // --- MERGE ---
-        let mergeFiles=[];
-        setupDnD('merge-drop','merge-input', f=>{ 
-            document.getElementById('merge-drop').classList.add('hidden'); document.getElementById('merge-workspace').classList.remove('hidden');
-            Array.from(f).forEach(file=>{ if(file.type!=='application/pdf')return; const id=Math.random().toString(36).substr(2,9); mergeFiles.push({id,file}); 
-            const el=document.createElement('div'); el.className="flex items-center justify-between bg-white border border-gray-200 p-3 rounded-xl shadow-sm cursor-move"; el.setAttribute('data-id',id);
-            el.innerHTML=`<span class="text-sm font-bold truncate">${file.name}</span><button onclick="rmMerge('${id}')" class="text-red-400"><i class="fa-solid fa-trash"></i></button>`;
-            document.getElementById('merge-list').appendChild(el); }); 
-        });
-        window.rmMerge=id=>{ mergeFiles=mergeFiles.filter(x=>x.id!==id); document.querySelector(`div[data-id="${id}"]`).remove(); if(!mergeFiles.length){document.getElementById('merge-workspace').classList.add('hidden');document.getElementById('merge-drop').classList.remove('hidden');} };
-        new Sortable(document.getElementById('merge-list'),{animation:150});
-        document.getElementById('btn-merge-action').addEventListener('click',async()=>{
-            progress.show('Merging...');
-            try{
-                const merged=await PDFDocument.create(), ids=Array.from(document.getElementById('merge-list').children).map(e=>e.getAttribute('data-id'));
-                let c=0; for(const id of ids){ c++; progress.update(Math.round((c/ids.length)*100)); await new Promise(r=>setTimeout(r,10));
-                const f=mergeFiles.find(x=>x.id===id).file, pdf=await PDFDocument.load(await f.arrayBuffer()), pgs=await merged.copyPages(pdf,pdf.getPageIndices()); pgs.forEach(p=>merged.addPage(p)); }
-                showResult(new Blob([await merged.save()],{type:'application/pdf'}),'merged.pdf','Merged Successfully');
-            }catch(e){alert('Error');progress.hide();}
-        });
-
-        // --- SPLIT ---
-        let splitFile=null, selPages=new Set();
-        setupDnD('split-drop','split-input',async f=>{ if(f[0].type!=='application/pdf')return; splitFile=f[0];
-            document.getElementById('split-drop').classList.add('hidden'); document.getElementById('split-workspace').classList.remove('hidden'); document.getElementById('split-workspace').classList.add('flex');
-            const pdf=await pdfjsLib.getDocument(await splitFile.arrayBuffer()).promise, grid=document.getElementById('split-grid'); grid.innerHTML='';
-            for(let i=1;i<=pdf.numPages;i++){
-                const el=document.createElement('div'); el.className="aspect-[3/4] bg-slate-50 border-2 border-transparent rounded-lg flex items-center justify-center cursor-pointer hover:border-mint-400 relative transition select-none group";
-                el.innerHTML=`<span class="font-bold text-slate-400 text-lg group-hover:text-mint-600">${i}</span><div class="chk-circle w-6 h-6 rounded-full border-2 border-gray-300 bg-white absolute top-2 right-2 flex items-center justify-center"><i class="chk-icon fa-solid fa-check text-white text-xs hidden"></i></div>`;
-                el.onclick=()=>{ if(selPages.has(i)){selPages.delete(i);el.classList.remove('page-selected');}else{selPages.add(i);el.classList.add('page-selected');} document.getElementById('split-range').value=Array.from(selPages).sort((a,b)=>a-b).join(', '); };
-                grid.appendChild(el);
-            }
-        });
-        document.getElementById('btn-split-action').addEventListener('click',async()=>{
-            if(!selPages.size)return alert('Select pages'); progress.show('Splitting...');
-            try{ const src=await PDFDocument.load(await splitFile.arrayBuffer()), newDoc=await PDFDocument.create(), idx=Array.from(selPages).map(n=>n-1).sort((a,b)=>a-b);
-            const pgs=await newDoc.copyPages(src,idx); pgs.forEach(p=>newDoc.addPage(p)); progress.update(100);
-            showResult(new Blob([await newDoc.save()],{type:'application/pdf'}),'split.pdf','Split Successfully'); }catch(e){alert('Error');progress.hide();}
-        });
-
-        // --- IMG2PDF (NEW ENGINE) ---
-        let imgFiles=[];
-        setupDnD('img-drop','img-input', f=>{
-            document.getElementById('img-drop').classList.add('hidden'); document.getElementById('img-workspace').classList.remove('hidden');
-            Array.from(f).forEach(file=>{ 
-                // Flexible Image Check
-                if(!file.type.match(/image\/(jpeg|jpg|png|webp)/)) return;
-                imgFiles.push(file);
-                const el=document.createElement('div'); el.className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative border border-gray-200 cursor-move";
-                el.innerHTML=`<img src="${URL.createObjectURL(file)}" class="w-full h-full object-cover">`;
-                document.getElementById('img-list').appendChild(el);
-            });
-        });
-        new Sortable(document.getElementById('img-list'),{animation:150});
-
-        document.getElementById('btn-img-action').addEventListener('click',async()=>{
-            progress.show('Converting...');
-            try{
+        document.getElementById('btn-comp-action').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-comp-action');
+            btn.innerText = 'Compressing...';
+            try {
+                const ab = await currentFile.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(ab).promise;
                 const { jsPDF } = window.jspdf;
-                const sizeOpt = document.getElementById('img-size').value;
-                const orientOpt = document.querySelector('input[name="img-orient"]:checked').value;
-                const marginOpt = document.querySelector('input[name="img-margin"]:checked').value;
+                const newPdf = new jsPDF({ compress: true });
+                const mode = document.querySelector('input[name="comp-mode"]:checked').value;
+                const quality = mode === 'extreme' ? 0.4 : 0.6;
 
-                let doc = null; // Init later based on first image if needed
-                
-                // Margin Logic
-                const margins = marginOpt === 'none' ? 0 : (marginOpt === 'small' ? 10 : 25); // mm
-
-                for(let i=0; i<imgFiles.length; i++){
-                    progress.update(Math.round((i/imgFiles.length)*100)); await new Promise(r=>setTimeout(r,10));
-
-                    // Load Image via Promise (Safe)
-                    const img = new Image();
-                    img.src = URL.createObjectURL(imgFiles[i]);
-                    await new Promise(r => img.onload = r);
-
-                    const imgW = img.width; 
-                    const imgH = img.height;
-                    let pW, pH, finalOrient;
-
-                    // Determine Page Size & Orientation
-                    if (sizeOpt === 'fit') {
-                        pW = imgW * 0.264583; // px to mm
-                        pH = imgH * 0.264583;
-                        finalOrient = pW > pH ? 'l' : 'p';
-                    } else {
-                        // A4: 210x297, Letter: 215.9x279.4
-                        let baseW = sizeOpt === 'letter' ? 215.9 : 210;
-                        let baseH = sizeOpt === 'letter' ? 279.4 : 297;
-
-                        // Orientation Logic
-                        if (orientOpt === 'auto') {
-                            finalOrient = imgW > imgH ? 'l' : 'p';
-                        } else {
-                            finalOrient = orientOpt;
-                        }
-
-                        if (finalOrient === 'l') { pW = baseH; pH = baseW; } 
-                        else { pW = baseW; pH = baseH; }
-                    }
-
-                    // Init Doc if first page
-                    if (i === 0) {
-                        doc = new jsPDF({ orientation: finalOrient, unit: 'mm', format: sizeOpt === 'fit' ? [pW, pH] : sizeOpt });
-                    } else {
-                        doc.addPage(sizeOpt === 'fit' ? [pW, pH] : sizeOpt, finalOrient);
-                    }
-
-                    // Calculate Dimensions within Margins
-                    const availW = pW - (margins * 2);
-                    const availH = pH - (margins * 2);
-                    const ratio = Math.min(availW / imgW, availH / imgH); // Maintain aspect ratio
-                    
-                    // Convert px to mm for PDF placement if using Fit, else standard scaling
-                    const finalImgW = (sizeOpt === 'fit') ? availW : (imgW * 0.264583 * (availW / (imgW * 0.264583))); 
-                    // Actually simplier:
-                    const scaleFactor = Math.min(availW / (imgW * 0.264583), availH / (imgH * 0.264583));
-                    const drawW = (imgW * 0.264583) * scaleFactor;
-                    const drawH = (imgH * 0.264583) * scaleFactor;
-
-                    const x = (pW - drawW) / 2;
-                    const y = (pH - drawH) / 2;
-
-                    // Draw (Canvas approach for safety)
+                for(let i=1; i<=pdf.numPages; i++){
+                    const page = await pdf.getPage(i);
+                    const vp = page.getViewport({ scale: 1.5 });
                     const canvas = document.createElement('canvas');
-                    canvas.width = imgW; canvas.height = imgH;
-                    canvas.getContext('2d').drawImage(img,0,0);
-                    const safeData = canvas.toDataURL('image/jpeg', 0.9);
-
-                    doc.addImage(safeData, 'JPEG', x, y, drawW, drawH);
+                    canvas.width = vp.width; canvas.height = vp.height;
+                    await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+                    const img = canvas.toDataURL('image/jpeg', quality);
+                    const pW = vp.width/1.5; const pH = vp.height/1.5;
+                    if(i>1) newPdf.addPage([pW, pH]); else { newPdf.deletePage(1); newPdf.addPage([pW, pH]); }
+                    newPdf.addImage(img, 'JPEG', 0, 0, pW, pH);
                 }
-                showResult(doc.output('blob'), 'images.pdf', 'Converted Successfully');
-            } catch(e) { console.error(e); alert('Error converting images.'); progress.hide(); }
+                const blob = newPdf.output('blob');
+                const url = URL.createObjectURL(blob);
+                document.getElementById('modal-dl').href = url;
+                document.getElementById('modal-dl').download = `compressed_${currentFile.name}`;
+                document.getElementById('modal-msg').innerText = `Saved ${formatBytes(currentFile.size - blob.size)}`;
+                document.getElementById('modal').classList.remove('hidden');
+            } catch(e) { alert('Error compressing'); }
+            btn.innerText = 'Compress PDF Now';
         });
     </script>
 </body>
-    </html>
+</html>
