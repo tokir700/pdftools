@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to PDF Online - Convert Images to PDF | MintPDF</title>
+    <meta name="description" content="Convert JPG, PNG, and WebP images to PDF instantly. Adjust page size, orientation, and margins. Free and secure client-side converter.">
+    <meta name="keywords" content="jpg to pdf, png to pdf, image to pdf, picture to pdf, free converter, mintpdf">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#10b981">
+    <link rel="canonical" href="https://pdftools-5un.pages.dev/jpg-to-pdf.html">
+    <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
+
+    <meta property="og:site_name" content="MintPDF">
+    <meta property="og:title" content="JPG to PDF Converter - Free & Secure">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://pdftools-5un.pages.dev/og-image.jpg">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "MintPDF Image to PDF",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "A free tool to convert images to PDF documents in the browser."
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .text-mint-600 { color: #059669; }
+        .bg-mint-600 { background-color: #059669; }
+        .bg-mint-50 { background-color: #ecfdf5; }
+        .nav-item.active { color: #059669; background-color: #ecfdf5; font-weight: 600; }
+        .drag-hover { border-color: #10b981 !important; background-color: #ecfdf5 !important; transform: scale(1.01); }
+    </style>
+</head>
+<body class="bg-white text-slate-800 min-h-screen flex flex-col">
+
+    <nav class="border-b border-gray-100 sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 bg-mint-600 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
+                </a>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="/" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Compress</a>
+                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge</a>
+                    <a href="/split.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Split</a>
+                    <a href="/jpg-to-pdf.html" class="nav-item active px-4 py-2 rounded-full text-sm transition">JPG to PDF</a>
+                </div>
+                <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"><i class="fa-solid fa-bars text-xl"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
+            <div class="flex flex-col p-2 gap-1">
+                <a href="/" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Compress PDF</a>
+                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
+                <a href="/split.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Split PDF</a>
+                <a href="/jpg-to-pdf.html" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">JPG to PDF</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto p-4 md:p-12 flex flex-col items-center">
+        <article class="w-full flex flex-col items-center">
+            <header class="text-center mb-10 max-w-2xl">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Convert JPG to PDF</h1>
+                <p class="text-slate-500 text-lg md:text-xl leading-relaxed">Turn your images into a PDF document instantly. <br class="hidden md:block">Supports JPG, PNG, and WebP.</p>
+            </header>
+
+            <section id="img-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 hover:shadow-xl transition-all duration-300 group">
+                <input type="file" id="img-input" class="hidden" accept="image/png, image/jpeg, image/jpg, image/webp" multiple>
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition">
+                    <i class="fa-regular fa-images text-4xl text-mint-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-slate-800 mb-2">Select Images</h2>
+            </section>
+
+            <section id="img-workspace" class="hidden w-full max-w-6xl mt-6 flex flex-col lg:flex-row gap-8">
+                <div class="flex-grow">
+                    <div id="img-list" class="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-4"></div>
+                    <button onclick="document.getElementById('img-input').click()" class="text-mint-600 font-bold text-sm hover:underline">+ Add More Images</button>
+                </div>
+
+                <div class="w-full lg:w-80 flex-shrink-0">
+                    <div class="bg-white border border-gray-200 p-6 rounded-2xl sticky top-24 shadow-lg">
+                        <h3 class="font-bold text-lg mb-4 text-slate-800">PDF Settings</h3>
+                        
+                        <div class="mb-4">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Page Size</label>
+                            <select id="img-size" class="w-full border rounded-lg p-2.5 text-sm bg-gray-50 focus:ring-2 focus:ring-mint-500 outline-none">
+                                <option value="a4">A4 (Standard)</option>
+                                <option value="letter">US Letter</option>
+                                <option value="fit">Fit to Image</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Orientation</label>
+                            <div class="flex gap-2">
+                                <label class="flex-1 cursor-pointer"><input type="radio" name="img-orient" value="auto" checked class="peer hidden"><div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600">Auto</div></label>
+                                <label class="flex-1 cursor-pointer"><input type="radio" name="img-orient" value="p" class="peer hidden"><div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600">Portrait</div></label>
+                                <label class="flex-1 cursor-pointer"><input type="radio" name="img-orient" value="l" class="peer hidden"><div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600">Landscape</div></label>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Margins</label>
+                            <div class="flex gap-2">
+                                <label class="flex-1 cursor-pointer"><input type="radio" name="img-margin" value="none" class="peer hidden"><div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600">None</div></label>
+                                <label class="flex-1 cursor-pointer"><input type="radio" name="img-margin" value="small" checked class="peer hidden"><div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600">Small</div></label>
+                                <label class="flex-1 cursor-pointer"><input type="radio" name="img-margin" value="big" class="peer hidden"><div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600">Big</div></label>
+                            </div>
+                        </div>
+
+                        <button id="btn-img-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all">Convert to PDF</button>
+                    </div>
+                </div>
+            </section>
+        </article>
+
+        <section class="max-w-4xl w-full mt-20 prose prose-slate">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-8">How to Convert Images to PDF?</h2>
+            <div class="grid md:grid-cols-3 gap-6 text-center mb-12">
+                <div class="p-4"><div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">1</div><h3 class="font-bold">Upload Images</h3><p class="text-sm text-slate-600">Select JPG or PNG files.</p></div>
+                <div class="p-4"><div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">2</div><h3 class="font-bold">Customize</h3><p class="text-sm text-slate-600">Set orientation and margins.</p></div>
+                <div class="p-4"><div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">3</div><h3 class="font-bold">Convert</h3><p class="text-sm text-slate-600">Download your PDF.</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white py-12 text-center border-t border-gray-200 mt-20">
+        <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
+        <div class="flex justify-center gap-6 mb-8 text-sm text-slate-500">
+            <a href="/" class="hover:text-mint-600">Compress</a>
+            <a href="/merge.html" class="hover:text-mint-600">Merge</a>
+            <a href="/split.html" class="hover:text-mint-600">Split</a>
+            <a href="/jpg-to-pdf.html" class="hover:text-mint-600">JPG to PDF</a>
+        </div>
+        <p class="text-slate-400 text-xs">&copy; 2025 MintPDF. Secure Client-Side Tools.</p>
+    </footer>
+
+    <div id="modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-2xl font-bold text-slate-900 mb-2">Success!</h3>
+            <p id="modal-msg" class="text-slate-500 mb-6">Converted Successfully</p>
+            <a id="modal-dl" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3.5 rounded-xl shadow-lg mb-3">Download File</a>
+            <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-slate-400 text-sm">Close</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+    <script>
+        let imgFiles = [];
+        const drop = document.getElementById('img-drop');
+        const input = document.getElementById('img-input');
+
+        drop.addEventListener('click', () => input.click());
+        input.addEventListener('change', e => e.target.files.length && addImages(e.target.files));
+        drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-hover'); });
+        drop.addEventListener('dragleave', () => drop.classList.remove('drag-hover'));
+        drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag-hover'); if(e.dataTransfer.files.length) addImages(e.dataTransfer.files); });
+
+        function addImages(files) {
+            document.getElementById('img-drop').classList.add('hidden');
+            document.getElementById('img-workspace').classList.remove('hidden');
+            document.getElementById('img-workspace').classList.add('flex');
+            Array.from(files).forEach(f => {
+                if(!f.type.match(/image\/(jpeg|jpg|png|webp)/)) return;
+                imgFiles.push(f);
+                const el = document.createElement('div');
+                el.className = "aspect-square bg-gray-100 rounded-lg overflow-hidden relative border border-gray-200 cursor-move";
+                el.innerHTML = `<img src="${URL.createObjectURL(f)}" class="w-full h-full object-cover">`;
+                document.getElementById('img-list').appendChild(el);
+            });
+        }
+        new Sortable(document.getElementById('img-list'), { animation: 150 });
+
+        document.getElementById('btn-img-action').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-img-action');
+            btn.innerText = 'Converting...';
+            try {
+                const { jsPDF } = window.jspdf;
+                const sizeOpt = document.getElementById('img-size').value;
+                const orientOpt = document.querySelector('input[name="img-orient"]:checked').value;
+                const marginOpt = document.querySelector('input[name="img-margin"]:checked').value;
+                
+                let doc = null;
+                const margins = marginOpt === 'none' ? 0 : (marginOpt === 'small' ? 10 : 25); 
+
+                for(let i=0; i<imgFiles.length; i++) {
+                    const img = new Image();
+                    img.src = URL.createObjectURL(imgFiles[i]);
+                    await new Promise(r => img.onload = r);
+                    const imgW = img.width, imgH = img.height;
+                    
+                    // Robust Canvas Conversion (Fixes file format errors)
+                    const canvas = document.createElement('canvas');
+                    canvas.width = imgW; canvas.height = imgH;
+                    canvas.getContext('2d').drawImage(img,0,0);
+                    const cleanData = canvas.toDataURL('image/jpeg', 0.95);
+
+                    let pW, pH, finalOrient;
+                    if (sizeOpt === 'fit') {
+                        pW = imgW * 0.264583; pH = imgH * 0.264583;
+                        finalOrient = pW > pH ? 'l' : 'p';
+                    } else {
+                        let baseW = sizeOpt === 'letter' ? 215.9 : 210;
+                        let baseH = sizeOpt === 'letter' ? 279.4 : 297;
+                        if (orientOpt === 'auto') finalOrient = imgW > imgH ? 'l' : 'p';
+                        else finalOrient = orientOpt;
+                        if (finalOrient === 'l') { pW = baseH; pH = baseW; } else { pW = baseW; pH = baseH; }
+                    }
+
+                    if (i === 0) doc = new jsPDF({ orientation: finalOrient, unit: 'mm', format: sizeOpt === 'fit' ? [pW, pH] : sizeOpt });
+                    else doc.addPage(sizeOpt === 'fit' ? [pW, pH] : sizeOpt, finalOrient);
+
+                    const availW = pW - (margins * 2), availH = pH - (margins * 2);
+                    const scaleFactor = Math.min(availW / (imgW * 0.264583), availH / (imgH * 0.264583));
+                    const drawW = (imgW * 0.264583) * scaleFactor;
+                    const drawH = (imgH * 0.264583) * scaleFactor;
+                    const x = (pW - drawW) / 2, y = (pH - drawH) / 2;
+
+                    doc.addImage(cleanData, 'JPEG', x, y, drawW, drawH);
+                }
+                const blob = doc.output('blob');
+                const url = URL.createObjectURL(blob);
+                document.getElementById('modal-dl').href = url;
+                document.getElementById('modal-dl').download = 'images.pdf';
+                document.getElementById('modal').classList.remove('hidden');
+            } catch(e) { console.error(e); alert('Error converting images'); }
+            btn.innerText = 'Convert to PDF';
+        });
+    </script>
+</body>
+</html>
