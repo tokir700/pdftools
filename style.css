@@ -1,10 +1,11 @@
 body {
+  margin: 0;
+  height: 100vh;
   background: #0f172a;
-  font-family: system-ui, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  font-family: system-ui, sans-serif;
   color: white;
 }
 
@@ -14,12 +15,12 @@ body {
   width: 340px;
   border-radius: 16px;
   text-align: center;
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
 }
 
 .sub {
-  color: #94a3b8;
   font-size: 14px;
+  color: #94a3b8;
 }
 
 input, select {
@@ -30,12 +31,16 @@ input, select {
 button {
   width: 100%;
   padding: 12px;
+  background: #2563eb;
   border: none;
   border-radius: 10px;
-  background: #2563eb;
-  color: white;
   font-size: 16px;
+  color: white;
   cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
 }
 
 .progress {
@@ -51,6 +56,11 @@ button {
   width: 0%;
   background: #22c55e;
   transition: width 0.3s;
+}
+
+#status {
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 .privacy {
