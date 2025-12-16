@@ -9,38 +9,40 @@
 </head>
 <body>
 
-<div class="card">
-    <h1><i class="fas fa-file-pdf"></i> PDF Compressor</h1>
-    <p class="sub">Fast, local compression using your browser.</p>
+<div class="main-container">
+    <div class="card">
+        <h1><i class="fas fa-file-pdf"></i> PDF Compressor</h1>
+        <p class="sub">Fast, local compression using your browser.</p>
 
-    <div class="input-group file-upload-area">
-        <label for="fileInput" id="fileLabel">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span>Click to select or drag & drop a PDF</span>
-        </label>
-        <input type="file" id="fileInput" accept="application/pdf" hidden>
-    </div>
-    
-    <div class="settings-group">
-        <label for="quality"><i class="fas fa-sliders-h"></i> Compression Quality:</label>
-        <select id="quality">
-            <option value="0.8">Low Compression (Best Quality)</option>
-            <option value="0.6" selected>Medium Compression (Good Balance)</option>
-            <option value="0.4">High Compression (Smaller Size)</option>
-        </select>
-    </div>
+        <div class="input-group file-upload-area">
+            <label for="fileInput" id="fileLabel">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Click to select or drag & drop a PDF</span>
+            </label>
+            <input type="file" id="fileInput" accept="application/pdf" hidden>
+        </div>
+        
+        <div class="settings-group">
+            <label for="quality"><i class="fas fa-sliders-h"></i> Compression Quality:</label>
+            <select id="quality">
+                <option value="0.8">Low Compression (Best Quality)</option>
+                <option value="0.6" selected>Medium Compression (Good Balance)</option>
+                <option value="0.4">High Compression (Smaller Size)</option>
+            </select>
+        </div>
 
-    <button id="compressBtn" disabled>
-        <i class="fas fa-compress-alt"></i> Compress PDF
-    </button>
-    
-    <div class="status-area">
-        <p id="status"><i class="fas fa-info-circle"></i> Waiting for file selection...</p>
-        <div class="progress">
-            <div id="bar"></div>
+        <button id="compressBtn" disabled>
+            <i class="fas fa-compress-alt"></i> Compress PDF
+        </button>
+        
+        <div class="status-area">
+            <p id="status"><i class="fas fa-info-circle"></i> Waiting for file selection...</p>
+            <div class="progress">
+                <div id="bar"></div>
+            </div>
         </div>
     </div>
-
+    
     <p class="privacy">
         <i class="fas fa-lock"></i> **No Upload** • **No Storage** • 100% Private
     </p>
