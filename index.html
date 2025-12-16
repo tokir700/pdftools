@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Compress PDF Online - Reduce File Size for Free | MintPDF</title>
-    <meta name="description" content="The best free online PDF compressor. Reduce PDF file size significantly while maintaining quality. Secure, client-side, and no file limits.">
+    <meta name="description" content="The best free online PDF compressor. Reduce PDF file size significantly without losing quality. Shrink scanned documents securely in your browser. No file limits.">
+    <meta name="keywords" content="compress pdf, reduce pdf size, shrink pdf, optimize pdf, free pdf compressor, reduce pdf file size, online pdf tools">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#10b981">
-    
     <link rel="canonical" href="https://pdftools-5un.pages.dev/">
-    
-    <meta property="og:site_name" content="MintPDF">
-    <meta property="og:title" content="Compress PDF Online - Free & Secure">
-    <meta property="og:description" content="Reduce PDF size locally in your browser. No uploads.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://pdftools-5un.pages.dev/og-image.jpg">
+    <link rel="icon" type="image/png" href="favicon.png">
     
     <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
+
+    <meta property="og:site_name" content="MintPDF">
+    <meta property="og:title" content="Compress PDF Online - Free & Secure">
+    <meta property="og:description" content="Reduce PDF size locally in your browser. No uploads, no waiting.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://pdftools-5un.pages.dev/og-image.jpg">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "MintPDF Compressor",
+      "url": "https://pdftools-5un.pages.dev/",
       "applicationCategory": "ProductivityApplication",
       "operatingSystem": "Web Browser",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "A free tool to compress PDF files directly in the browser using WebAssembly."
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "A secure tool to compress PDF files directly in the browser using WebAssembly."
     }
     </script>
 
@@ -47,7 +44,6 @@
         .bg-mint-50 { background-color: #ecfdf5; }
         .nav-item.active { color: #059669; background-color: #ecfdf5; font-weight: 600; }
         .drag-hover { border-color: #10b981 !important; background-color: #ecfdf5 !important; transform: scale(1.01); }
-        /* Loader */
         .spinner { width: 24px; height: 24px; border: 3px solid #e5e7eb; border-top-color: #059669; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
@@ -63,14 +59,12 @@
                     </div>
                     <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
                 </a>
-
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="/" class="nav-item active px-4 py-2 rounded-full text-sm transition">Compress PDF</a>
-                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge</a>
-                    <a href="/split.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Split</a>
+                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge PDF</a>
+                    <a href="/split.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Split PDF</a>
                     <a href="/jpg-to-pdf.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">JPG to PDF</a>
                 </div>
-
                 <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
@@ -87,13 +81,12 @@
     </nav>
 
     <main class="flex-grow w-full max-w-6xl mx-auto p-4 md:p-12 flex flex-col items-center">
-        
         <article class="w-full flex flex-col items-center">
-            <header class="text-center mb-10 max-w-2xl">
+            <header class="text-center mb-10 max-w-3xl">
                 <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Compress PDF Online</h1>
                 <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
-                    Significantly reduce PDF file size without losing quality. 
-                    <br class="hidden md:block">Secure, client-side, and free.
+                    Significantly <span class="text-mint-600 font-bold">reduce PDF file size</span> without losing quality. 
+                    <br class="hidden md:block">Secure, client-side, and free forever.
                 </p>
             </header>
 
@@ -112,79 +105,68 @@
                     <div><h3 id="comp-filename" class="font-bold text-slate-800 text-lg truncate">doc.pdf</h3><p id="comp-filesize" class="text-sm text-slate-500 font-mono mt-1">0 MB</p></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    <label class="relative border-2 border-mint-500 bg-mint-50 p-5 rounded-2xl cursor-pointer"><input type="radio" name="comp-mode" value="normal" checked class="absolute top-6 right-6 text-mint-600"><span class="font-bold">Balanced</span><p class="text-xs text-slate-600">Good quality, good compression.</p></label>
-                    <label class="relative border border-gray-200 p-5 rounded-2xl cursor-pointer hover:bg-gray-50"><input type="radio" name="comp-mode" value="extreme" class="absolute top-6 right-6 text-mint-600"><span class="font-bold">Extreme</span><p class="text-xs text-slate-600">High compression, lower quality.</p></label>
+                    <label class="relative border-2 border-mint-500 bg-mint-50 p-5 rounded-2xl cursor-pointer"><input type="radio" name="comp-mode" value="normal" checked class="absolute top-6 right-6 text-mint-600"><span class="font-bold">Balanced</span><p class="text-xs text-slate-600">Best quality & compression.</p></label>
+                    <label class="relative border border-gray-200 p-5 rounded-2xl cursor-pointer hover:bg-gray-50"><input type="radio" name="comp-mode" value="extreme" class="absolute top-6 right-6 text-mint-600"><span class="font-bold">Extreme</span><p class="text-xs text-slate-600">Max compression, lower quality.</p></label>
                 </div>
                 <button id="btn-comp-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white text-lg font-bold py-4 rounded-xl shadow-lg transition-all">Compress PDF Now</button>
             </section>
         </article>
 
-        <section class="max-w-4xl w-full mt-20 prose prose-slate">
-            <h2 class="text-3xl font-bold text-slate-900 text-center mb-8">How to Compress PDF Files Online?</h2>
-            <div class="grid md:grid-cols-3 gap-6 text-center mb-12">
-                <div class="p-4">
-                    <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">1</div>
-                    <h3 class="font-bold">Upload PDF</h3>
-                    <p class="text-sm text-slate-600">Drag and drop your file into the box above.</p>
+        <section class="max-w-4xl w-full mt-24 prose prose-slate">
+            <h2 class="text-3xl font-bold text-slate-900 text-center mb-10">How to Reduce PDF Size Online?</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-center mb-16">
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-4 text-xl">1</div>
+                    <h3 class="font-bold text-lg mb-2">Upload PDF</h3>
+                    <p class="text-sm text-slate-500">Drag and drop your document into the box above.</p>
                 </div>
-                <div class="p-4">
-                    <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">2</div>
-                    <h3 class="font-bold">Choose Level</h3>
-                    <p class="text-sm text-slate-600">Select Balanced or Extreme compression.</p>
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-4 text-xl">2</div>
+                    <h3 class="font-bold text-lg mb-2">Auto Compress</h3>
+                    <p class="text-sm text-slate-500">Our smart engine optimizes images and fonts instantly.</p>
                 </div>
-                <div class="p-4">
-                    <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-3">3</div>
-                    <h3 class="font-bold">Download</h3>
-                    <p class="text-sm text-slate-600">Get your smaller PDF instantly.</p>
+                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 font-bold mx-auto mb-4 text-xl">3</div>
+                    <h3 class="font-bold text-lg mb-2">Download</h3>
+                    <p class="text-sm text-slate-500">Save your smaller, optimized PDF file immediately.</p>
                 </div>
             </div>
 
-            <div class="bg-slate-50 p-8 rounded-3xl border border-gray-200">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
-                
-                <details class="mb-4 bg-white p-4 rounded-xl shadow-sm cursor-pointer group">
-                    <summary class="font-bold text-slate-800 list-none flex justify-between">
-                        Is my data safe?
-                        <i class="fa-solid fa-chevron-down text-mint-600 transition group-open:rotate-180"></i>
-                    </summary>
-                    <p class="mt-2 text-slate-600 text-sm">Yes. MintPDF operates 100% client-side. Your files are processed by your browser and never uploaded to our servers.</p>
-                </details>
-
-                <details class="mb-4 bg-white p-4 rounded-xl shadow-sm cursor-pointer group">
-                    <summary class="font-bold text-slate-800 list-none flex justify-between">
-                        Does it reduce quality?
-                        <i class="fa-solid fa-chevron-down text-mint-600 transition group-open:rotate-180"></i>
-                    </summary>
-                    <p class="mt-2 text-slate-600 text-sm">Our "Balanced" mode removes redundant data without visible quality loss. "Extreme" mode may lower image resolution for maximum size reduction.</p>
-                </details>
-
-                <details class="bg-white p-4 rounded-xl shadow-sm cursor-pointer group">
-                    <summary class="font-bold text-slate-800 list-none flex justify-between">
-                        Is it free?
-                        <i class="fa-solid fa-chevron-down text-mint-600 transition group-open:rotate-180"></i>
-                    </summary>
-                    <p class="mt-2 text-slate-600 text-sm">Yes, MintPDF is free forever. There are no daily limits and no watermarks.</p>
-                </details>
+            <div class="bg-slate-50 p-8 md:p-12 rounded-3xl border border-gray-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6">Why use MintPDF Compressor?</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-lock text-mint-600"></i> Secure & Private</h3>
+                        <p class="text-slate-600 text-sm mt-1">Unlike other tools, we process your files <strong>client-side</strong>. Your sensitive documents never leave your browser, ensuring bank-grade privacy.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-bolt text-mint-600"></i> Lightning Fast</h3>
+                        <p class="text-slate-600 text-sm mt-1">No upload waiting time. We use WebAssembly to shrink PDF files instantly on your device, even offline.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-infinity text-mint-600"></i> Unlimited & Free</h3>
+                        <p class="text-slate-600 text-sm mt-1">Compress as many files as you need. No daily limits, no watermarks, and no sign-up required.</p>
+                    </div>
+                </div>
             </div>
         </section>
-
     </main>
 
     <footer class="bg-white py-12 text-center border-t border-gray-200 mt-20">
         <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
-        <div class="flex justify-center gap-6 mb-8 text-sm text-slate-500">
-            <a href="/" class="hover:text-mint-600">Compress</a>
-            <a href="/merge.html" class="hover:text-mint-600">Merge</a>
-            <a href="/split.html" class="hover:text-mint-600">Split</a>
-            <a href="/jpg-to-pdf.html" class="hover:text-mint-600">JPG to PDF</a>
+        <div class="flex justify-center gap-6 mb-8 text-sm text-slate-500 flex-wrap px-4">
+            <a href="/" class="hover:text-mint-600 font-medium">Compress PDF</a>
+            <a href="/merge.html" class="hover:text-mint-600 font-medium">Merge PDF</a>
+            <a href="/split.html" class="hover:text-mint-600 font-medium">Split PDF</a>
+            <a href="/jpg-to-pdf.html" class="hover:text-mint-600 font-medium">JPG to PDF</a>
         </div>
-        <p class="text-slate-400 text-xs">&copy; 2025 MintPDF. Secure Client-Side Tools.</p>
+        <p class="text-slate-400 text-xs">&copy; 2025 MintPDF. Secure Online PDF Tools.</p>
     </footer>
 
     <div id="modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Success!</h3>
-            <p id="modal-msg" class="text-slate-500 mb-6">Done</p>
+            <p id="modal-msg" class="text-slate-500 mb-6">Processing Complete</p>
             <a id="modal-dl" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3.5 rounded-xl shadow-lg mb-3">Download File</a>
             <button onclick="document.getElementById('modal').classList.add('hidden')" class="text-slate-400 text-sm">Close</button>
         </div>
@@ -197,8 +179,7 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         const formatBytes = b => b ? `${(b/1024/1024).toFixed(2)} MB` : '0 MB';
-
-        // COMPRESSOR LOGIC ONLY
+        
         const drop = document.getElementById('comp-drop');
         const input = document.getElementById('comp-input');
         
@@ -252,4 +233,3 @@
     </script>
 </body>
 </html>
-
