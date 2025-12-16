@@ -2,55 +2,349 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>⚡ PDF Compressor (Local & Private)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>PDF Compressor | Secure Client-Side Tool</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .drag-active { border-color: #3b82f6; background-color: #eff6ff; }
+        .gradient-text { background: linear-gradient(to right, #2563eb, #db2777); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen flex flex-col">
 
-<div class="main-container">
-    <div class="card">
-        <h1><i class="fas fa-file-pdf"></i> PDF Compressor</h1>
-        <p class="sub">Fast, local compression using your browser.</p>
-
-        <div class="input-group file-upload-area">
-            <label for="fileInput" id="fileLabel">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <span>Click to select or drag & drop a PDF</span>
-            </label>
-            <input type="file" id="fileInput" accept="application/pdf" hidden>
-        </div>
-        
-        <div class="settings-group">
-            <label for="quality"><i class="fas fa-sliders-h"></i> Compression Quality:</label>
-            <select id="quality">
-                <option value="0.8">Low Compression (Best Quality)</option>
-                <option value="0.6" selected>Medium Compression (Good Balance)</option>
-                <option value="0.4">High Compression (Smaller Size)</option>
-            </select>
-        </div>
-
-        <button id="compressBtn" disabled>
-            <i class="fas fa-compress-alt"></i> Compress PDF
-        </button>
-        
-        <div class="status-area">
-            <p id="status"><i class="fas fa-info-circle"></i> Waiting for file selection...</p>
-            <div class="progress">
-                <div id="bar"></div>
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-blue-600 text-2xl"></i>
+                    <span class="font-bold text-xl text-gray-800">SwiftPDF</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-gray-500 text-sm font-medium">
+                    <a href="#" class="hover:text-blue-600 transition">Merge PDF</a>
+                    <a href="#" class="hover:text-blue-600 transition">Split PDF</a>
+                    <a href="#" class="text-blue-600">Compress PDF</a>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <p class="privacy">
-        <i class="fas fa-lock"></i> **No Upload** • **No Storage** • 100% Private
-    </p>
-</div>
+    </nav>
 
-<script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-<script src="script.js"></script>
+    <main class="flex-grow flex flex-col items-center justify-center p-6">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Compress PDF file
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Reduce file size while optimizing for maximal PDF quality. 
+                <br><span class="text-sm text-gray-400">100% Client-side. Your files never leave this browser.</span>
+            </p>
+        </div>
 
+        <div id="upload-section" class="w-full max-w-2xl">
+            <div id="drop-zone" class="bg-white rounded-3xl border-4 border-dashed border-gray-200 p-12 text-center transition-all duration-300 hover:border-blue-400 hover:shadow-xl cursor-pointer group relative overflow-hidden">
+                <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="application/pdf">
+                
+                <div class="relative z-10 pointer-events-none">
+                    <div class="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-blue-600"></i>
+                    </div>
+                    <button class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition-colors mb-4">
+                        Select PDF files
+                    </button>
+                    <p class="text-gray-500">or drop PDF here</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings-section" class="w-full max-w-4xl hidden bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+            <div class="w-full md:w-1/3 bg-gray-50 p-8 border-r border-gray-100 flex flex-col items-center text-center">
+                <i class="fa-solid fa-file-pdf text-6xl text-red-500 mb-4 shadow-sm"></i>
+                <h3 id="file-name" class="font-bold text-gray-800 break-all">filename.pdf</h3>
+                <p id="original-size" class="text-sm text-gray-500 mt-2">2.4 MB</p>
+                <button onclick="location.reload()" class="mt-auto text-red-500 text-sm hover:underline flex items-center gap-1">
+                    <i class="fa-solid fa-trash"></i> Remove
+                </button>
+            </div>
+
+            <div class="w-full md:w-2/3 p-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Compression Level</h2>
+                
+                <div class="space-y-4">
+                    <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all group">
+                        <input type="radio" name="compression" value="extreme" class="w-5 h-5 text-blue-600">
+                        <div class="ml-4">
+                            <span class="block font-bold text-gray-700 group-hover:text-blue-700">Extreme Compression</span>
+                            <span class="text-sm text-gray-500">Less quality, high compression (72 DPI)</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center p-4 border-2 border-blue-100 bg-blue-50 rounded-xl cursor-pointer transition-all">
+                        <input type="radio" name="compression" value="recommended" checked class="w-5 h-5 text-blue-600">
+                        <div class="ml-4">
+                            <span class="block font-bold text-gray-800">Recommended Compression</span>
+                            <span class="text-sm text-gray-500">Good quality, good compression (144 DPI)</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition-all group">
+                        <input type="radio" name="compression" value="less" class="w-5 h-5 text-blue-600">
+                        <div class="ml-4">
+                            <span class="block font-bold text-gray-700 group-hover:text-blue-700">Less Compression</span>
+                            <span class="text-sm text-gray-500">High quality, less compression (200 DPI)</span>
+                        </div>
+                    </label>
+                </div>
+
+                <button id="compress-btn" class="w-full mt-8 bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition shadow-lg flex justify-center items-center gap-2">
+                    <span>Compress PDF</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <div id="progress-container" class="hidden mt-6">
+                    <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                        <span>Processing...</span>
+                        <span id="progress-text">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <p class="text-xs text-center text-gray-400 mt-2">This may take a moment for large files.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-section" class="hidden text-center animate-fade-in-up">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+                <i class="fa-solid fa-check text-4xl text-green-600"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">PDF Compressed!</h2>
+            <p class="text-gray-600 mb-8">
+                Your PDF is now <span id="savings-text" class="font-bold text-green-600"></span> smaller.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a id="download-link" href="#" class="bg-gray-900 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-800 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Download PDF
+                </a>
+                <button onclick="location.reload()" class="bg-white border border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition">
+                    Compress Another
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto py-8 px-4 text-center text-gray-500 text-sm">
+            &copy; 2024 SwiftPDF. Built for GitHub Pages.
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // --- Configuration ---
+        // We use PDF.js to render pages to canvas, then save them as JPEG to compress
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // --- DOM Elements ---
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const uploadSection = document.getElementById('upload-section');
+        const settingsSection = document.getElementById('settings-section');
+        const resultSection = document.getElementById('result-section');
+        const compressBtn = document.getElementById('compress-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const progressContainer = document.getElementById('progress-container');
+        
+        // --- State ---
+        let currentFile = null;
+
+        // --- Event Listeners ---
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-active');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-active');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-active');
+            if (e.dataTransfer.files.length) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        compressBtn.addEventListener('click', startCompression);
+
+        // --- Functions ---
+
+        function handleFileSelect(e) {
+            if (e.target.files.length) {
+                handleFile(e.target.files[0]);
+            }
+        }
+
+        function handleFile(file) {
+            if (file.type !== 'application/pdf') {
+                alert('Please upload a PDF file.');
+                return;
+            }
+            currentFile = file;
+            
+            // UI Updates
+            document.getElementById('file-name').textContent = file.name;
+            document.getElementById('original-size').textContent = formatBytes(file.size);
+            
+            uploadSection.classList.add('hidden');
+            settingsSection.classList.remove('hidden');
+            settingsSection.classList.add('flex'); // restore flex display
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (!+bytes) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+        }
+
+        async function startCompression() {
+            if (!currentFile) return;
+
+            // UI: Show loading
+            compressBtn.disabled = true;
+            compressBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            compressBtn.innerHTML = '<div class="loader mr-2 w-5 h-5 border-2"></div> Compressing...';
+            progressContainer.classList.remove('hidden');
+
+            // Get Settings
+            const mode = document.querySelector('input[name="compression"]:checked').value;
+            let scale = 1.0;
+            let quality = 0.7;
+
+            // Logic: 
+            // PDF.js renders at 72dpi by default when scale=1.
+            // We adjust scale to balance clarity vs size.
+            switch (mode) {
+                case 'extreme':
+                    scale = 1.0; // 72 DPI (approx)
+                    quality = 0.4; // Low JPEG quality
+                    break;
+                case 'recommended':
+                    scale = 1.5; // ~108 DPI
+                    quality = 0.6; // Med JPEG quality
+                    break;
+                case 'less':
+                    scale = 2.0; // ~144 DPI
+                    quality = 0.8; // High JPEG quality
+                    break;
+            }
+
+            try {
+                const arrayBuffer = await currentFile.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                const totalPages = pdf.numPages;
+                
+                // Initialize jsPDF (A4 default, we will change page by page)
+                const { jsPDF } = window.jspdf;
+                const newPdf = new jsPDF({
+                    orientation: 'p',
+                    unit: 'px',
+                    format: 'a4',
+                    compress: true 
+                });
+                
+                // Process Pages
+                for (let i = 1; i <= totalPages; i++) {
+                    // Update Progress
+                    const percent = Math.round((i / totalPages) * 100);
+                    progressBar.style.width = `${percent}%`;
+                    progressText.textContent = `${percent}%`;
+
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: scale });
+                    
+                    // Create Canvas
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    // Render Page to Canvas
+                    await page.render({
+                        canvasContext: ctx,
+                        viewport: viewport
+                    }).promise;
+
+                    // Convert Canvas to Image (JPEG)
+                    const imgData = canvas.toDataURL('image/jpeg', quality);
+
+                    // Add to new PDF
+                    if (i === 1) {
+                        // For the first page, set the document size to match the image
+                        newPdf.deletePage(1); // Remove default page
+                        newPdf.addPage([viewport.width, viewport.height]);
+                    } else {
+                        newPdf.addPage([viewport.width, viewport.height]);
+                    }
+                    
+                    // addImage(imageData, format, x, y, width, height)
+                    // We use the full canvas dimensions
+                    newPdf.addImage(imgData, 'JPEG', 0, 0, viewport.width, viewport.height);
+                }
+
+                // Finish
+                const outputBlob = newPdf.output('blob');
+                
+                // Calculate Savings
+                const originalSize = currentFile.size;
+                const newSize = outputBlob.size;
+                const savedPercent = Math.round(((originalSize - newSize) / originalSize) * 100);
+                
+                // If file grew (possible with small text PDFs -> Images), handle gracefully
+                const savedText = savedPercent > 0 
+                    ? `Saved ${savedPercent}% (${formatBytes(originalSize)} → ${formatBytes(newSize)})`
+                    : `Processed (${formatBytes(newSize)}) - (Note: Text PDFs may grow when rasterized)`;
+
+                // Show Results
+                settingsSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+                document.getElementById('savings-text').textContent = savedText;
+                
+                const url = URL.createObjectURL(outputBlob);
+                const downloadLink = document.getElementById('download-link');
+                downloadLink.href = url;
+                downloadLink.download = `compressed_${currentFile.name}`;
+
+            } catch (error) {
+                console.error(error);
+                alert("An error occurred during compression. Please try a simpler file.");
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
