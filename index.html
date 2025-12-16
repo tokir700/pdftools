@@ -10,7 +10,7 @@
 
 <div class="card">
   <h2>PDF Compressor</h2>
-  <p class="sub">Compress PDFs safely in your browser</p>
+  <p class="sub">Compress PDFs locally in your browser</p>
 
   <input type="file" id="fileInput" accept="application/pdf">
 
@@ -20,7 +20,7 @@
     <option value="0.8">Low Compression</option>
   </select>
 
-  <button onclick="compress()">Compress PDF</button>
+  <button id="compressBtn">Compress PDF</button>
 
   <div class="progress">
     <div id="bar"></div>
@@ -33,8 +33,13 @@
   </p>
 </div>
 
+<!-- pdf.js -->
+<script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+
+<!-- pdf-lib -->
 <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-<script src="https://unpkg.com/pdfjs-dist/build/pdf.min.js"></script>
+
+<!-- your script -->
 <script src="script.js"></script>
 
 </body>
