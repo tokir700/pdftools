@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>MintPDF | Free Online PDF Tools - Compress, Merge, Split & Convert</title>
-    <meta name="description" content="Secure, fast, and free online PDF tools. Compress PDF size, merge documents, split pages, and convert JPG to PDF without uploading your files.">
-    <meta name="keywords" content="compress pdf, merge pdf, split pdf, jpg to pdf, free pdf tools, client side pdf, mintpdf, smallpdf alternative">
+    <meta name="description" content="Secure, fast, and free online PDF tools. Compress PDF size, merge documents, split pages, and convert JPG/JPEG to PDF without uploading your files.">
+    <meta name="keywords" content="compress pdf, merge pdf, split pdf, jpg to pdf, jpeg to pdf, free pdf tools, client side pdf, mintpdf">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#10b981">
     <link rel="canonical" href="https://pdftools-5un.pages.dev/">
@@ -34,8 +34,7 @@
         "priceCurrency": "USD"
       },
       "featureList": "PDF Compression, PDF Merging, PDF Splitting, Image to PDF Conversion",
-      "screenshot": "https://pdftools-5un.pages.dev/screenshot.jpg",
-      "softwareVersion": "2.0",
+      "softwareVersion": "2.1",
       "author": {
         "@type": "Organization",
         "name": "MintPDF"
@@ -71,18 +70,19 @@
             transform: scale(1.01);
         }
 
-        /* Split PDF Selection Highlight */
+        /* Split PDF Selection Highlight (Green Border + Checkmark) */
         .page-selected {
             border-color: #10b981 !important;
             background-color: #ecfdf5 !important;
-            box-shadow: 0 0 0 2px #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+        }
+        /* Show checkmark when selected */
+        .page-selected .chk-icon {
+            display: block !important;
         }
         .page-selected .chk-circle {
             background-color: #10b981 !important;
             border-color: #10b981 !important;
-        }
-        .page-selected .chk-icon {
-            display: block !important;
         }
     </style>
 </head>
@@ -188,10 +188,10 @@
         <article id="tool-img2pdf" class="tool-panel w-full flex-col items-center">
             <header class="text-center mb-10 max-w-2xl">
                 <h1 class="text-4xl font-extrabold text-slate-900 mb-4">JPG to PDF</h1>
-                <p class="text-slate-500 text-lg">Convert images to PDF documents. Drag to reorder.</p>
+                <p class="text-slate-500 text-lg">Convert images (JPEG, PNG) to PDF documents.</p>
             </header>
             <section id="img-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 transition-all group">
-                <input type="file" id="img-input" class="hidden" accept="image/*" multiple>
+                <input type="file" id="img-input" class="hidden" accept="image/png, image/jpeg, image/jpg, image/webp" multiple>
                 <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-regular fa-images text-3xl text-mint-600"></i></div>
                 <h2 class="text-xl font-bold text-slate-800">Select Images</h2>
             </section>
@@ -449,12 +449,13 @@
              } catch(e) { alert('Split Error'); progress.hide(); }
         });
 
-        // --- IMG2PDF (FIXED ERROR CONVERTING IMAGES) ---
+        // --- IMG2PDF (ROBUST JPEG SUPPORT) ---
         let imgFiles = [];
         setupDnD('img-drop', 'img-input', files => {
             document.getElementById('img-drop').classList.add('hidden');
             document.getElementById('img-workspace').classList.remove('hidden');
             Array.from(files).forEach(f => {
+                // Ensure check covers both .jpg, .jpeg, .png, .webp
                 if(!f.type.startsWith('image/')) return;
                 imgFiles.push(f);
                 const el = document.createElement('div');
@@ -478,20 +479,33 @@
 
                     const f = imgFiles[i];
                     
-                    // FIXED: Load image to CANVAS first to ensure correct data format for jsPDF
-                    const img = new Image();
-                    img.src = URL.createObjectURL(f);
-                    await new Promise(resolve => img.onload = resolve);
+                    // 1. Read file as DataURL first (FileReader is robust for all image types)
+                    const reader = new FileReader();
+                    const base64 = await new Promise((resolve, reject) => {
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(f);
+                    });
 
+                    // 2. Load into Image Object
+                    const img = new Image();
+                    img.src = base64;
+                    await new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = () => reject('Image load failed');
+                    });
+
+                    // 3. Draw to Canvas to normalize formats (fixes issues with specific JPEG encodings)
                     const canvas = document.createElement('canvas');
                     canvas.width = img.width;
                     canvas.height = img.height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0);
                     
-                    // Convert to JPEG Data URL
-                    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                    // 4. Export as clean JPEG for PDF
+                    const cleanData = canvas.toDataURL('image/jpeg', 0.95);
 
+                    // 5. Calculate Ratio
                     const pW = doc.internal.pageSize.getWidth();
                     const pH = doc.internal.pageSize.getHeight();
                     const ratio = Math.min(pW/img.width, pH/img.height);
@@ -501,11 +515,15 @@
                     const y = (pH - h) / 2;
 
                     doc.addPage();
-                    doc.addImage(imgData, 'JPEG', x, y, w, h);
+                    doc.addImage(cleanData, 'JPEG', x, y, w, h);
                 }
                 showResult(doc.output('blob'), 'images.pdf', 'Converted Successfully');
-            } catch(e) { console.error(e); alert('Error converting. Try JPG/PNG files.'); progress.hide(); }
+            } catch(e) { 
+                console.error(e); 
+                alert('Error converting. Please ensure files are valid JPG/PNG/WebP.'); 
+                progress.hide(); 
+            }
         });
     </script>
 </body>
-                </html>
+                                                                                                                                                                                                          </html>
