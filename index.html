@@ -5,41 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>MintPDF | Free Online PDF Tools - Compress, Merge, Split & Convert</title>
-    <meta name="description" content="Secure, fast, and free online PDF tools. Compress PDF size, merge documents, split pages, and convert JPG/JPEG to PDF without uploading your files.">
-    <meta name="keywords" content="compress pdf, merge pdf, split pdf, jpg to pdf, jpeg to pdf, free pdf tools, client side pdf, mintpdf">
+    <meta name="description" content="Secure, fast, and free online PDF tools. Compress PDF size, merge documents, split pages, and convert JPG/JPEG to PDF without uploading.">
+    <meta name="keywords" content="jpg to pdf, image to pdf, compress pdf, merge pdf, free pdf tools, client side pdf, mintpdf">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#10b981">
     <link rel="canonical" href="https://pdftools-5un.pages.dev/">
-    
     <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
 
     <meta property="og:site_name" content="MintPDF">
     <meta property="og:title" content="MintPDF - Secure Online PDF Tools">
     <meta property="og:description" content="Compress, Merge, and Convert PDFs directly in your browser. 100% Free & Private.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://pdftools-5un.pages.dev/og-image.jpg">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "MintPDF",
-      "alternateName": "MintPDF Tools",
-      "url": "https://pdftools-5un.pages.dev/",
       "applicationCategory": "ProductivityApplication",
       "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "featureList": "PDF Compression, PDF Merging, PDF Splitting, Image to PDF Conversion",
-      "softwareVersion": "2.1",
-      "author": {
-        "@type": "Organization",
-        "name": "MintPDF"
-      },
-      "description": "A suite of high-performance, client-side PDF manipulation tools that ensures data privacy by processing files locally."
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "A suite of high-performance, client-side PDF manipulation tools."
     }
     </script>
 
@@ -50,40 +36,21 @@
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
         
-        /* Brand Colors */
+        /* Colors & UI */
         .text-mint-600 { color: #059669; }
         .bg-mint-600 { background-color: #059669; }
         .bg-mint-50 { background-color: #ecfdf5; }
         .border-mint-500 { border-color: #10b981; }
-
-        /* Navigation & UI */
         .nav-item.active { color: #059669; background-color: #ecfdf5; font-weight: 600; }
         .tool-panel { display: none; }
         .tool-panel.active { display: flex; animation: fadeUp 0.4s ease-out forwards; }
-        
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Drag & Drop Highlight */
-        .drag-hover { 
-            border-color: #10b981 !important; 
-            background-color: #ecfdf5 !important; 
-            transform: scale(1.01);
-        }
-
-        /* Split PDF Selection Highlight (Green Border + Checkmark) */
-        .page-selected {
-            border-color: #10b981 !important;
-            background-color: #ecfdf5 !important;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
-        }
-        /* Show checkmark when selected */
-        .page-selected .chk-icon {
-            display: block !important;
-        }
-        .page-selected .chk-circle {
-            background-color: #10b981 !important;
-            border-color: #10b981 !important;
-        }
+        .drag-hover { border-color: #10b981 !important; background-color: #ecfdf5 !important; transform: scale(1.01); }
+        
+        /* Split PDF Highlights */
+        .page-selected { border-color: #10b981 !important; background-color: #ecfdf5 !important; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3); }
+        .page-selected .chk-icon { display: block !important; }
+        .page-selected .chk-circle { background-color: #10b981 !important; border-color: #10b981 !important; }
     </style>
 </head>
 <body class="bg-white text-slate-800 min-h-screen flex flex-col">
@@ -123,13 +90,11 @@
         <article id="tool-compress" class="tool-panel w-full flex-col items-center active">
             <header class="text-center mb-10 max-w-2xl">
                 <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Compress PDF File</h1>
-                <p class="text-slate-500 text-lg">Reduce file size while optimizing for maximal PDF quality. Secure & Free.</p>
+                <p class="text-slate-500 text-lg">Reduce file size while optimizing for maximal PDF quality.</p>
             </header>
             <section id="comp-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 hover:shadow-xl transition-all duration-300 group">
                 <input type="file" id="comp-input" class="hidden" accept="application/pdf">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition">
-                    <i class="fa-solid fa-compress text-4xl text-mint-600"></i>
-                </div>
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-solid fa-compress text-4xl text-mint-600"></i></div>
                 <h2 class="text-xl font-bold text-slate-800 mb-2">Choose PDF File</h2>
             </section>
             <section id="comp-options" class="hidden w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 mt-4">
@@ -188,16 +153,73 @@
         <article id="tool-img2pdf" class="tool-panel w-full flex-col items-center">
             <header class="text-center mb-10 max-w-2xl">
                 <h1 class="text-4xl font-extrabold text-slate-900 mb-4">JPG to PDF</h1>
-                <p class="text-slate-500 text-lg">Convert images (JPEG, PNG) to PDF documents.</p>
+                <p class="text-slate-500 text-lg">Convert images (JPEG, PNG, WebP) to PDF. Fully customizable.</p>
             </header>
+            
             <section id="img-drop" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 transition-all group">
                 <input type="file" id="img-input" class="hidden" accept="image/png, image/jpeg, image/jpg, image/webp" multiple>
                 <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition"><i class="fa-regular fa-images text-3xl text-mint-600"></i></div>
                 <h2 class="text-xl font-bold text-slate-800">Select Images</h2>
             </section>
-            <section id="img-workspace" class="hidden w-full max-w-4xl mt-6">
-                <div id="img-list" class="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-8"></div>
-                <button id="btn-img-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-4 rounded-xl shadow-lg max-w-sm mx-auto block">Convert to PDF</button>
+
+            <section id="img-workspace" class="hidden w-full max-w-6xl mt-6 flex flex-col lg:flex-row gap-8">
+                <div class="flex-grow">
+                    <div id="img-list" class="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-4"></div>
+                    <button onclick="document.getElementById('img-input').click()" class="text-mint-600 font-bold text-sm hover:underline">+ Add More Images</button>
+                </div>
+
+                <div class="w-full lg:w-80 flex-shrink-0">
+                    <div class="bg-white border border-gray-200 p-6 rounded-2xl sticky top-24 shadow-lg">
+                        <h3 class="font-bold text-lg mb-4 text-slate-800">PDF Settings</h3>
+                        
+                        <div class="mb-4">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Page Size</label>
+                            <select id="img-size" class="w-full border rounded-lg p-2.5 text-sm bg-gray-50 focus:ring-2 focus:ring-mint-500 outline-none">
+                                <option value="a4">A4 (Standard)</option>
+                                <option value="letter">US Letter</option>
+                                <option value="fit">Fit to Image</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Orientation</label>
+                            <div class="flex gap-2">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="img-orient" value="auto" checked class="peer hidden">
+                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Auto</div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="img-orient" value="p" class="peer hidden">
+                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Portrait</div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="img-orient" value="l" class="peer hidden">
+                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Landscape</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Margins</label>
+                            <div class="flex gap-2">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="img-margin" value="none" class="peer hidden">
+                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">None</div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="img-margin" value="small" checked class="peer hidden">
+                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Small</div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="img-margin" value="big" class="peer hidden">
+                                    <div class="text-center p-2 border rounded-lg text-sm peer-checked:bg-mint-50 peer-checked:border-mint-500 peer-checked:text-mint-600 hover:bg-gray-50">Big</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button id="btn-img-action" class="w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all">Convert to PDF</button>
+                    </div>
+                </div>
             </section>
         </article>
 
@@ -210,17 +232,17 @@
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <div class="w-10 h-10 bg-mint-50 rounded-lg flex items-center justify-center text-mint-600 mb-4"><i class="fa-solid fa-lock"></i></div>
                     <h3 class="font-bold text-lg mb-2">100% Secure</h3>
-                    <p class="text-sm text-slate-600">Files are processed in your browser. No uploads to servers.</p>
+                    <p class="text-sm text-slate-600">Files are processed in your browser. No uploads.</p>
                 </div>
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <div class="w-10 h-10 bg-mint-50 rounded-lg flex items-center justify-center text-mint-600 mb-4"><i class="fa-solid fa-bolt"></i></div>
                     <h3 class="font-bold text-lg mb-2">Instant Speed</h3>
-                    <p class="text-sm text-slate-600">No waiting for uploads. Processing happens instantly.</p>
+                    <p class="text-sm text-slate-600">No waiting. Processing happens instantly.</p>
                 </div>
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <div class="w-10 h-10 bg-mint-50 rounded-lg flex items-center justify-center text-mint-600 mb-4"><i class="fa-solid fa-infinity"></i></div>
                     <h3 class="font-bold text-lg mb-2">Free Forever</h3>
-                    <p class="text-sm text-slate-600">No daily limits. No watermarks. No signup.</p>
+                    <p class="text-sm text-slate-600">No daily limits. No watermarks.</p>
                 </div>
             </div>
         </div>
@@ -234,19 +256,16 @@
     <div id="progress-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
             <h3 class="text-xl font-bold text-slate-900 mb-2" id="progress-title">Processing...</h3>
-            <p class="text-slate-500 text-sm mb-6" id="progress-desc">Please wait while we process your file.</p>
-            <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
-                <div id="progress-bar" class="bg-mint-600 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
-            </div>
+            <p class="text-slate-500 text-sm mb-6" id="progress-desc">Please wait.</p>
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden"><div id="progress-bar" class="bg-mint-600 h-4 rounded-full transition-all duration-300" style="width: 0%"></div></div>
             <p id="progress-text" class="text-xs font-bold text-mint-600 text-right">0%</p>
         </div>
     </div>
-
     <div id="result-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl animate-fade-in">
             <div class="w-16 h-16 bg-mint-50 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-check text-2xl text-mint-600"></i></div>
             <h3 class="text-2xl font-bold text-slate-900 mb-2">Success!</h3>
-            <p id="result-msg" class="text-slate-500 mb-8">Processing Complete</p>
+            <p id="result-msg" class="text-slate-500 mb-8">Done</p>
             <a id="result-dl" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all mb-3 flex justify-center items-center gap-2"><i class="fa-solid fa-download"></i> Download File</a>
             <button onclick="document.getElementById('result-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-sm font-medium">Close</button>
         </div>
@@ -258,11 +277,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
     <script>
-        // CONFIG
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         const { PDFDocument } = PDFLib;
 
-        // UI HELPERS
+        // --- COMMON ---
         function switchTool(id) {
             document.querySelectorAll('.tool-panel').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -270,260 +288,178 @@
             document.getElementById(`nav-${id}`).classList.add('active');
             document.getElementById('mobile-menu').classList.add('hidden');
         }
-        function formatBytes(b) {
-            if(!b) return '0 B';
-            const i = Math.floor(Math.log(b)/Math.log(1024));
-            return `${(b/Math.pow(1024,i)).toFixed(2)} ${['B','KB','MB','GB'][i]}`;
-        }
+        function formatBytes(b) { if(!b) return '0 B'; const i=Math.floor(Math.log(b)/Math.log(1024)); return `${(b/Math.pow(1024,i)).toFixed(2)} ${['B','KB','MB','GB'][i]}`; }
         function setupDnD(areaId, inputId, cb) {
-            const area = document.getElementById(areaId);
-            const input = document.getElementById(inputId);
+            const area = document.getElementById(areaId), input = document.getElementById(inputId);
             area.addEventListener('click', () => input.click());
             input.addEventListener('change', e => e.target.files.length && cb(e.target.files));
             area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-hover'); });
             area.addEventListener('dragleave', () => area.classList.remove('drag-hover'));
             area.addEventListener('drop', e => { e.preventDefault(); area.classList.remove('drag-hover'); if(e.dataTransfer.files.length) cb(e.dataTransfer.files); });
         }
-
-        // PROGRESS BAR CONTROLLER
         const progress = {
-            show: (title) => {
-                document.getElementById('progress-title').innerText = title;
-                document.getElementById('progress-bar').style.width = '0%';
-                document.getElementById('progress-text').innerText = '0%';
-                document.getElementById('progress-modal').classList.remove('hidden');
-            },
-            update: (percent) => {
-                document.getElementById('progress-bar').style.width = `${percent}%`;
-                document.getElementById('progress-text').innerText = `${percent}%`;
-            },
-            hide: () => {
-                setTimeout(() => { document.getElementById('progress-modal').classList.add('hidden'); }, 500);
-            }
+            show: (t) => { document.getElementById('progress-title').innerText=t; document.getElementById('progress-bar').style.width='0%'; document.getElementById('progress-text').innerText='0%'; document.getElementById('progress-modal').classList.remove('hidden'); },
+            update: (p) => { document.getElementById('progress-bar').style.width=`${p}%`; document.getElementById('progress-text').innerText=`${p}%`; },
+            hide: () => { setTimeout(() => document.getElementById('progress-modal').classList.add('hidden'), 500); }
         };
-
-        const showResult = (blob, name, msg) => {
-            progress.hide();
-            const url = URL.createObjectURL(blob);
-            const btn = document.getElementById('result-dl');
-            btn.href = url;
-            btn.download = name;
-            document.getElementById('result-msg').innerText = msg;
-            document.getElementById('result-modal').classList.remove('hidden');
-        };
+        const showResult = (b, n, m) => { progress.hide(); const u=URL.createObjectURL(b), btn=document.getElementById('result-dl'); btn.href=u; btn.download=n; document.getElementById('result-msg').innerText=m; document.getElementById('result-modal').classList.remove('hidden'); };
 
         // --- COMPRESSOR ---
-        let compFile = null;
-        setupDnD('comp-drop', 'comp-input', files => {
-            if(files[0].type!=='application/pdf') return alert('PDF only');
-            compFile = files[0];
-            document.getElementById('comp-filename').innerText = compFile.name;
-            document.getElementById('comp-filesize').innerText = formatBytes(compFile.size);
-            document.getElementById('comp-drop').classList.add('hidden');
-            document.getElementById('comp-options').classList.remove('hidden');
-        });
-
-        document.getElementById('btn-comp-action').addEventListener('click', async () => {
-            progress.show('Compressing PDF...');
-            try {
-                const ab = await compFile.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument(ab).promise;
-                const { jsPDF } = window.jspdf;
-                const newPdf = new jsPDF({ compress: true });
+        let compFile=null;
+        setupDnD('comp-drop','comp-input', f=>{ if(f[0].type!=='application/pdf') return alert('PDF only'); compFile=f[0]; document.getElementById('comp-filename').innerText=compFile.name; document.getElementById('comp-filesize').innerText=formatBytes(compFile.size); document.getElementById('comp-drop').classList.add('hidden'); document.getElementById('comp-options').classList.remove('hidden'); });
+        document.getElementById('btn-comp-action').addEventListener('click', async()=>{
+            progress.show('Compressing...');
+            try{
+                const ab=await compFile.arrayBuffer(), pdf=await pdfjsLib.getDocument(ab).promise;
+                const { jsPDF } = window.jspdf; const newPdf = new jsPDF({ compress: true });
                 const mode = document.querySelector('input[name="comp-mode"]:checked').value;
-                const scale = mode === 'extreme' ? 0.8 : 1.0;
-                const quality = mode === 'extreme' ? 0.4 : 0.6;
-
-                for(let i=1; i<=pdf.numPages; i++){
-                    progress.update(Math.round((i/pdf.numPages)*100));
-                    await new Promise(r => setTimeout(r, 10)); // Allow UI update
-
-                    const page = await pdf.getPage(i);
-                    const vp = page.getViewport({ scale: 1.5 });
-                    const canvas = document.createElement('canvas');
-                    canvas.width = vp.width; canvas.height = vp.height;
-                    await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-                    const img = canvas.toDataURL('image/jpeg', quality);
-                    const pW = vp.width/1.5; const pH = vp.height/1.5;
-                    
-                    if(i>1) newPdf.addPage([pW, pH]);
-                    else { newPdf.deletePage(1); newPdf.addPage([pW, pH]); }
-                    newPdf.addImage(img, 'JPEG', 0, 0, pW, pH);
+                const q = mode==='extreme'?0.4:0.6;
+                for(let i=1;i<=pdf.numPages;i++){
+                    progress.update(Math.round((i/pdf.numPages)*100)); await new Promise(r=>setTimeout(r,10));
+                    const p=await pdf.getPage(i), vp=p.getViewport({scale:1.5}), cvs=document.createElement('canvas');
+                    cvs.width=vp.width; cvs.height=vp.height; await p.render({canvasContext:cvs.getContext('2d'),viewport:vp}).promise;
+                    const img=cvs.toDataURL('image/jpeg',q), pW=vp.width/1.5, pH=vp.height/1.5;
+                    if(i>1) newPdf.addPage([pW,pH]); else { newPdf.deletePage(1); newPdf.addPage([pW,pH]); }
+                    newPdf.addImage(img,'JPEG',0,0,pW,pH);
                 }
-                const blob = newPdf.output('blob');
-                showResult(blob, `compressed_${compFile.name}`, `Saved ${formatBytes(compFile.size - blob.size)}`);
-            } catch(e) { console.error(e); alert('Error compressing'); progress.hide(); }
+                showResult(newPdf.output('blob'), `compressed_${compFile.name}`, `Reduced ${formatBytes(compFile.size)}`);
+            }catch(e){console.error(e);alert('Error');progress.hide();}
         });
 
         // --- MERGE ---
-        let mergeFiles = [];
-        setupDnD('merge-drop', 'merge-input', files => {
-            document.getElementById('merge-drop').classList.add('hidden');
-            document.getElementById('merge-workspace').classList.remove('hidden');
-            Array.from(files).forEach(f => {
-                if(f.type!=='application/pdf') return;
-                const id = Math.random().toString(36).substr(2,9);
-                mergeFiles.push({id, file:f});
-                const el = document.createElement('div');
-                el.className = "flex items-center justify-between bg-white border border-gray-200 p-3 rounded-xl shadow-sm cursor-move";
-                el.setAttribute('data-id', id);
-                el.innerHTML = `<span class="text-sm font-bold truncate">${f.name}</span><button onclick="rmMerge('${id}')" class="text-red-400"><i class="fa-solid fa-trash"></i></button>`;
-                document.getElementById('merge-list').appendChild(el);
-            });
+        let mergeFiles=[];
+        setupDnD('merge-drop','merge-input', f=>{ 
+            document.getElementById('merge-drop').classList.add('hidden'); document.getElementById('merge-workspace').classList.remove('hidden');
+            Array.from(f).forEach(file=>{ if(file.type!=='application/pdf')return; const id=Math.random().toString(36).substr(2,9); mergeFiles.push({id,file}); 
+            const el=document.createElement('div'); el.className="flex items-center justify-between bg-white border border-gray-200 p-3 rounded-xl shadow-sm cursor-move"; el.setAttribute('data-id',id);
+            el.innerHTML=`<span class="text-sm font-bold truncate">${file.name}</span><button onclick="rmMerge('${id}')" class="text-red-400"><i class="fa-solid fa-trash"></i></button>`;
+            document.getElementById('merge-list').appendChild(el); }); 
         });
-        window.rmMerge = id => {
-            mergeFiles = mergeFiles.filter(x=>x.id!==id);
-            document.querySelector(`div[data-id="${id}"]`).remove();
-            if(!mergeFiles.length) { document.getElementById('merge-workspace').classList.add('hidden'); document.getElementById('merge-drop').classList.remove('hidden'); }
-        };
-        new Sortable(document.getElementById('merge-list'), { animation: 150 });
-        
-        document.getElementById('btn-merge-action').addEventListener('click', async () => {
-            progress.show('Merging PDFs...');
-            try {
-                const merged = await PDFDocument.create();
-                const ids = Array.from(document.getElementById('merge-list').children).map(e=>e.getAttribute('data-id'));
-                let count = 0;
-                for(const id of ids){
-                    count++;
-                    progress.update(Math.round((count/ids.length)*100));
-                    await new Promise(r => setTimeout(r, 10));
-
-                    const f = mergeFiles.find(x=>x.id===id).file;
-                    const pdf = await PDFDocument.load(await f.arrayBuffer());
-                    const pgs = await merged.copyPages(pdf, pdf.getPageIndices());
-                    pgs.forEach(p=>merged.addPage(p));
-                }
-                showResult(new Blob([await merged.save()], {type:'application/pdf'}), 'merged.pdf', 'Merged Successfully');
-            } catch(e) { console.error(e); alert('Merge Error'); progress.hide(); }
+        window.rmMerge=id=>{ mergeFiles=mergeFiles.filter(x=>x.id!==id); document.querySelector(`div[data-id="${id}"]`).remove(); if(!mergeFiles.length){document.getElementById('merge-workspace').classList.add('hidden');document.getElementById('merge-drop').classList.remove('hidden');} };
+        new Sortable(document.getElementById('merge-list'),{animation:150});
+        document.getElementById('btn-merge-action').addEventListener('click',async()=>{
+            progress.show('Merging...');
+            try{
+                const merged=await PDFDocument.create(), ids=Array.from(document.getElementById('merge-list').children).map(e=>e.getAttribute('data-id'));
+                let c=0; for(const id of ids){ c++; progress.update(Math.round((c/ids.length)*100)); await new Promise(r=>setTimeout(r,10));
+                const f=mergeFiles.find(x=>x.id===id).file, pdf=await PDFDocument.load(await f.arrayBuffer()), pgs=await merged.copyPages(pdf,pdf.getPageIndices()); pgs.forEach(p=>merged.addPage(p)); }
+                showResult(new Blob([await merged.save()],{type:'application/pdf'}),'merged.pdf','Merged Successfully');
+            }catch(e){alert('Error');progress.hide();}
         });
 
         // --- SPLIT ---
-        let splitFile = null;
-        let selectedPages = new Set();
-        setupDnD('split-drop', 'split-input', async files => {
-            if(files[0].type!=='application/pdf') return;
-            splitFile = files[0];
-            document.getElementById('split-drop').classList.add('hidden');
-            document.getElementById('split-workspace').classList.remove('hidden');
-            document.getElementById('split-workspace').classList.add('flex');
-            
-            const pdf = await pdfjsLib.getDocument(await splitFile.arrayBuffer()).promise;
-            const grid = document.getElementById('split-grid');
-            grid.innerHTML = '';
-            
-            for(let i=1; i<=pdf.numPages; i++){
-                const el = document.createElement('div');
-                el.className = "aspect-[3/4] bg-slate-50 border-2 border-transparent rounded-lg flex items-center justify-center cursor-pointer hover:border-mint-400 relative transition select-none group";
-                el.innerHTML = `
-                    <span class="font-bold text-slate-400 text-lg group-hover:text-mint-600">${i}</span>
-                    <div class="chk-circle w-6 h-6 rounded-full border-2 border-gray-300 bg-white absolute top-2 right-2 flex items-center justify-center">
-                        <i class="chk-icon fa-solid fa-check text-white text-xs hidden"></i>
-                    </div>
-                `;
-                el.onclick = () => {
-                    if(selectedPages.has(i)) {
-                        selectedPages.delete(i);
-                        el.classList.remove('page-selected');
-                    } else {
-                        selectedPages.add(i);
-                        el.classList.add('page-selected');
-                    }
-                    document.getElementById('split-range').value = Array.from(selectedPages).sort((a,b)=>a-b).join(', ');
-                };
+        let splitFile=null, selPages=new Set();
+        setupDnD('split-drop','split-input',async f=>{ if(f[0].type!=='application/pdf')return; splitFile=f[0];
+            document.getElementById('split-drop').classList.add('hidden'); document.getElementById('split-workspace').classList.remove('hidden'); document.getElementById('split-workspace').classList.add('flex');
+            const pdf=await pdfjsLib.getDocument(await splitFile.arrayBuffer()).promise, grid=document.getElementById('split-grid'); grid.innerHTML='';
+            for(let i=1;i<=pdf.numPages;i++){
+                const el=document.createElement('div'); el.className="aspect-[3/4] bg-slate-50 border-2 border-transparent rounded-lg flex items-center justify-center cursor-pointer hover:border-mint-400 relative transition select-none group";
+                el.innerHTML=`<span class="font-bold text-slate-400 text-lg group-hover:text-mint-600">${i}</span><div class="chk-circle w-6 h-6 rounded-full border-2 border-gray-300 bg-white absolute top-2 right-2 flex items-center justify-center"><i class="chk-icon fa-solid fa-check text-white text-xs hidden"></i></div>`;
+                el.onclick=()=>{ if(selPages.has(i)){selPages.delete(i);el.classList.remove('page-selected');}else{selPages.add(i);el.classList.add('page-selected');} document.getElementById('split-range').value=Array.from(selPages).sort((a,b)=>a-b).join(', '); };
                 grid.appendChild(el);
             }
         });
-
-        document.getElementById('btn-split-action').addEventListener('click', async () => {
-             if(selectedPages.size===0) return alert('Select pages');
-             progress.show('Splitting PDF...');
-             try {
-                 const src = await PDFDocument.load(await splitFile.arrayBuffer());
-                 const newDoc = await PDFDocument.create();
-                 const idx = Array.from(selectedPages).map(n=>n-1).sort((a,b)=>a-b);
-                 const pgs = await newDoc.copyPages(src, idx);
-                 pgs.forEach(p => newDoc.addPage(p));
-                 progress.update(100);
-                 showResult(new Blob([await newDoc.save()], {type:'application/pdf'}), 'split.pdf', 'Split Successfully');
-             } catch(e) { alert('Split Error'); progress.hide(); }
+        document.getElementById('btn-split-action').addEventListener('click',async()=>{
+            if(!selPages.size)return alert('Select pages'); progress.show('Splitting...');
+            try{ const src=await PDFDocument.load(await splitFile.arrayBuffer()), newDoc=await PDFDocument.create(), idx=Array.from(selPages).map(n=>n-1).sort((a,b)=>a-b);
+            const pgs=await newDoc.copyPages(src,idx); pgs.forEach(p=>newDoc.addPage(p)); progress.update(100);
+            showResult(new Blob([await newDoc.save()],{type:'application/pdf'}),'split.pdf','Split Successfully'); }catch(e){alert('Error');progress.hide();}
         });
 
-        // --- IMG2PDF (ROBUST JPEG SUPPORT) ---
-        let imgFiles = [];
-        setupDnD('img-drop', 'img-input', files => {
-            document.getElementById('img-drop').classList.add('hidden');
-            document.getElementById('img-workspace').classList.remove('hidden');
-            Array.from(files).forEach(f => {
-                // Ensure check covers both .jpg, .jpeg, .png, .webp
-                if(!f.type.startsWith('image/')) return;
-                imgFiles.push(f);
-                const el = document.createElement('div');
-                el.className = "aspect-square bg-gray-100 rounded-lg overflow-hidden relative border border-gray-200 cursor-move";
-                el.innerHTML = `<img src="${URL.createObjectURL(f)}" class="w-full h-full object-cover">`;
+        // --- IMG2PDF (NEW ENGINE) ---
+        let imgFiles=[];
+        setupDnD('img-drop','img-input', f=>{
+            document.getElementById('img-drop').classList.add('hidden'); document.getElementById('img-workspace').classList.remove('hidden');
+            Array.from(f).forEach(file=>{ 
+                // Flexible Image Check
+                if(!file.type.match(/image\/(jpeg|jpg|png|webp)/)) return;
+                imgFiles.push(file);
+                const el=document.createElement('div'); el.className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative border border-gray-200 cursor-move";
+                el.innerHTML=`<img src="${URL.createObjectURL(file)}" class="w-full h-full object-cover">`;
                 document.getElementById('img-list').appendChild(el);
             });
         });
-        new Sortable(document.getElementById('img-list'), { animation: 150 });
+        new Sortable(document.getElementById('img-list'),{animation:150});
 
-        document.getElementById('btn-img-action').addEventListener('click', async () => {
-            progress.show('Converting Images...');
-            try {
+        document.getElementById('btn-img-action').addEventListener('click',async()=>{
+            progress.show('Converting...');
+            try{
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF(); 
-                doc.deletePage(1);
+                const sizeOpt = document.getElementById('img-size').value;
+                const orientOpt = document.querySelector('input[name="img-orient"]:checked').value;
+                const marginOpt = document.querySelector('input[name="img-margin"]:checked').value;
+
+                let doc = null; // Init later based on first image if needed
+                
+                // Margin Logic
+                const margins = marginOpt === 'none' ? 0 : (marginOpt === 'small' ? 10 : 25); // mm
 
                 for(let i=0; i<imgFiles.length; i++){
-                    progress.update(Math.round((i/imgFiles.length)*100));
-                    await new Promise(r => setTimeout(r, 10)); // UI Tick
+                    progress.update(Math.round((i/imgFiles.length)*100)); await new Promise(r=>setTimeout(r,10));
 
-                    const f = imgFiles[i];
-                    
-                    // 1. Read file as DataURL first (FileReader is robust for all image types)
-                    const reader = new FileReader();
-                    const base64 = await new Promise((resolve, reject) => {
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(f);
-                    });
-
-                    // 2. Load into Image Object
+                    // Load Image via Promise (Safe)
                     const img = new Image();
-                    img.src = base64;
-                    await new Promise((resolve, reject) => {
-                        img.onload = resolve;
-                        img.onerror = () => reject('Image load failed');
-                    });
+                    img.src = URL.createObjectURL(imgFiles[i]);
+                    await new Promise(r => img.onload = r);
 
-                    // 3. Draw to Canvas to normalize formats (fixes issues with specific JPEG encodings)
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
+                    const imgW = img.width; 
+                    const imgH = img.height;
+                    let pW, pH, finalOrient;
+
+                    // Determine Page Size & Orientation
+                    if (sizeOpt === 'fit') {
+                        pW = imgW * 0.264583; // px to mm
+                        pH = imgH * 0.264583;
+                        finalOrient = pW > pH ? 'l' : 'p';
+                    } else {
+                        // A4: 210x297, Letter: 215.9x279.4
+                        let baseW = sizeOpt === 'letter' ? 215.9 : 210;
+                        let baseH = sizeOpt === 'letter' ? 279.4 : 297;
+
+                        // Orientation Logic
+                        if (orientOpt === 'auto') {
+                            finalOrient = imgW > imgH ? 'l' : 'p';
+                        } else {
+                            finalOrient = orientOpt;
+                        }
+
+                        if (finalOrient === 'l') { pW = baseH; pH = baseW; } 
+                        else { pW = baseW; pH = baseH; }
+                    }
+
+                    // Init Doc if first page
+                    if (i === 0) {
+                        doc = new jsPDF({ orientation: finalOrient, unit: 'mm', format: sizeOpt === 'fit' ? [pW, pH] : sizeOpt });
+                    } else {
+                        doc.addPage(sizeOpt === 'fit' ? [pW, pH] : sizeOpt, finalOrient);
+                    }
+
+                    // Calculate Dimensions within Margins
+                    const availW = pW - (margins * 2);
+                    const availH = pH - (margins * 2);
+                    const ratio = Math.min(availW / imgW, availH / imgH); // Maintain aspect ratio
                     
-                    // 4. Export as clean JPEG for PDF
-                    const cleanData = canvas.toDataURL('image/jpeg', 0.95);
+                    // Convert px to mm for PDF placement if using Fit, else standard scaling
+                    const finalImgW = (sizeOpt === 'fit') ? availW : (imgW * 0.264583 * (availW / (imgW * 0.264583))); 
+                    // Actually simplier:
+                    const scaleFactor = Math.min(availW / (imgW * 0.264583), availH / (imgH * 0.264583));
+                    const drawW = (imgW * 0.264583) * scaleFactor;
+                    const drawH = (imgH * 0.264583) * scaleFactor;
 
-                    // 5. Calculate Ratio
-                    const pW = doc.internal.pageSize.getWidth();
-                    const pH = doc.internal.pageSize.getHeight();
-                    const ratio = Math.min(pW/img.width, pH/img.height);
-                    const w = img.width * ratio;
-                    const h = img.height * ratio;
-                    const x = (pW - w) / 2;
-                    const y = (pH - h) / 2;
+                    const x = (pW - drawW) / 2;
+                    const y = (pH - drawH) / 2;
 
-                    doc.addPage();
-                    doc.addImage(cleanData, 'JPEG', x, y, w, h);
+                    // Draw (Canvas approach for safety)
+                    const canvas = document.createElement('canvas');
+                    canvas.width = imgW; canvas.height = imgH;
+                    canvas.getContext('2d').drawImage(img,0,0);
+                    const safeData = canvas.toDataURL('image/jpeg', 0.9);
+
+                    doc.addImage(safeData, 'JPEG', x, y, drawW, drawH);
                 }
                 showResult(doc.output('blob'), 'images.pdf', 'Converted Successfully');
-            } catch(e) { 
-                console.error(e); 
-                alert('Error converting. Please ensure files are valid JPG/PNG/WebP.'); 
-                progress.hide(); 
-            }
+            } catch(e) { console.error(e); alert('Error converting images.'); progress.hide(); }
         });
     </script>
 </body>
-                                                                                                                                                                                                          </html>
+    </html>
