@@ -3,217 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>PDF to Word Converter - Editable DOCX | MintPDF</title>
-    <meta name="description" content="Convert PDF to editable Word (DOCX) documents online. Accurate conversion using secure server technology.">
-    <meta name="theme-color" content="#10b981">
-    <link rel="icon" type="image/png" href="favicon.png">
-
+    <title>PDF to Word Converter | MintPDF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Inter', sans-serif; }
         .text-mint-600 { color: #059669; }
         .bg-mint-600 { background-color: #059669; }
         .bg-mint-50 { background-color: #ecfdf5; }
-        .drag-hover { border-color: #10b981 !important; background-color: #ecfdf5 !important; transform: scale(1.01); }
-        /* Server Status Indicator Pulse */
-        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
-        .status-online { background-color: #10b981; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); animation: pulse-green 2s infinite; }
-        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        /* Progress Bar Animation */
+        .progress-stripe { background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent); background-size: 1rem 1rem; animation: progress-bar-stripes 1s linear infinite; }
+        @keyframes progress-bar-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
     </style>
 </head>
-<body class="bg-white text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center p-4">
 
-    <nav class="border-b border-gray-100 sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <a href="/" class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 bg-mint-600 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
-                    <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
-                </a>
-                <div class="hidden md:flex items-center space-x-1">
-                    <a href="/" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Compress PDF</a>
-                    <a href="/pdf-to-word.html" class="nav-item px-4 py-2 rounded-full text-sm font-bold text-mint-600 bg-mint-50 transition">PDF to Word</a>
-                    <a href="/merge.html" class="nav-item px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-gray-50 transition">Merge PDF</a>
-                </div>
-                <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
-            <div class="flex flex-col p-2 gap-1">
-                <a href="/" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Compress PDF</a>
-                <a href="/pdf-to-word.html" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">PDF to Word</a>
-                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
-            </div>
-        </div>
+    <nav class="w-full max-w-4xl flex justify-between items-center py-6 mb-8">
+        <a href="/" class="flex items-center gap-2 font-extrabold text-2xl">
+            Mint<span class="text-mint-600">PDF</span>
+        </a>
+        <a href="/" class="text-slate-500 hover:text-slate-800 text-sm font-medium"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
     </nav>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto p-4 md:p-12 flex flex-col items-center">
-        <article class="w-full flex flex-col items-center">
+    <main class="w-full max-w-xl bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+        
+        <div class="p-8 text-center border-b border-slate-100">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">PDF to Word</h1>
+            <p class="text-slate-500">Convert large files safely using your Local Server.</p>
+        </div>
+
+        <div id="step-upload" class="p-8">
+            <label class="flex flex-col items-center justify-center w-full h-64 border-2 border-slate-300 border-dashed rounded-2xl cursor-pointer bg-slate-50 hover:bg-mint-50 hover:border-mint-500 transition-all group">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-mint-600"></i>
+                    </div>
+                    <p class="mb-2 text-lg font-bold text-slate-700">Click to upload PDF</p>
+                    <p class="text-sm text-slate-400">Up to 50MB supported</p>
+                </div>
+                <input id="file-input" type="file" class="hidden" accept="application/pdf" />
+            </label>
+        </div>
+
+        <div id="step-process" class="hidden p-8">
             
-            <header class="text-center mb-10 max-w-3xl">
-                <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-4 py-1 mb-6">
-                    <span class="status-dot status-online"></span>
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Server Online</span>
+            <div class="flex items-center gap-4 mb-6 bg-slate-50 p-4 rounded-xl">
+                <div class="w-10 h-10 bg-red-100 text-red-500 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-file-pdf"></i>
                 </div>
-                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">PDF to Word Converter</h1>
-                <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
-                    Convert your PDF documents to editable <span class="text-mint-600 font-bold">DOCX files</span> instantly.
-                </p>
-            </header>
-
-            <section id="drop-zone" class="w-full max-w-xl bg-slate-50 border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center cursor-pointer hover:border-mint-500 hover:bg-mint-50 hover:shadow-xl transition-all duration-300 group">
-                <input type="file" id="file-input" class="hidden" accept="application/pdf">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                    <i class="fa-solid fa-file-word text-4xl text-blue-600"></i>
+                <div class="overflow-hidden">
+                    <h3 id="filename" class="font-bold text-slate-800 truncate">document.pdf</h3>
+                    <p id="filesize" class="text-xs text-slate-500">0 MB</p>
                 </div>
-                <h2 class="text-xl font-bold text-slate-800 mb-2">Select PDF File</h2>
-                <p class="text-slate-400">or drag and drop here</p>
-            </section>
+            </div>
 
-            <section id="process-area" class="hidden w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 mt-4 text-center">
-                <div class="flex items-center justify-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600"><i class="fa-solid fa-file-pdf text-xl"></i></div>
-                    <div class="text-left">
-                        <h3 id="filename-display" class="font-bold text-slate-800 truncate max-w-[200px]">document.pdf</h3>
-                        <p id="status-text" class="text-sm text-slate-500">Ready to convert</p>
+            <div class="space-y-4">
+                
+                <div class="relative">
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span id="label-upload" class="text-slate-400">1. Uploading...</span>
+                        <span id="percent-upload" class="text-mint-600">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5">
+                        <div id="bar-upload" class="bg-mint-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                     </div>
                 </div>
 
-                <div id="progress-container" class="w-full bg-gray-100 rounded-full h-2.5 mb-6 hidden">
-                    <div id="progress-bar" class="bg-mint-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="relative opacity-50" id="group-convert">
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span id="label-convert" class="text-slate-400">2. Converting (Large files take time!)</span>
+                        <span id="icon-convert" class="text-slate-400"><i class="fa-solid fa-clock"></i></span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div id="bar-convert" class="bg-blue-500 h-2.5 rounded-full transition-all duration-[10s] w-0"></div>
+                    </div>
                 </div>
 
-                <button id="btn-convert" class="w-full bg-mint-600 hover:bg-mint-700 text-white text-lg font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                    <span>Convert to Word</span> <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </section>
+                <div class="relative opacity-50" id="group-download">
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span id="label-download" class="text-slate-400">3. Downloading</span>
+                    </div>
+                </div>
 
-        </article>
-        
-        <section class="max-w-4xl w-full mt-24 prose prose-slate text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-6">How it works</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="p-6 bg-white border border-gray-100 rounded-2xl">
-                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-mint-600 mb-4"></i>
-                    <h3 class="font-bold">1. Upload</h3>
-                    <p class="text-sm text-gray-500">Your file is securely sent to our conversion engine.</p>
-                </div>
-                <div class="p-6 bg-white border border-gray-100 rounded-2xl">
-                    <i class="fa-solid fa-gears text-3xl text-mint-600 mb-4"></i>
-                    <h3 class="font-bold">2. Convert</h3>
-                    <p class="text-sm text-gray-500">Python-powered backend extracts text and layout.</p>
-                </div>
-                <div class="p-6 bg-white border border-gray-100 rounded-2xl">
-                    <i class="fa-solid fa-download text-3xl text-mint-600 mb-4"></i>
-                    <h3 class="font-bold">3. Download</h3>
-                    <p class="text-sm text-gray-500">Get your editable Word document instantly.</p>
-                </div>
             </div>
-        </section>
+            
+            <div id="error-box" class="hidden mt-4 p-3 bg-red-50 text-red-600 text-sm font-bold rounded-lg text-center">
+                Error: Server timed out or file too big.
+            </div>
+
+            <button onclick="location.reload()" id="btn-reset" class="hidden w-full mt-6 bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-900">Convert Another File</button>
+        </div>
+
     </main>
 
-    <footer class="bg-white py-12 text-center border-t border-gray-200 mt-20">
-        <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools.</p>
-    </footer>
-
     <script>
-        // ==========================================
-        // CONFIGURATION - PASTE YOUR URL HERE
-        // ==========================================
+        // ========================================================
+        // PASTE YOUR TUNNEL URL HERE (Example: https://xyz.trycloudflare.com/convert)
+        // ========================================================
         const TUNNEL_URL = "https://bus-installations-deals-can.trycloudflare.com/convert"; 
-        // ==========================================
+        // ========================================================
 
-        const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
-        const processArea = document.getElementById('process-area');
-        const filenameDisplay = document.getElementById('filename-display');
-        const statusText = document.getElementById('status-text');
-        const btnConvert = document.getElementById('btn-convert');
-        const progressBar = document.getElementById('progress-bar');
-        const progressContainer = document.getElementById('progress-container');
+        const stepUpload = document.getElementById('step-upload');
+        const stepProcess = document.getElementById('step-process');
+        
+        fileInput.addEventListener('change', startProcess);
 
-        let selectedFile = null;
+        function startProcess(e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        // UI Interactions
-        dropZone.addEventListener('click', () => fileInput.click());
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-hover'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-hover'));
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-hover');
-            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-        });
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length) handleFile(e.target.files[0]);
-        });
+            // Setup UI
+            stepUpload.classList.add('hidden');
+            stepProcess.classList.remove('hidden');
+            document.getElementById('filename').innerText = file.name;
+            document.getElementById('filesize').innerText = (file.size / (1024*1024)).toFixed(2) + " MB";
 
-        function handleFile(file) {
-            if (file.type !== 'application/pdf') return alert('Please upload a valid PDF file.');
-            selectedFile = file;
-            filenameDisplay.innerText = file.name;
-            dropZone.classList.add('hidden');
-            processArea.classList.remove('hidden');
+            uploadFile(file);
         }
 
-        // Conversion Logic
-        btnConvert.addEventListener('click', async () => {
-            if (!selectedFile) return;
-
-            // UI Updates
-            btnConvert.disabled = true;
-            btnConvert.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Converting...';
-            statusText.innerText = "Uploading to server & converting...";
-            statusText.className = "text-sm text-mint-600 font-bold";
-            progressContainer.classList.remove('hidden');
-            progressBar.style.width = "40%"; // Fake progress to start
-
+        function uploadFile(file) {
+            const xhr = new XMLHttpRequest();
             const formData = new FormData();
-            formData.append("file", selectedFile);
+            formData.append("file", file);
 
-            try {
-                // Hitting your Local Server via Cloudflare
-                const response = await fetch(TUNNEL_URL, {
-                    method: 'POST',
-                    body: formData
-                });
+            // 1. TRACK UPLOAD PROGRESS
+            xhr.upload.addEventListener("progress", (e) => {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    document.getElementById('bar-upload').style.width = percent + "%";
+                    document.getElementById('percent-upload').innerText = percent + "%";
+                }
+            });
 
-                if (response.ok) {
-                    progressBar.style.width = "100%";
-                    statusText.innerText = "Conversion Successful!";
-                    
+            // 2. UPLOAD COMPLETE -> START CONVERSION UI
+            xhr.upload.addEventListener("load", () => {
+                document.getElementById('label-upload').innerText = "✅ Upload Complete";
+                document.getElementById('label-upload').className = "text-green-600 font-bold";
+                
+                // Activate Conversion Step
+                document.getElementById('group-convert').classList.remove('opacity-50');
+                document.getElementById('label-convert').className = "text-blue-600 font-bold animate-pulse";
+                document.getElementById('bar-convert').className = "bg-blue-500 h-2.5 rounded-full progress-stripe w-full"; // Start striped animation
+                document.getElementById('icon-convert').innerHTML = '<i class="fa-solid fa-gear fa-spin"></i>';
+            });
+
+            // 3. HANDLE SERVER RESPONSE
+            xhr.open("POST", TUNNEL_URL, true);
+            xhr.responseType = "blob"; // Expect a file back
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Success!
+                    document.getElementById('label-convert').innerText = "✅ Conversion Complete";
+                    document.getElementById('label-convert').className = "text-green-600 font-bold";
+                    document.getElementById('bar-convert').className = "bg-green-500 h-2.5 rounded-full w-full";
+                    document.getElementById('icon-convert').innerHTML = '<i class="fa-solid fa-check"></i>';
+
+                    // Activate Download Step
+                    document.getElementById('group-download').classList.remove('opacity-50');
+                    document.getElementById('label-download').innerText = "✅ Download Started";
+                    document.getElementById('label-download').className = "text-green-600 font-bold";
+
                     // Trigger Download
-                    const blob = await response.blob();
-                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const blob = xhr.response;
+                    const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
-                    a.href = downloadUrl;
-                    a.download = selectedFile.name.replace(".pdf", ".docx");
+                    a.href = url;
+                    a.download = file.name.replace(".pdf", ".docx");
                     document.body.appendChild(a);
                     a.click();
                     
-                    // Reset UI
-                    btnConvert.innerHTML = '<i class="fa-solid fa-check"></i> Download Again';
-                    btnConvert.classList.replace('bg-mint-600', 'bg-slate-800');
-                    btnConvert.disabled = false;
+                    document.getElementById('btn-reset').classList.remove('hidden');
+
                 } else {
-                    throw new Error("Server returned error");
+                    showError();
                 }
-            } catch (error) {
-                console.error(error);
-                statusText.innerText = "Error: Server offline or file too big.";
-                statusText.className = "text-sm text-red-500 font-bold";
-                progressBar.style.backgroundColor = "#ef4444";
-                btnConvert.innerHTML = "Try Again";
-                btnConvert.disabled = false;
-            }
-        });
+            };
+
+            xhr.onerror = function() { showError(); };
+            
+            // Send the file
+            xhr.send(formData);
+        }
+
+        function showError() {
+            document.getElementById('error-box').classList.remove('hidden');
+            document.getElementById('label-convert').innerText = "❌ Conversion Failed";
+            document.getElementById('label-convert').className = "text-red-600 font-bold";
+            document.getElementById('bar-convert').className = "bg-red-500 h-2.5 rounded-full w-full";
+            document.getElementById('btn-reset').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
