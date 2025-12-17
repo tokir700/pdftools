@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compress PDF - Reduce File Size Online for Free | MintPDF</title>
-    <meta name="description" content="Reduce PDF file size online for free without losing quality. Optimize documents for email, web, and uploading. Fast, secure, and no registration required.">
-    <meta name="keywords" content="compress pdf, reduce pdf size, shrink pdf, online pdf compressor, optimize pdf, free pdf tool, minimize pdf size">
+    <meta name="description" content="Reduce PDF file size online for free. Optimize documents for email and web.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,9 +24,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <a href="/" class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 bg-mint-600 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
                     <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
                 </a>
                 <div class="hidden md:flex items-center space-x-1">
@@ -37,18 +33,6 @@
                     <a href="/split.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">Split</a>
                     <a href="/jpg-to-pdf.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">JPG to PDF</a>
                 </div>
-                <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
-            <div class="flex flex-col p-2 gap-1">
-                <a href="/" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">Compress PDF</a>
-                <a href="/pdf-to-word.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">PDF to Word</a>
-                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
-                <a href="/split.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Split PDF</a>
-                <a href="/jpg-to-pdf.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">JPG to PDF</a>
             </div>
         </div>
     </nav>
@@ -63,23 +47,6 @@
 
             <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden fade-in">
                 
-                <div class="bg-slate-50 p-4 border-b border-gray-100 flex justify-center">
-                    <div class="inline-flex bg-white rounded-lg p-1 border border-gray-200 shadow-sm">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="level" value="basic" checked class="peer sr-only">
-                            <span class="px-4 py-2 rounded-md text-sm font-bold text-slate-500 peer-checked:bg-mint-600 peer-checked:text-white transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-feather"></i> Basic Compression
-                            </span>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="level" value="high" class="peer sr-only">
-                            <span class="px-4 py-2 rounded-md text-sm font-bold text-slate-500 peer-checked:bg-red-500 peer-checked:text-white transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-weight-hanging"></i> High Compression
-                            </span>
-                        </label>
-                    </div>
-                </div>
-
                 <div id="step-upload" class="p-8 md:p-12 text-center">
                     <label class="flex flex-col items-center justify-center w-full h-64 border-2 border-slate-300 border-dashed rounded-2xl cursor-pointer bg-white hover:bg-mint-50 hover:border-mint-500 transition-all group">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -93,6 +60,48 @@
                     </label>
                 </div>
 
+                <div id="step-options" class="hidden p-8 bg-white text-center">
+                    <div class="mb-6">
+                        <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <h3 id="filename-display" class="font-bold text-lg text-slate-800 truncate px-10">filename.pdf</h3>
+                        <p id="filesize-display" class="text-sm text-slate-500">0 MB</p>
+                    </div>
+
+                    <h4 class="text-left text-xs font-bold text-slate-400 uppercase mb-3 ml-1">Select Compression Level</h4>
+                    
+                    <div class="grid gap-4 mb-8">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="level" value="basic" checked class="peer sr-only">
+                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-mint-400 peer-checked:border-mint-600 peer-checked:bg-mint-50 transition-all text-left flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800">Basic Compression</div>
+                                    <div class="text-xs text-slate-500">Good Quality • Standard Size</div>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-mint-600 peer-checked:border-mint-600"></div>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="level" value="high" class="peer sr-only">
+                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-left flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800">High Compression</div>
+                                    <div class="text-xs text-slate-500">Lower Quality • Smallest Size</div>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-red-500 peer-checked:border-red-500"></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button id="btn-start" class="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-xl font-bold shadow-lg text-lg transition-transform transform active:scale-95">
+                        Compress PDF Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <button onclick="location.reload()" class="mt-4 text-slate-400 text-sm hover:text-slate-600">Cancel</button>
+                </div>
+
                 <div id="step-process" class="hidden p-8 md:p-12 text-center">
                     <div class="animate-spin text-mint-600 text-5xl mb-6 mx-auto w-fit"><i class="fa-solid fa-circle-notch"></i></div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-2">Compressing...</h3>
@@ -100,60 +109,57 @@
                     <button onclick="location.reload()" id="btn-reset" class="hidden w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg transition">Compress Another File</button>
                     <div id="error-box" class="hidden mt-4 text-red-500 font-bold text-sm">Error: Server Timeout. Try a smaller file.</div>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <section class="max-w-7xl mx-auto px-4 py-16">
-        <h2 class="text-2xl font-bold text-slate-900 text-center mb-10">Explore Our Other Free PDF Tools</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a href="/pdf-to-word.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-file-word"></i></div>
-                <h3 class="font-bold text-lg mb-1 group-hover:text-blue-600">PDF to Word</h3>
-                <p class="text-sm text-slate-500">Convert PDF to editable DOCX documents.</p>
-            </a>
-            <a href="/jpg-to-pdf.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
-                <div class="w-12 h-12 bg-yellow-50 text-yellow-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-images"></i></div>
-                <h3 class="font-bold text-lg mb-1 group-hover:text-yellow-600">JPG to PDF</h3>
-                <p class="text-sm text-slate-500">Turn images into a single PDF file.</p>
-            </a>
-            <a href="/merge.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
-                <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-layer-group"></i></div>
-                <h3 class="font-bold text-lg mb-1 group-hover:text-purple-600">Merge PDF</h3>
-                <p class="text-sm text-slate-500">Combine multiple files into one.</p>
-            </a>
-            <a href="/split.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
-                <div class="w-12 h-12 bg-pink-50 text-pink-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-scissors"></i></div>
-                <h3 class="font-bold text-lg mb-1 group-hover:text-pink-600">Split PDF</h3>
-                <p class="text-sm text-slate-500">Extract pages from your document.</p>
-            </a>
-        </div>
-    </section>
-
-    <footer class="bg-white py-12 text-center border-t border-gray-200">
+    <footer class="bg-white py-12 text-center border-t border-gray-200 mt-auto">
         <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
         <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools. All rights reserved.</p>
     </footer>
 
     <script>
         const SERVER_URL = "https://toukir700-pdf-converter.hf.space/compress";
+        
         const fileInput = document.getElementById('file-input');
         const stepUpload = document.getElementById('step-upload');
+        const stepOptions = document.getElementById('step-options');
         const stepProcess = document.getElementById('step-process');
+        const btnStart = document.getElementById('btn-start');
 
+        let selectedFile = null;
+
+        // 1. Handle File Selection
         fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+            selectedFile = e.target.files[0];
+            if (!selectedFile) return;
 
-            // Get selected compression level
+            // Show File Info
+            document.getElementById('filename-display').innerText = selectedFile.name;
+            document.getElementById('filesize-display').innerText = (selectedFile.size / (1024 * 1024)).toFixed(2) + " MB";
+
+            // Switch Views
+            stepUpload.classList.add('hidden');
+            stepOptions.classList.remove('hidden');
+            stepOptions.classList.add('fade-in');
+        });
+
+        // 2. Handle Start Button Click
+        btnStart.addEventListener('click', () => {
+            if (!selectedFile) return;
+
+            // Get Level
             const level = document.querySelector('input[name="level"]:checked').value;
 
-            stepUpload.classList.add('hidden');
+            // Switch to Loading
+            stepOptions.classList.add('hidden');
             stepProcess.classList.remove('hidden');
-            
+
+            // Send Request
             const formData = new FormData();
-            formData.append("file", file);
-            formData.append("level", level); // Send level to server
+            formData.append("file", selectedFile);
+            formData.append("level", level);
 
             fetch(SERVER_URL, {
                 method: 'POST',
@@ -167,7 +173,7 @@
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = "compressed_" + file.name;
+                a.download = "compressed_" + selectedFile.name;
                 document.body.appendChild(a);
                 a.click();
                 
