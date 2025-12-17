@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compress PDF - Reduce File Size Online for Free | MintPDF</title>
-    <meta name="description" content="Reduce PDF file size online for free. Optimize documents for email and web directly in your browser.">
-    
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
-    
+    <meta name="description" content="Reduce PDF file size online for free. Optimize documents for email and web.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,7 +42,7 @@
             
             <header class="text-center mb-10 fade-in">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Compress PDF Files</h1>
-                <p class="text-slate-500 text-lg md:text-xl max-w-2xl mx-auto">Reduce file size securely in your browser.</p>
+                <p class="text-slate-500 text-lg md:text-xl max-w-2xl mx-auto">Reduce file size while optimizing for maximal PDF quality.</p>
             </header>
 
             <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden fade-in">
@@ -58,22 +54,60 @@
                                 <i class="fa-solid fa-compress-arrows-alt text-4xl text-red-500"></i>
                             </div>
                             <p class="mb-2 text-xl font-bold text-slate-800">Select PDF File</p>
-                            <p class="text-sm text-slate-400">Processed locally (Privacy Focused)</p>
+                            <p class="text-sm text-slate-400">Max 50MB</p>
                         </div>
                         <input id="file-input" type="file" class="hidden" accept="application/pdf" />
                     </label>
                 </div>
 
+                <div id="step-options" class="hidden p-8 bg-white text-center">
+                    <div class="mb-6">
+                        <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <h3 id="filename-display" class="font-bold text-lg text-slate-800 truncate px-10">filename.pdf</h3>
+                        <p id="filesize-display" class="text-sm text-slate-500">0 MB</p>
+                    </div>
+
+                    <h4 class="text-left text-xs font-bold text-slate-400 uppercase mb-3 ml-1">Select Compression Level</h4>
+                    
+                    <div class="grid gap-4 mb-8">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="level" value="basic" checked class="peer sr-only">
+                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-mint-400 peer-checked:border-mint-600 peer-checked:bg-mint-50 transition-all text-left flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800">Basic Compression</div>
+                                    <div class="text-xs text-slate-500">Good Quality • Standard Size</div>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-mint-600 peer-checked:border-mint-600"></div>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="level" value="high" class="peer sr-only">
+                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-left flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800">High Compression</div>
+                                    <div class="text-xs text-slate-500">Lower Quality • Smallest Size</div>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-red-500 peer-checked:border-red-500"></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <button id="btn-start" class="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-xl font-bold shadow-lg text-lg transition-transform transform active:scale-95">
+                        Compress PDF Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <button onclick="location.reload()" class="mt-4 text-slate-400 text-sm hover:text-slate-600">Cancel</button>
+                </div>
+
                 <div id="step-process" class="hidden p-8 md:p-12 text-center">
                     <div class="animate-spin text-mint-600 text-5xl mb-6 mx-auto w-fit"><i class="fa-solid fa-circle-notch"></i></div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-2">Compressing...</h3>
-                    <p class="text-slate-500 mb-8 animate-pulse" id="status-text">Analyzing structure...</p>
-                    
-                    <div id="result-area" class="hidden">
-                        <p class="text-green-600 font-bold mb-4">✅ Compression Complete!</p>
-                        <p id="size-reduction" class="text-sm text-slate-500 mb-6"></p>
-                        <button onclick="location.reload()" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg transition">Compress Another File</button>
-                    </div>
+                    <p class="text-slate-500 mb-8 animate-pulse" id="status-text">Optimizing images & fonts...</p>
+                    <button onclick="location.reload()" id="btn-reset" class="hidden w-full bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg transition">Compress Another File</button>
+                    <div id="error-box" class="hidden mt-4 text-red-500 font-bold text-sm">Error: Server Timeout. Try a smaller file.</div>
                 </div>
 
             </div>
@@ -86,64 +120,73 @@
     </footer>
 
     <script>
-        const { PDFDocument } = PDFLib;
-
+        const SERVER_URL = "https://toukir700-pdf-converter.hf.space/compress";
+        
         const fileInput = document.getElementById('file-input');
         const stepUpload = document.getElementById('step-upload');
+        const stepOptions = document.getElementById('step-options');
         const stepProcess = document.getElementById('step-process');
-        const statusText = document.getElementById('status-text');
-        const resultArea = document.getElementById('result-area');
-        const sizeDisplay = document.getElementById('size-reduction');
+        const btnStart = document.getElementById('btn-start');
 
-        fileInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        let selectedFile = null;
 
-            // UI Update
+        // 1. Handle File Selection
+        fileInput.addEventListener('change', (e) => {
+            selectedFile = e.target.files[0];
+            if (!selectedFile) return;
+
+            // Show File Info
+            document.getElementById('filename-display').innerText = selectedFile.name;
+            document.getElementById('filesize-display').innerText = (selectedFile.size / (1024 * 1024)).toFixed(2) + " MB";
+
+            // Switch Views
             stepUpload.classList.add('hidden');
+            stepOptions.classList.remove('hidden');
+            stepOptions.classList.add('fade-in');
+        });
+
+        // 2. Handle Start Button Click
+        btnStart.addEventListener('click', () => {
+            if (!selectedFile) return;
+
+            // Get Level
+            const level = document.querySelector('input[name="level"]:checked').value;
+
+            // Switch to Loading
+            stepOptions.classList.add('hidden');
             stepProcess.classList.remove('hidden');
-            statusText.innerText = "Reading file...";
 
-            try {
-                // 1. Read the file
-                const arrayBuffer = await file.arrayBuffer();
-                const originalSize = arrayBuffer.byteLength;
+            // Send Request
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+            formData.append("level", level);
 
-                statusText.innerText = "Compressing objects...";
-
-                // 2. Load PDF
-                const pdfDoc = await PDFDocument.load(arrayBuffer);
-
-                // 3. Compress: We remove unused objects and re-save
-                // Note: Client-side JS cannot do heavy image downsampling easily like Ghostscript
-                // But this cleans up the PDF structure significantly.
-                const compressedBytes = await pdfDoc.save({ useObjectStreams: false });
-
-                // 4. Download
-                const compressedSize = compressedBytes.byteLength;
-                const ratio = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
-
-                // Create Blob and Download
-                const blob = new Blob([compressedBytes], { type: 'application/pdf' });
-                download(blob, "compressed_" + file.name, "application/pdf");
-
-                // 5. Show Success
-                document.querySelector('.animate-spin').classList.add('hidden');
-                statusText.classList.add('hidden');
-                resultArea.classList.remove('hidden');
+            fetch(SERVER_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Server Error");
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "compressed_" + selectedFile.name;
+                document.body.appendChild(a);
+                a.click();
                 
-                if (compressedSize < originalSize) {
-                     sizeDisplay.innerText = `Reduced by ${ratio}% (${(originalSize/1024).toFixed(0)}KB → ${(compressedSize/1024).toFixed(0)}KB)`;
-                } else {
-                     sizeDisplay.innerText = "This file was already optimized.";
-                }
-
-            } catch (err) {
-                console.error(err);
-                statusText.innerText = "Error: Could not compress this file.";
-                statusText.className = "text-red-500 font-bold";
+                document.getElementById('status-text').innerText = "✅ Done! Download Started.";
+                document.getElementById('status-text').className = "text-green-600 font-bold mb-8";
                 document.querySelector('.animate-spin').classList.add('hidden');
-            }
+                document.getElementById('btn-reset').classList.remove('hidden');
+            })
+            .catch(err => {
+                document.getElementById('status-text').innerText = "❌ Compression Failed.";
+                document.getElementById('error-box').classList.remove('hidden');
+                document.getElementById('btn-reset').classList.remove('hidden');
+            });
         });
     </script>
 </body>
