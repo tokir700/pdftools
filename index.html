@@ -42,7 +42,27 @@
         .bg-mint-50 { background-color: #ecfdf5; }
         .hover-lift:hover { transform: translateY(-5px); }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Radio Styling to ensure it works */
+        input:checked + div {
+            border-color: #059669; /* Mint Green */
+            background-color: #ecfdf5; /* Mint Light */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        input:checked + div .circle-indicator {
+            background-color: #059669;
+            border-color: #059669;
+        }
+        
+        /* Specific Red Style for High Compression when checked */
+        input#opt-high:checked + div {
+            border-color: #ef4444; /* Red */
+            background-color: #fef2f2; /* Red Light */
+        }
+        input#opt-high:checked + div .circle-indicator {
+            background-color: #ef4444;
+            border-color: #ef4444;
+        }
     </style>
 </head>
 <body class="bg-white text-slate-800 flex flex-col min-h-screen">
@@ -109,25 +129,26 @@
                     <h4 class="text-left text-xs font-bold text-slate-400 uppercase mb-3 ml-1">Select Compression Mode</h4>
                     
                     <div class="grid gap-4 mb-8">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="level" value="basic" checked class="peer sr-only">
-                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-mint-400 peer-checked:border-mint-600 peer-checked:bg-mint-50 transition-all text-left flex items-center justify-between">
+                        
+                        <label class="cursor-pointer block relative">
+                            <input type="radio" name="level" value="basic" checked class="sr-only">
+                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-mint-400 transition-all text-left flex items-center justify-between">
                                 <div>
                                     <div class="font-bold text-slate-800">Basic Compression</div>
-                                    <div class="text-xs text-slate-500">Good Quality (75% Quality)</div>
+                                    <div class="text-xs text-slate-500">Good Quality (75%)</div>
                                 </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-mint-600 peer-checked:border-mint-600"></div>
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 circle-indicator"></div>
                             </div>
                         </label>
 
-                        <label class="cursor-pointer">
-                            <input type="radio" name="level" value="high" class="peer sr-only">
-                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-left flex items-center justify-between">
+                        <label class="cursor-pointer block relative">
+                            <input id="opt-high" type="radio" name="level" value="high" class="sr-only">
+                            <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-red-400 transition-all text-left flex items-center justify-between">
                                 <div>
                                     <div class="font-bold text-slate-800">High Compression</div>
-                                    <div class="text-xs text-slate-500">Maximum Reduction (30% Quality)</div>
+                                    <div class="text-xs text-slate-500">Smallest Size (50%)</div>
                                 </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-red-500 peer-checked:border-red-500"></div>
+                                <div class="w-6 h-6 rounded-full border-2 border-slate-300 circle-indicator"></div>
                             </div>
                         </label>
                     </div>
@@ -232,15 +253,15 @@
             stepProcess.classList.remove('hidden');
 
             try {
-                // === CONFIGURATION ===
-                // High: 0.7 scale, 0.3 quality (Very aggressive)
-                // Basic: 1.0 scale, 0.75 quality (Standard)
+                // === CONFIGURATION (Adjusted High to 50%) ===
+                // Basic: Scale 1.0, Quality 0.75
+                // High: Scale 0.7, Quality 0.50 (User Requested)
                 let scale = 1.0; 
                 let quality = 0.75; 
                 
                 if (level === 'high') {
                     scale = 0.7;    
-                    quality = 0.3;   
+                    quality = 0.50; // Changed from 0.3 to 0.5   
                 }
 
                 // Load PDF
@@ -251,7 +272,6 @@
 
                 // Create JS PDF
                 const { jsPDF } = window.jspdf;
-                // 'p' = portrait, 'mm' = units, 'a4' = default format (will resize per page anyway)
                 const newPdf = new jsPDF('p', 'mm', 'a4');
 
                 // LOOP PAGES
@@ -276,7 +296,6 @@
                     // Add to New PDF
                     if (i > 1) newPdf.addPage();
                     
-                    // Get page dimensions in PDF units
                     const imgProps = newPdf.getImageProperties(imgData);
                     const pdfWidth = newPdf.internal.pageSize.getWidth();
                     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
