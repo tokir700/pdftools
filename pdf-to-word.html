@@ -31,7 +31,7 @@
         
         <div class="p-8 text-center border-b border-slate-100">
             <h1 class="text-3xl font-bold text-slate-900 mb-2">PDF to Word</h1>
-            <p class="text-slate-500">Convert large files safely using your Local Server.</p>
+            <p class="text-slate-500">Convert files securely using our Cloud Server.</p>
         </div>
 
         <div id="step-upload" class="p-8">
@@ -73,12 +73,13 @@
 
                 <div class="relative opacity-50" id="group-convert">
                     <div class="flex justify-between text-sm font-bold mb-1">
-                        <span id="label-convert" class="text-slate-400">2. Converting (Large files take time!)</span>
+                        <span id="label-convert" class="text-slate-400">2. Waking Server & Converting...</span>
                         <span id="icon-convert" class="text-slate-400"><i class="fa-solid fa-clock"></i></span>
                     </div>
                     <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                         <div id="bar-convert" class="bg-blue-500 h-2.5 rounded-full transition-all duration-[10s] w-0"></div>
                     </div>
+                    <p class="text-xs text-slate-400 mt-1 italic">Note: The first run may take ~50 seconds to wake up the server.</p>
                 </div>
 
                 <div class="relative opacity-50" id="group-download">
@@ -100,9 +101,9 @@
 
     <script>
         // ========================================================
-        // PASTE YOUR TUNNEL URL HERE (Example: https://xyz.trycloudflare.com/convert)
+        // YOUR RENDER SERVER URL
         // ========================================================
-        const TUNNEL_URL = "https://bus-installations-deals-can.trycloudflare.com/convert"; 
+        const TUNNEL_URL = "https://pdftools-nhgx.onrender.com/convert"; 
         // ========================================================
 
         const fileInput = document.getElementById('file-input');
