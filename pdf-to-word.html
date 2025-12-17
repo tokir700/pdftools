@@ -3,305 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>PDF to Word Converter - Free & Editable DOCX | MintPDF</title>
-    <meta name="description" content="Convert PDF files to editable Word (DOCX) documents online for free. Fast, accurate, and secure. No installation or registration required.">
-    <meta name="keywords" content="pdf to word, convert pdf to docx, editable pdf, free pdf converter, online pdf tool, pdf to word converter, convert pdf to word free">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#10b981">
-    <link rel="icon" type="image/png" href="favicon.png">
-
-    <meta property="og:title" content="PDF to Word Converter - Free & Editable">
-    <meta property="og:description" content="Turn your PDFs into editable Word documents in seconds. Free and secure.">
-    <meta property="og:image" content="https://pdftools-nhgx.pages.dev/og-image.jpg">
-    <meta property="og:type" content="website">
-
+    <title>PDF to Word Converter - Edit PDF in Docx Online | MintPDF</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .text-mint-600 { color: #059669; }
-        .bg-mint-600 { background-color: #059669; }
-        .bg-mint-50 { background-color: #ecfdf5; }
-        .hover-mint:hover { color: #059669; }
-        /* Animated Progress Bar */
-        .progress-stripe { background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent); background-size: 1rem 1rem; animation: progress-bar-stripes 1s linear infinite; }
-        @keyframes progress-bar-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
-    </style>
 </head>
-<body class="bg-white text-slate-800 min-h-screen flex flex-col">
+<body class="bg-white text-slate-800 flex flex-col min-h-screen">
 
     <nav class="border-b border-gray-100 sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <a href="/" class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 bg-mint-600 rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
                     <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
                 </a>
-                
                 <div class="hidden md:flex items-center space-x-1">
-                    <a href="/" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">Compress</a>
-                    <a href="/pdf-to-word.html" class="px-3 py-2 rounded-full text-sm font-bold text-mint-600 bg-mint-50 transition">PDF to Word</a>
-                    <a href="/merge.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">Merge</a>
-                    <a href="/split.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">Split</a>
-                    <a href="/jpg-to-pdf.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">JPG to PDF</a>
+                    <a href="/" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">Compress</a>
+                    <a href="/pdf-to-word.html" class="px-3 py-2 rounded-full text-sm font-bold text-mint-600 bg-mint-50">PDF to Word</a>
+                    <a href="/merge.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">Merge</a>
+                    <a href="/split.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">Split</a>
+                    <a href="/jpg-to-pdf.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">JPG to PDF</a>
                 </div>
-
-                <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
-            <div class="flex flex-col p-2 gap-1">
-                <a href="/" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Compress PDF</a>
-                <a href="/pdf-to-word.html" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">PDF to Word</a>
-                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
-                <a href="/split.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Split PDF</a>
-                <a href="/jpg-to-pdf.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">JPG to PDF</a>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow w-full max-w-6xl mx-auto p-4 md:p-12 flex flex-col items-center">
-        
-        <header class="text-center mb-10 max-w-3xl">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">Convert PDF to Word</h1>
-            <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
-                Transform your PDF files into easy-to-edit <span class="text-mint-600 font-bold">DOCX documents</span>. 
-                <br class="hidden md:block">Accurate, secure, and 100% free.
-            </p>
-        </header>
-
-        <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all hover:shadow-mint-500/10">
+    <div class="bg-slate-50 border-b border-gray-200 pb-20 pt-16">
+        <main class="w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
             
-            <div id="step-upload" class="p-8 md:p-12 text-center bg-slate-50 border-b border-slate-100">
-                <label class="flex flex-col items-center justify-center w-full h-64 border-2 border-slate-300 border-dashed rounded-2xl cursor-pointer bg-white hover:bg-mint-50 hover:border-mint-500 transition-all group relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-transparent to-mint-50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative z-10 flex flex-col items-center justify-center pt-5 pb-6">
-                        <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300 shadow-sm">
-                            <i class="fa-solid fa-file-word text-4xl text-blue-600"></i>
-                        </div>
-                        <p class="mb-2 text-xl font-bold text-slate-800">Choose a PDF File</p>
-                        <p class="text-sm text-slate-400">or drag and drop it here</p>
-                    </div>
-                    <input id="file-input" type="file" class="hidden" accept="application/pdf" />
-                </label>
-            </div>
+            <header class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Convert <span class="text-mint-600">PDF to Word</span></h1>
+                <p class="text-slate-500 text-lg">Turn your PDF into an editable DOCX document.</p>
+            </header>
 
-            <div id="step-process" class="hidden p-8 md:p-10">
-                <div class="flex items-center gap-4 mb-8 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <div class="w-12 h-12 bg-red-100 text-red-500 rounded-lg flex items-center justify-center text-xl shadow-sm">
-                        <i class="fa-solid fa-file-pdf"></i>
-                    </div>
-                    <div class="overflow-hidden">
-                        <h3 id="filename" class="font-bold text-slate-800 truncate text-lg">document.pdf</h3>
-                        <p id="filesize" class="text-sm text-slate-500 font-mono">0 MB</p>
-                    </div>
-                </div>
+            <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden p-8">
+                
+                <div id="step-upload" class="text-center">
+                    <label class="flex flex-col items-center justify-center w-full h-48 border-2 border-slate-300 border-dashed rounded-2xl cursor-pointer bg-white hover:bg-mint-50 hover:border-mint-500 transition-all group mb-6">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <i class="fa-solid fa-file-word text-4xl text-blue-600 mb-4 group-hover:scale-110 transition"></i>
+                            <p class="mb-2 text-xl font-bold text-slate-800">Select PDF File</p>
+                        </div>
+                        <input id="file-input" type="file" class="hidden" accept="application/pdf" />
+                    </label>
 
-                <div class="space-y-6">
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span id="label-upload" class="text-slate-400">1. Uploading...</span>
-                            <span id="percent-upload" class="text-slate-900">0%</span>
-                        </div>
-                        <div class="w-full bg-slate-100 rounded-full h-3">
-                            <div id="bar-upload" class="bg-mint-600 h-3 rounded-full transition-all duration-300 shadow-md" style="width: 0%"></div>
-                        </div>
+                    <div class="flex items-center border border-gray-300 rounded-xl px-4 py-3 mb-6 bg-gray-50 focus-within:ring-2 focus-within:ring-mint-500 focus-within:bg-white transition-all">
+                        <i class="fa-solid fa-envelope text-gray-400 mr-3"></i>
+                        <input type="email" id="email-input" placeholder="Email to send file (Optional)" class="bg-transparent w-full outline-none text-slate-700 placeholder-gray-400">
                     </div>
 
-                    <div id="group-convert" class="opacity-40 transition-opacity duration-500">
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span id="label-convert" class="text-slate-400 flex items-center gap-2">2. Converting <span id="icon-convert"></span></span>
-                            <span id="percent-convert" class="text-blue-600">0%</span>
-                        </div>
-                        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-                            <div id="bar-convert" class="bg-blue-500 h-3 rounded-full w-0 transition-all duration-300 shadow-md"></div>
-                        </div>
-                    </div>
-
-                    <button onclick="location.reload()" id="btn-reset" class="hidden w-full mt-4 bg-slate-800 hover:bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg transition-all transform hover:scale-[1.02]">
-                        Convert Another File
+                    <button id="btn-convert" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg transition">
+                        Convert Now
                     </button>
-                    
-                    <div id="error-box" class="hidden p-4 bg-red-50 text-red-600 text-sm font-bold rounded-xl text-center border border-red-100">
-                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> Error: Server timed out. Try a smaller file.
-                    </div>
                 </div>
-            </div>
-        </div>
 
-        <section class="max-w-4xl w-full mt-24 prose prose-slate">
-            <h2 class="text-3xl font-bold text-slate-900 text-center mb-12">Why use our PDF to Word Tool?</h2>
-            
-            <div class="grid md:grid-cols-3 gap-8 text-center mb-16">
-                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 text-xl mx-auto mb-4">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Fast Conversion</h3>
-                    <p class="text-sm text-slate-500">Powered by high-speed cloud servers to convert your documents in seconds.</p>
+                <div id="step-process" class="hidden text-center py-12">
+                    <div class="animate-spin text-mint-600 text-5xl mb-6 mx-auto w-fit"><i class="fa-solid fa-circle-notch"></i></div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Converting...</h3>
+                    <p class="text-slate-500 mb-8 animate-pulse">If email was provided, we are sending it now.</p>
                 </div>
-                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 text-xl mx-auto mb-4">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Secure & Private</h3>
-                    <p class="text-sm text-slate-500">Your files are automatically deleted from our servers immediately after processing.</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center text-mint-600 text-xl mx-auto mb-4">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Editable Word</h3>
-                    <p class="text-sm text-slate-500">We extract text, tables, and images accurately so you can edit easily in MS Word.</p>
-                </div>
-            </div>
 
-            <div class="bg-slate-50 p-8 md:p-12 rounded-3xl border border-gray-200">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Frequently Asked Questions</h2>
-                <div class="space-y-6">
-                    <details class="group bg-white p-4 rounded-xl border border-gray-100 cursor-pointer">
-                        <summary class="flex justify-between items-center font-bold text-slate-800 list-none">
-                            How do I convert PDF to Word for free?
-                            <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-mint-600"></i></span>
-                        </summary>
-                        <p class="text-slate-600 text-sm mt-3 leading-relaxed">Simply upload your PDF file to the box above. Our tool will automatically extract the content and provide you with a downloadable .docx file instantly.</p>
-                    </details>
-                    <details class="group bg-white p-4 rounded-xl border border-gray-100 cursor-pointer">
-                        <summary class="flex justify-between items-center font-bold text-slate-800 list-none">
-                            Is it safe to convert files online?
-                            <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-mint-600"></i></span>
-                        </summary>
-                        <p class="text-slate-600 text-sm mt-3 leading-relaxed">Yes. We use SSL encryption for data transfer, and our servers are programmed to delete your files immediately after the conversion is finished.</p>
-                    </details>
+                <div id="step-success" class="hidden text-center py-8">
+                    <div class="bg-green-50 text-green-700 p-4 rounded-xl mb-6 border border-green-100">
+                        <i class="fa-solid fa-check-circle mr-2"></i> Done! File Ready.
+                    </div>
+                    <a id="download-link" href="#" class="block w-full bg-mint-600 hover:bg-mint-700 text-white font-bold py-4 rounded-xl shadow-lg transition mb-4">Download Word Doc</a>
+                    <button onclick="location.reload()" class="text-slate-500 hover:text-slate-800 text-sm">Convert Another</button>
                 </div>
-            </div>
-        </section>
-    </main>
 
-    <footer class="bg-white py-12 text-center border-t border-gray-200 mt-20">
-        <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
-        <div class="flex justify-center gap-6 mb-8 text-sm text-slate-500 flex-wrap px-4">
-            <a href="/" class="hover:text-mint-600 font-medium">Compress PDF</a>
-            <a href="/pdf-to-word.html" class="hover:text-mint-600 font-medium">PDF to Word</a>
-            <a href="/merge.html" class="hover:text-mint-600 font-medium">Merge PDF</a>
-            <a href="/split.html" class="hover:text-mint-600 font-medium">Split PDF</a>
-            <a href="/jpg-to-pdf.html" class="hover:text-mint-600 font-medium">JPG to PDF</a>
-        </div>
-        <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools. All rights reserved.</p>
-    </footer>
+            </div>
+        </main>
+    </div>
 
     <script>
-        // ========================================================
-        // SERVER CONFIGURATION
-        // ========================================================
-        const TUNNEL_URL = "https://toukir700-pdf-converter.hf.space/convert"; 
-        // ========================================================
+        const SERVER_URL = "https://toukir700-pdf-converter.hf.space/convert";
 
         const fileInput = document.getElementById('file-input');
+        const emailInput = document.getElementById('email-input');
+        const btnConvert = document.getElementById('btn-convert');
+        
         const stepUpload = document.getElementById('step-upload');
         const stepProcess = document.getElementById('step-process');
-        let conversionInterval;
+        const stepSuccess = document.getElementById('step-success');
+        const downloadLink = document.getElementById('download-link');
 
-        fileInput.addEventListener('change', startProcess);
+        let selectedFile = null;
 
-        function startProcess(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+        fileInput.addEventListener('change', (e) => {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                // Visual feedback that file is selected
+                btnConvert.innerText = "Convert: " + selectedFile.name;
+                btnConvert.classList.add('bg-mint-600', 'hover:bg-mint-700');
+                btnConvert.classList.remove('bg-slate-900', 'hover:bg-black');
+            }
+        });
+
+        btnConvert.addEventListener('click', () => {
+            if (!selectedFile) {
+                alert("Please select a PDF file first.");
+                return;
+            }
 
             stepUpload.classList.add('hidden');
             stepProcess.classList.remove('hidden');
-            document.getElementById('filename').innerText = file.name;
-            document.getElementById('filesize').innerText = (file.size / (1024*1024)).toFixed(2) + " MB";
-            uploadFile(file);
-        }
 
-        function uploadFile(file) {
-            const xhr = new XMLHttpRequest();
             const formData = new FormData();
-            formData.append("file", file);
+            formData.append("file", selectedFile);
+            
+            // Add email if user typed one
+            if (emailInput.value) {
+                formData.append("email", emailInput.value);
+            }
 
-            xhr.upload.addEventListener("progress", (e) => {
-                if (e.lengthComputable) {
-                    const percent = Math.round((e.loaded / e.total) * 100);
-                    document.getElementById('bar-upload').style.width = percent + "%";
-                    document.getElementById('percent-upload').innerText = percent + "%";
-                }
-            });
-
-            xhr.upload.addEventListener("load", () => {
-                document.getElementById('label-upload').innerText = "✅ Upload Complete";
-                document.getElementById('label-upload').className = "text-green-600 font-bold";
+            fetch(SERVER_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Server Error");
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                downloadLink.href = url;
+                downloadLink.download = selectedFile.name.replace(".pdf", ".docx");
                 
-                document.getElementById('group-convert').classList.remove('opacity-40');
-                document.getElementById('label-convert').className = "text-blue-600 font-bold animate-pulse flex items-center gap-2";
-                document.getElementById('bar-convert').className = "bg-blue-500 h-3 rounded-full progress-stripe";
-                document.getElementById('icon-convert').innerHTML = '<i class="fa-solid fa-gear fa-spin"></i>';
-
-                let fakePercent = 0;
-                const convertBar = document.getElementById('bar-convert');
-                const convertText = document.getElementById('percent-convert');
-                
-                conversionInterval = setInterval(() => {
-                    let increment = 0;
-                    if (fakePercent < 30) increment = 5;       
-                    else if (fakePercent < 70) increment = 2;  
-                    else if (fakePercent < 90) increment = 1;  
-                    
-                    if (fakePercent < 90) { 
-                        fakePercent += increment;
-                        convertBar.style.width = fakePercent + "%";
-                        convertText.innerText = fakePercent + "%";
-                    }
-                }, 800);
+                stepProcess.classList.add('hidden');
+                stepSuccess.classList.remove('hidden');
+            })
+            .catch(err => {
+                alert("Conversion failed. Please try a smaller file.");
+                location.reload();
             });
-
-            xhr.open("POST", TUNNEL_URL, true);
-            xhr.responseType = "blob";
-
-            xhr.onload = function() {
-                clearInterval(conversionInterval);
-
-                if (xhr.status === 200) {
-                    document.getElementById('bar-convert').style.width = "100%";
-                    document.getElementById('percent-convert').innerText = "100%";
-                    document.getElementById('label-convert').innerHTML = '✅ Conversion Complete';
-                    document.getElementById('label-convert').className = "text-green-600 font-bold flex items-center gap-2";
-                    document.getElementById('bar-convert').className = "bg-green-500 h-3 rounded-full w-full";
-
-                    const blob = xhr.response;
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = file.name.replace(".pdf", ".docx");
-                    document.body.appendChild(a);
-                    a.click();
-                    
-                    document.getElementById('btn-reset').classList.remove('hidden');
-                } else {
-                    showError();
-                }
-            };
-
-            xhr.onerror = function() { showError(); };
-            xhr.send(formData);
-        }
-
-        function showError() {
-            clearInterval(conversionInterval);
-            document.getElementById('error-box').classList.remove('hidden');
-            document.getElementById('label-convert').innerText = "❌ Failed";
-            document.getElementById('label-convert').className = "text-red-600 font-bold";
-            document.getElementById('bar-convert').className = "bg-red-500 h-3 rounded-full w-full";
-            document.getElementById('btn-reset').classList.remove('hidden');
-        }
+        });
     </script>
 </body>
 </html>
