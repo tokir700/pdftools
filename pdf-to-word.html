@@ -97,7 +97,7 @@
                         <input type="checkbox" id="ocr-check" class="w-5 h-5 text-mint-600 rounded focus:ring-mint-500 cursor-pointer accent-mint-600">
                         <label for="ocr-check" class="text-sm text-slate-700 cursor-pointer select-none leading-tight">
                             <strong>Enable OCR</strong> (Use for Scanned PDFs)
-                            <br><span class="text-xs text-slate-500">Extracts text from images. Slower (~1-2 mins).</span>
+                            <br><span class="text-xs text-slate-500">Extracts text from images. Slower (~1 min).</span>
                         </label>
                     </div>
 
@@ -159,35 +159,6 @@
         </div>
     </section>
 
-    <section class="bg-slate-50 py-16 border-t border-gray-100">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Why use MintPDF to Convert?</h2>
-            
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3"><i class="fa-solid fa-file-word text-mint-600 mr-2"></i>Accurate Formatting</h3>
-                    <p class="text-slate-600">We preserve your original fonts, images, and layout. Your converted Word document will look just like the original PDF.</p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3"><i class="fa-solid fa-eye text-mint-600 mr-2"></i>OCR Support</h3>
-                    <p class="text-slate-600">Have a scanned document? Our OCR technology can extract text from images, making your document editable again.</p>
-                </div>
-            </div>
-
-            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Frequently Asked Questions</h2>
-            <div class="space-y-4">
-                <div class="bg-white p-6 rounded-xl border border-gray-200">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">How long does conversion take?</h3>
-                    <p class="text-slate-600">Standard PDFs convert in seconds. Scanned PDFs (OCR) may take 1-2 minutes depending on complexity.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">Can I edit the Word file?</h3>
-                    <p class="text-slate-600">Yes! The output file is a standard .docx file that works in Microsoft Word, Google Docs, and LibreOffice.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer class="bg-white py-12 text-center border-t border-gray-200">
         <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
         <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools. All rights reserved.</p>
@@ -215,12 +186,12 @@
         let processTimer = null;
         let isWorking = false;
 
-        // 1. PREVENT ACCIDENTAL REFRESH
+        // 1. PREVENT ACCIDENTAL REFRESH (Safe Guard)
         window.addEventListener('beforeunload', function (e) {
             if (isWorking) { e.preventDefault(); e.returnValue = ''; }
         });
 
-        // 2. FILE SELECTION (Button Styling)
+        // 2. FILE SELECTION
         fileInput.addEventListener('change', (e) => {
             selectedFile = e.target.files[0];
             if (selectedFile) {
@@ -247,10 +218,13 @@
             const formData = new FormData();
             formData.append("file", selectedFile);
             
-            // Handle OCR
-            if (ocrCheck && ocrCheck.checked) {
+            // --- CRITICAL FIX: SEND OCR FLAG CORRECTLY ---
+            const isOcrEnabled = ocrCheck && ocrCheck.checked;
+            if (isOcrEnabled) {
+                console.log("OCR Mode: ON");
                 formData.append("use_ocr", "true");
             } else {
+                console.log("OCR Mode: OFF");
                 formData.append("use_ocr", "false");
             }
 
@@ -267,7 +241,7 @@
                     progressBar.style.width = percent + "%";
                     progressPercent.innerText = percent + "%";
                     
-                    if (percent === 100) startProcessingTimer();
+                    if (percent === 100) startProcessingTimer(isOcrEnabled);
                 }
             };
 
@@ -299,14 +273,14 @@
                     const url = window.URL.createObjectURL(blob);
                     
                     downloadLink.href = url;
-                    // Append _editable if OCR was used
-                    let suffix = ocrCheck.checked ? "_editable.docx" : ".docx";
+                    // Auto-rename if OCR was used
+                    let suffix = isOcrEnabled ? "_editable.docx" : ".docx";
                     downloadLink.download = selectedFile.name.replace(".pdf", suffix);
 
                     stepProcess.classList.add('hidden');
                     stepSuccess.classList.remove('hidden');
                 } else {
-                    alert("Server Error. The file might be too complex for the free server.");
+                    alert("Server Error. If using OCR, the file might be too complex for the free server.");
                     location.reload();
                 }
             };
@@ -323,7 +297,7 @@
         });
 
         // 4. SMART TIMER (Visual Feedback)
-        function startProcessingTimer() {
+        function startProcessingTimer(isOcr) {
             let seconds = 0;
             statusTitle.innerText = "Step 2: Processing";
             progressBar.className = "bg-yellow-500 h-full rounded-full animate-pulse";
@@ -331,10 +305,9 @@
             
             processTimer = setInterval(() => {
                 seconds++;
-                // Check if OCR is active for different messages
-                if(ocrCheck && ocrCheck.checked) {
-                    if (seconds < 10) statusText.innerText = `Scanning images (OCR)... (${seconds}s)`;
-                    else if (seconds < 40) statusText.innerText = `Analyzing text layers... (${seconds}s)`;
+                if(isOcr) {
+                    if (seconds < 10) statusText.innerText = `Running OCR (Scanning Images)... (${seconds}s)`;
+                    else if (seconds < 40) statusText.innerText = `Reconstructing text layers... (${seconds}s)`;
                     else statusText.innerText = `Finalizing document... (${seconds}s)`;
                 } else {
                     if (seconds < 10) statusText.innerText = `Analyzing PDF structure... (${seconds}s)`;
