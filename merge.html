@@ -32,6 +32,10 @@
         .bg-mint-50 { background-color: #ecfdf5; }
         .hover-lift:hover { transform: translateY(-5px); }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        /* Dragging Styles */
+        .sortable-ghost { opacity: 0.4; background-color: #ecfdf5; border: 2px dashed #059669; }
+        .sortable-drag { cursor: grabbing; }
+        .cursor-grab { cursor: grab; }
     </style>
 </head>
 <body class="bg-white text-slate-800 flex flex-col min-h-screen">
@@ -77,7 +81,7 @@
                 </h1>
                 <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
                     Combine multiple PDFs into one document. 
-                    <br class="hidden md:block">Drag and drop to reorder. Fast, free, and secure.
+                    <br class="hidden md:block">Drag and drop to reorder pages before merging.
                 </p>
             </header>
 
@@ -94,9 +98,14 @@
                     </label>
 
                     <div id="file-list-container" class="hidden mb-6">
-                        <h3 class="text-sm font-bold text-slate-500 uppercase mb-2">Files to Merge (Drag to Reorder)</h3>
-                        <div id="file-list" class="space-y-2 max-h-48 overflow-y-auto">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-down-up"></i> Drag to Reorder Files
+                        </h3>
+                        <div id="file-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
                             </div>
+                        <div class="mt-4 text-center">
+                            <label for="file-input" class="text-sm text-mint-600 font-bold cursor-pointer hover:underline">+ Add more files</label>
+                        </div>
                     </div>
 
                     <button id="btn-merge" class="hidden w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg transition-colors duration-300">
@@ -201,22 +210,23 @@
                 btnMerge.classList.remove('hidden');
                 fileListContainer.classList.remove('hidden');
             }
-            // Reset input so same files can be selected again if needed
+            // Reset input to allow re-selecting same files
             fileInput.value = '';
         });
 
-        // 3. RENDER FILE LIST (With Drag & Remove)
+        // 3. RENDER FILE LIST (With Drag Handle)
         function renderFileList() {
             fileList.innerHTML = '';
             selectedFiles.forEach((file, index) => {
                 const item = document.createElement('div');
-                item.className = "flex items-center justify-between bg-white border border-gray-200 p-3 rounded-lg shadow-sm cursor-move hover:border-mint-400 transition";
+                item.className = "flex items-center justify-between bg-white border border-gray-200 p-3 rounded-lg shadow-sm cursor-grab hover:border-mint-400 transition group";
                 item.innerHTML = `
                     <div class="flex items-center gap-3 overflow-hidden">
-                        <div class="w-6 h-6 bg-red-50 text-red-500 rounded flex items-center justify-center flex-shrink-0 text-xs"><i class="fa-solid fa-file-pdf"></i></div>
-                        <span class="text-sm font-medium truncate text-slate-700">${file.name}</span>
+                        <div class="text-slate-400 cursor-grab group-hover:text-mint-600"><i class="fa-solid fa-grip-vertical"></i></div>
+                        <div class="w-8 h-8 bg-red-50 text-red-500 rounded flex items-center justify-center flex-shrink-0 text-lg"><i class="fa-solid fa-file-pdf"></i></div>
+                        <span class="text-sm font-medium truncate text-slate-700 select-none">${file.name}</span>
                     </div>
-                    <button onclick="removeFile(${index})" class="text-slate-400 hover:text-red-500 px-2 transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    <button onclick="removeFile(${index})" class="text-slate-300 hover:text-red-500 px-2 transition-colors"><i class="fa-solid fa-xmark"></i></button>
                 `;
                 fileList.appendChild(item);
             });
@@ -225,16 +235,20 @@
         window.removeFile = (index) => {
             selectedFiles.splice(index, 1);
             renderFileList();
-            if (selectedFiles.length === 0) {
-                btnMerge.classList.add('hidden');
-                fileListContainer.classList.add('hidden');
+            if (selectedFiles.length < 2) {
+                // Keep UI open but maybe disable merge if only 1 file
+                if(selectedFiles.length === 0) {
+                    btnMerge.classList.add('hidden');
+                    fileListContainer.classList.add('hidden');
+                }
             }
         };
 
         // Enable Drag and Drop Reordering
         new Sortable(fileList, {
             animation: 150,
-            ghostClass: 'bg-mint-50',
+            ghostClass: 'sortable-ghost',
+            dragClass: 'sortable-drag',
             onEnd: function (evt) {
                 // Reorder array based on DOM
                 const item = selectedFiles.splice(evt.oldIndex, 1)[0];
@@ -253,11 +267,12 @@
             stepUpload.classList.add('hidden');
             stepProcess.classList.remove('hidden');
             progressBar.style.width = "0%";
+            progressBar.className = "bg-green-500 h-full rounded-full transition-all duration-200";
 
             const formData = new FormData();
             // Append files in the specific order they are currently in the array
             selectedFiles.forEach(file => {
-                formData.append("files", file); // Must be 'files' for backend List[UploadFile]
+                formData.append("files", file); 
             });
 
             const xhr = new XMLHttpRequest();
@@ -289,6 +304,7 @@
                     progressPercent.innerText = percent + "%";
                 } else {
                     statusTitle.innerText = "Step 3: Downloading";
+                    statusText.innerText = "File is being transferred...";
                     progressBar.className = "bg-blue-600 h-full rounded-full animate-pulse";
                     progressBar.style.width = "100%";
                 }
@@ -329,13 +345,14 @@
         function startProcessingTimer() {
             let seconds = 0;
             statusTitle.innerText = "Step 2: Merging";
+            statusText.innerText = "Combining pages and saving...";
             progressBar.className = "bg-yellow-500 h-full rounded-full animate-pulse";
             progressBar.style.width = "100%"; 
             
             processTimer = setInterval(() => {
                 seconds++;
-                if (seconds < 10) statusText.innerText = `Combining pages... (${seconds}s)`;
-                else if (seconds < 30) statusText.innerText = `Reordering and saving... (${seconds}s)`;
+                if (seconds < 10) statusText.innerText = `Processing file structure... (${seconds}s)`;
+                else if (seconds < 30) statusText.innerText = `Reordering and merging... (${seconds}s)`;
                 else statusText.innerText = `Server is waking up (Cold Boot)... (${seconds}s)`;
                 progressPercent.innerText = "Working...";
             }, 1000);
