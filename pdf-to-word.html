@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
+
     <title>PDF to Word Converter - Convert PDF to Docx Online Free | MintPDF</title>
     <meta name="description" content="Convert PDF to editable Word (DOCX) documents online for free. Accurately preserves layout, fonts, and tables. No signup required.">
     <meta name="keywords" content="pdf to word, convert pdf to docx, pdf converter, edit pdf, free pdf to word, online pdf tools">
     <meta name="robots" content="index, follow">
     <meta name="author" content="MintPDF">
     <link rel="canonical" href="https://mintpdf.pages.dev/pdf-to-word.html">
-
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="PDF to Word Converter - Free & Secure">
-    <meta property="og:description" content="Turn your PDF into an editable Word document instantly.">
     <meta property="og:image" content="https://mintpdf.pages.dev/og-image.jpg">
     <meta property="og:url" content="https://mintpdf.pages.dev/pdf-to-word.html">
 
@@ -93,11 +92,6 @@
                         <input id="file-input" type="file" class="hidden" accept="application/pdf" />
                     </label>
 
-                    <div class="flex items-center border border-gray-300 rounded-xl px-4 py-3 mb-6 bg-gray-50 focus-within:ring-2 focus-within:ring-mint-500 focus-within:bg-white transition-all">
-                        <i class="fa-solid fa-envelope text-gray-400 mr-3"></i>
-                        <input type="email" id="email-input" placeholder="Email to send file (Optional)" class="bg-transparent w-full outline-none text-slate-700 placeholder-gray-400">
-                    </div>
-
                     <button id="btn-convert" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg transition-colors duration-300">
                         Convert to Word <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
@@ -105,11 +99,14 @@
 
                 <div id="step-process" class="hidden p-12 text-center">
                     <div class="animate-spin text-mint-600 text-5xl mb-6 mx-auto w-fit"><i class="fa-solid fa-circle-notch"></i></div>
-                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Converting...</h3>
-                    <p class="text-slate-500 mb-8 animate-pulse">Extracting text, tables, and layout...</p>
-                    <div class="w-full bg-slate-100 rounded-full h-2.5 mb-6">
-                        <div class="bg-mint-600 h-2.5 rounded-full animate-pulse" style="width: 80%"></div>
+                    
+                    <h3 id="status-title" class="text-2xl font-bold text-slate-800 mb-2">Starting...</h3>
+                    <p id="status-text" class="text-slate-500 mb-8 font-mono text-sm">Initializing connection...</p>
+                    
+                    <div class="w-full bg-slate-100 rounded-full h-4 mb-2 overflow-hidden shadow-inner">
+                        <div id="progress-bar" class="bg-mint-600 h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
                     </div>
+                    <p id="progress-percent" class="text-xs text-slate-400 font-bold text-right">0%</p>
                 </div>
 
                 <div id="step-success" class="hidden p-12 text-center">
@@ -153,107 +150,124 @@
         </div>
     </section>
 
-    <section class="bg-slate-50 py-16 border-t border-gray-100">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Why use MintPDF to Convert?</h2>
-            
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3"><i class="fa-solid fa-file-word text-mint-600 mr-2"></i>Accurate Formatting</h3>
-                    <p class="text-slate-600">We preserve your original fonts, images, and layout. Your converted Word document will look just like the original PDF.</p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3"><i class="fa-solid fa-shield-halved text-mint-600 mr-2"></i>Secure Handling</h3>
-                    <p class="text-slate-600">Your privacy is our priority. Files are processed securely and deleted automatically after conversion.</p>
-                </div>
-            </div>
-
-            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Frequently Asked Questions</h2>
-            <div class="space-y-4">
-                <div class="bg-white p-6 rounded-xl border border-gray-200">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">How long does it take?</h3>
-                    <p class="text-slate-600">Most files convert in less than 10 seconds. Larger files with many images may take slightly longer.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">Can I edit the Word file?</h3>
-                    <p class="text-slate-600">Yes! The output file is a standard .docx file that you can open and edit in Microsoft Word, Google Docs, or any other editor.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer class="bg-white py-12 text-center border-t border-gray-200">
         <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
         <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools. All rights reserved.</p>
     </footer>
 
     <script>
-        // YOUR BACKEND URL
         const SERVER_URL = "https://toukir700-pdf-converter.hf.space/convert";
 
         const fileInput = document.getElementById('file-input');
-        const emailInput = document.getElementById('email-input');
         const btnConvert = document.getElementById('btn-convert');
         
         const stepUpload = document.getElementById('step-upload');
         const stepProcess = document.getElementById('step-process');
         const stepSuccess = document.getElementById('step-success');
         const downloadLink = document.getElementById('download-link');
+        
+        const statusTitle = document.getElementById('status-title');
+        const statusText = document.getElementById('status-text');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
 
         let selectedFile = null;
 
-        // 1. Handle File Selection (BUTTON COLOR FIX)
+        // 1. Handle File Selection
         fileInput.addEventListener('change', (e) => {
             selectedFile = e.target.files[0];
             if (selectedFile) {
-                // Change Button to Mint Green and Update Text
                 btnConvert.innerHTML = `Convert <strong>${selectedFile.name}</strong> Now`;
-                // Force styling via style attribute to override any conflicts
                 btnConvert.style.backgroundColor = "#059669"; // Mint-600
                 btnConvert.style.color = "white";
                 btnConvert.classList.add('shadow-xl', 'scale-105');
             }
         });
 
-        // 2. Handle Conversion
+        // 2. Handle Conversion (XHR for Progress)
         btnConvert.addEventListener('click', () => {
             if (!selectedFile) {
                 alert("Please select a PDF file first.");
                 return;
             }
 
-            // Switch Steps
+            // UI Switch
             stepUpload.classList.add('hidden');
             stepProcess.classList.remove('hidden');
 
             const formData = new FormData();
             formData.append("file", selectedFile);
-            
-            if (emailInput.value) {
-                formData.append("email", emailInput.value);
-            }
 
-            fetch(SERVER_URL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) throw new Error("Server Error");
-                return response.blob();
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                downloadLink.href = url;
-                downloadLink.download = selectedFile.name.replace(".pdf", ".docx");
-                
-                stepProcess.classList.add('hidden');
-                stepSuccess.classList.remove('hidden');
-            })
-            .catch(err => {
-                alert("Conversion failed. The server might be busy. Please try again.");
+            // Use XMLHttpRequest for Real Upload Progress
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', SERVER_URL, true);
+
+            // A. UPLOAD PROGRESS
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    
+                    if (percentComplete < 100) {
+                        statusTitle.innerText = "Uploading File...";
+                        statusText.innerText = "Sending to secure server...";
+                        progressBar.style.width = percentComplete + "%";
+                        progressPercent.innerText = percentComplete + "%";
+                    } else {
+                        statusTitle.innerText = "Processing...";
+                        statusText.innerText = "Converting PDF structure to Word...";
+                        progressBar.style.width = "100%";
+                        progressPercent.innerText = "100% (Upload Complete)";
+                        
+                        // Start "Fake" Processing Progress Bar (since backend doesn't stream progress)
+                        startProcessingAnimation();
+                    }
+                }
+            };
+
+            // B. ON SUCCESS
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Complete!
+                    const blob = new Blob([xhr.response], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+                    const url = window.URL.createObjectURL(blob);
+                    
+                    downloadLink.href = url;
+                    downloadLink.download = selectedFile.name.replace(".pdf", ".docx");
+
+                    stepProcess.classList.add('hidden');
+                    stepSuccess.classList.remove('hidden');
+                } else {
+                    alert("Conversion failed. Please try a different file.");
+                    location.reload();
+                }
+            };
+
+            // C. ON ERROR
+            xhr.onerror = function() {
+                alert("Network Error. Please check your connection.");
                 location.reload();
-            });
+            };
+
+            xhr.responseType = "blob"; // Important for file download
+            xhr.send(formData);
         });
+
+        // Helper: Simulate "Processing" bar so user doesn't think it froze
+        function startProcessingAnimation() {
+            let width = 0;
+            progressBar.style.width = "0%";
+            progressBar.className = "bg-blue-500 h-full rounded-full transition-all duration-1000 ease-linear"; // Change color to blue for processing phase
+            
+            const interval = setInterval(() => {
+                if (width >= 90) {
+                    clearInterval(interval); // Stop at 90% and wait for actual response
+                } else {
+                    width += 5; // Increment slowly
+                    progressBar.style.width = width + "%";
+                    progressPercent.innerText = width + "% (Converting...)";
+                }
+            }, 800);
+        }
     </script>
 </body>
 </html>
