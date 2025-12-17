@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Compress PDF - Reduce File Size Online for Free | MintPDF</title>
-    <meta name="description" content="Reduce PDF file size online for free. Compress PDF documents directly in your browser without uploading. Fast, secure, and privacy-focused.">
-    <meta name="keywords" content="compress pdf, reduce pdf size, shrink pdf, client side pdf compressor, offline pdf tool, optimize pdf">
+    <meta name="description" content="Reduce PDF file size online for free directly in your browser. Choose 'Basic' or 'High' compression. Fast, secure, and privacy-focused.">
+    <meta name="keywords" content="compress pdf, reduce pdf size, shrink pdf, client side pdf compressor, offline pdf tool, optimize pdf, free pdf tools">
     <meta name="robots" content="index, follow">
     <meta name="author" content="MintPDF">
-    <link rel="canonical" href="https://yourwebsite.com/">
+    <link rel="canonical" href="https://mintpdf.pages.dev/">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Compress PDF - Reduce File Size for Free">
-    <meta property="og:description" content="Securely compress PDF files in your browser. No server uploads.">
-    <meta property="og:image" content="https://yourwebsite.com/og-image.jpg">
-    <meta property="og:url" content="https://yourwebsite.com/">
+    <meta property="og:description" content="Securely compress PDF files in your browser. No server uploads required.">
+    <meta property="og:image" content="https://mintpdf.pages.dev/og-image.jpg">
+    <meta property="og:url" content="https://mintpdf.pages.dev/">
 
     <script type="application/ld+json">
     {
@@ -40,6 +40,7 @@
         .text-mint-600 { color: #059669; }
         .bg-mint-600 { background-color: #059669; }
         .bg-mint-50 { background-color: #ecfdf5; }
+        .hover-lift:hover { transform: translateY(-5px); }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -52,13 +53,28 @@
                 <a href="/" class="flex items-center gap-2 group">
                     <span class="font-extrabold text-2xl tracking-tight text-slate-900">Mint<span class="text-mint-600">PDF</span></span>
                 </a>
+                
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="/" class="px-3 py-2 rounded-full text-sm font-bold text-mint-600 bg-mint-50">Compress</a>
-                    <a href="/pdf-to-word.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">PDF to Word</a>
-                    <a href="/merge.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">Merge</a>
-                    <a href="/split.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">Split</a>
-                    <a href="/jpg-to-pdf.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50">JPG to PDF</a>
+                    <a href="/pdf-to-word.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">PDF to Word</a>
+                    <a href="/merge.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">Merge</a>
+                    <a href="/split.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">Split</a>
+                    <a href="/jpg-to-pdf.html" class="px-3 py-2 rounded-full text-sm font-medium text-slate-600 hover:bg-gray-50 transition">JPG to PDF</a>
                 </div>
+
+                <button class="md:hidden text-slate-500" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white absolute w-full shadow-xl z-40">
+            <div class="flex flex-col p-2 gap-1">
+                <a href="/" class="text-left px-4 py-3 rounded-lg bg-mint-50 text-mint-600 font-bold">Compress PDF</a>
+                <a href="/pdf-to-word.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">PDF to Word</a>
+                <a href="/merge.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Merge PDF</a>
+                <a href="/split.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">Split PDF</a>
+                <a href="/jpg-to-pdf.html" class="text-left px-4 py-3 rounded-lg hover:bg-gray-50">JPG to PDF</a>
             </div>
         </div>
     </nav>
@@ -90,7 +106,7 @@
                         <p id="filesize-display" class="text-sm text-slate-500">0 MB</p>
                     </div>
 
-                    <h4 class="text-left text-xs font-bold text-slate-400 uppercase mb-3 ml-1">Select Compression Strength</h4>
+                    <h4 class="text-left text-xs font-bold text-slate-400 uppercase mb-3 ml-1">Select Compression Mode</h4>
                     
                     <div class="grid gap-4 mb-8">
                         <label class="cursor-pointer">
@@ -98,7 +114,7 @@
                             <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-mint-400 peer-checked:border-mint-600 peer-checked:bg-mint-50 transition-all text-left flex items-center justify-between">
                                 <div>
                                     <div class="font-bold text-slate-800">Basic Compression</div>
-                                    <div class="text-xs text-slate-500">Maintains good quality (JPEG 0.8)</div>
+                                    <div class="text-xs text-slate-500">Good Quality (75% Quality)</div>
                                 </div>
                                 <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-mint-600 peer-checked:border-mint-600"></div>
                             </div>
@@ -109,7 +125,7 @@
                             <div class="p-4 rounded-xl border-2 border-slate-200 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-left flex items-center justify-between">
                                 <div>
                                     <div class="font-bold text-slate-800">High Compression</div>
-                                    <div class="text-xs text-slate-500">Smallest size (JPEG 0.4)</div>
+                                    <div class="text-xs text-slate-500">Maximum Reduction (30% Quality)</div>
                                 </div>
                                 <div class="w-6 h-6 rounded-full border-2 border-slate-300 peer-checked:bg-red-500 peer-checked:border-red-500"></div>
                             </div>
@@ -127,8 +143,8 @@
                     <h3 class="text-2xl font-bold text-slate-800 mb-2">Compressing...</h3>
                     <p class="text-slate-500 mb-8 font-mono text-sm" id="status-text">Initializing...</p>
                     
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200 mb-6">
-                        <div id="progress-bar" class="bg-mint-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+                        <div id="progress-bar" class="bg-mint-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                     </div>
 
                     <div id="result-area" class="hidden mt-6">
@@ -144,18 +160,39 @@
         </main>
     </div>
 
-    <footer class="bg-white py-12 text-center border-t border-gray-200 mt-auto">
-        <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
-        <div class="flex justify-center gap-6 mb-8 text-sm text-slate-500 flex-wrap px-4">
-            <a href="/" class="hover:text-mint-600 font-medium">Compress PDF</a>
-            <a href="/pdf-to-word.html" class="hover:text-mint-600 font-medium">PDF to Word</a>
-            <a href="/merge.html" class="hover:text-mint-600 font-medium">Merge PDF</a>
+    <section class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="text-2xl font-bold text-slate-900 text-center mb-10">Explore Our Other Free PDF Tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <a href="/pdf-to-word.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-file-word"></i></div>
+                <h3 class="font-bold text-lg mb-1 group-hover:text-blue-600">PDF to Word</h3>
+                <p class="text-sm text-slate-500">Convert PDF to editable DOCX documents.</p>
+            </a>
+            <a href="/jpg-to-pdf.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
+                <div class="w-12 h-12 bg-yellow-50 text-yellow-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-images"></i></div>
+                <h3 class="font-bold text-lg mb-1 group-hover:text-yellow-600">JPG to PDF</h3>
+                <p class="text-sm text-slate-500">Turn images into a single PDF file.</p>
+            </a>
+            <a href="/merge.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
+                <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-layer-group"></i></div>
+                <h3 class="font-bold text-lg mb-1 group-hover:text-purple-600">Merge PDF</h3>
+                <p class="text-sm text-slate-500">Combine multiple files into one.</p>
+            </a>
+            <a href="/split.html" class="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-mint-200 transition-all hover-lift">
+                <div class="w-12 h-12 bg-pink-50 text-pink-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-scissors"></i></div>
+                <h3 class="font-bold text-lg mb-1 group-hover:text-pink-600">Split PDF</h3>
+                <p class="text-sm text-slate-500">Extract pages from your document.</p>
+            </a>
         </div>
+    </section>
+
+    <footer class="bg-white py-12 text-center border-t border-gray-200">
+        <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
         <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools. All rights reserved.</p>
     </footer>
 
     <script>
-        // Setup PDF.js Worker
+        // Set worker source for PDF.js
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
         const fileInput = document.getElementById('file-input');
@@ -186,67 +223,74 @@
         // 2. START COMPRESSION
         btnStart.addEventListener('click', async () => {
             if (!selectedFile) return;
+
+            // Get selected level
             const level = document.querySelector('input[name="level"]:checked').value;
             
-            // UI Switch
+            // Switch UI
             stepOptions.classList.add('hidden');
             stepProcess.classList.remove('hidden');
 
             try {
-                // Determine Settings
-                let scale = 1.5; // Render Scale
-                let quality = 0.8; // JPEG Quality
+                // === CONFIGURATION ===
+                // High: 0.7 scale, 0.3 quality (Very aggressive)
+                // Basic: 1.0 scale, 0.75 quality (Standard)
+                let scale = 1.0; 
+                let quality = 0.75; 
                 
                 if (level === 'high') {
-                    scale = 1.0;     // Lower resolution render
-                    quality = 0.4;   // Aggressive JPEG compression
+                    scale = 0.7;    
+                    quality = 0.3;   
                 }
 
-                // Load Original PDF
+                // Load PDF
                 const arrayBuffer = await selectedFile.arrayBuffer();
                 const originalSize = arrayBuffer.byteLength;
                 const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
                 const totalPages = pdf.numPages;
 
-                // Create New PDF (jsPDF)
+                // Create JS PDF
                 const { jsPDF } = window.jspdf;
-                const newPdf = new jsPDF();
+                // 'p' = portrait, 'mm' = units, 'a4' = default format (will resize per page anyway)
+                const newPdf = new jsPDF('p', 'mm', 'a4');
 
                 // LOOP PAGES
                 for (let i = 1; i <= totalPages; i++) {
-                    statusText.innerText = `Processing Page ${i} of ${totalPages}...`;
+                    statusText.innerText = `Compressing Page ${i} of ${totalPages}...`;
                     progressBar.style.width = `${(i / totalPages) * 100}%`;
 
                     const page = await pdf.getPage(i);
                     const viewport = page.getViewport({ scale: scale });
 
-                    // Prepare Canvas
+                    // Canvas Render
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
 
-                    // Render Page to Canvas
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
 
-                    // Compress Canvas to Image Data
+                    // Convert to Compressed JPEG
                     const imgData = canvas.toDataURL('image/jpeg', quality);
 
-                    // Add Image to New PDF
+                    // Add to New PDF
                     if (i > 1) newPdf.addPage();
+                    
+                    // Get page dimensions in PDF units
+                    const imgProps = newPdf.getImageProperties(imgData);
                     const pdfWidth = newPdf.internal.pageSize.getWidth();
-                    const pdfHeight = newPdf.internal.pageSize.getHeight();
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    
                     newPdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                 }
 
                 statusText.innerText = "Finalizing PDF...";
                 
-                // Save
+                // Save & Download
                 const compressedPdfData = newPdf.output('blob');
                 const compressedSize = compressedPdfData.size;
                 const ratio = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
 
-                // Download
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(compressedPdfData);
                 link.download = "compressed_" + selectedFile.name;
@@ -261,7 +305,7 @@
                     sizeDisplay.innerText = `Reduced by ${ratio}% (${(originalSize/1024/1024).toFixed(2)}MB → ${(compressedSize/1024/1024).toFixed(2)}MB)`;
                     sizeDisplay.className = "text-lg font-bold text-green-600 mb-6";
                 } else {
-                    sizeDisplay.innerText = "File size increased. The original was already highly optimized.";
+                    sizeDisplay.innerText = "File size increased. Original was already optimized.";
                     sizeDisplay.className = "text-lg font-bold text-orange-500 mb-6";
                 }
 
