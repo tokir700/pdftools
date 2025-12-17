@@ -1,3 +1,12 @@
 User-agent: *
 Allow: /
+
+# Block system files from Google Search
+Disallow: /main.py
+Disallow: /requirements.txt
+Disallow: /Dockerfile
+Disallow: /Procfile
+Disallow: /README.md
+
+# Tell Google where your Sitemap is
 Sitemap: https://pdftools-5un.pages.dev/sitemap.xml
