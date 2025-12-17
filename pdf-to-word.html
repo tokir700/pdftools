@@ -7,15 +7,16 @@
     <meta name="google-site-verification" content="68OviSlVymLH4Zre9SCQZwMeSzpLivVBNo-QxYgnWxs" />
 
     <title>PDF to Word Converter - Convert PDF to Docx Online Free | MintPDF</title>
-    <meta name="description" content="Convert PDF to editable Word (DOCX) documents online for free. Accurately preserves layout, fonts, and tables. No signup required.">
-    <meta name="keywords" content="pdf to word, convert pdf to docx, pdf converter, edit pdf, free pdf to word, online pdf tools">
+    <meta name="description" content="Convert PDF to editable Word (DOCX) documents online for free. Supports OCR for scanned files. Fast, secure, and accurate formatting preserved.">
+    <meta name="keywords" content="pdf to word, convert pdf to docx, ocr pdf, scanned pdf to word, edit pdf, free pdf converter">
     <meta name="robots" content="index, follow">
     <meta name="author" content="MintPDF">
     <link rel="canonical" href="https://mintpdf.pages.dev/pdf-to-word.html">
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="PDF to Word Converter - Free & Secure">
+    <meta property="og:title" content="PDF to Word Converter - Free with OCR">
+    <meta property="og:description" content="Turn your PDF into an editable Word document instantly. Supports scanned documents.">
     <meta property="og:image" content="https://mintpdf.pages.dev/og-image.jpg">
     <meta property="og:url" content="https://mintpdf.pages.dev/pdf-to-word.html">
 
@@ -92,7 +93,15 @@
                         <input id="file-input" type="file" class="hidden" accept="application/pdf" />
                     </label>
 
-                    <button id="btn-convert" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg transition-colors duration-300">
+                    <div class="flex items-center justify-center mb-6 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <input type="checkbox" id="ocr-check" class="w-5 h-5 text-mint-600 rounded focus:ring-mint-500 cursor-pointer accent-mint-600">
+                        <label for="ocr-check" class="text-sm text-slate-700 cursor-pointer select-none leading-tight">
+                            <strong>Enable OCR</strong> (Use for Scanned PDFs)
+                            <br><span class="text-xs text-slate-500">Extracts text from images. Slower (~1-2 mins).</span>
+                        </label>
+                    </div>
+
+                    <button id="btn-convert" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg transition-colors duration-300 transform active:scale-95">
                         Convert to Word <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -103,7 +112,7 @@
                     <h3 id="status-title" class="text-2xl font-bold text-slate-800 mb-2">Starting...</h3>
                     <p id="status-text" class="text-slate-500 mb-8 font-mono text-sm">Initializing connection...</p>
                     
-                    <div class="w-full bg-slate-100 rounded-full h-4 mb-2 overflow-hidden shadow-inner">
+                    <div class="w-full bg-slate-100 rounded-full h-4 mb-2 overflow-hidden shadow-inner border border-slate-200">
                         <div id="progress-bar" class="bg-mint-600 h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
                     </div>
                     <p id="progress-percent" class="text-xs text-slate-400 font-bold text-right">0%</p>
@@ -114,7 +123,7 @@
                         <i class="fa-solid fa-check-circle mr-2"></i> Conversion Complete!
                     </div>
                     <p class="text-slate-500 mb-6">Your Word document is ready.</p>
-                    <a id="download-link" href="#" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition mb-4">
+                    <a id="download-link" href="#" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition mb-4 hover:shadow-xl">
                         Download DOCX File
                     </a>
                     <button onclick="location.reload()" class="text-slate-400 hover:text-slate-600 text-sm">Convert Another File</button>
@@ -150,6 +159,35 @@
         </div>
     </section>
 
+    <section class="bg-slate-50 py-16 border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Why use MintPDF to Convert?</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3"><i class="fa-solid fa-file-word text-mint-600 mr-2"></i>Accurate Formatting</h3>
+                    <p class="text-slate-600">We preserve your original fonts, images, and layout. Your converted Word document will look just like the original PDF.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3"><i class="fa-solid fa-eye text-mint-600 mr-2"></i>OCR Support</h3>
+                    <p class="text-slate-600">Have a scanned document? Our OCR technology can extract text from images, making your document editable again.</p>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <div class="bg-white p-6 rounded-xl border border-gray-200">
+                    <h3 class="font-bold text-lg text-slate-800 mb-2">How long does conversion take?</h3>
+                    <p class="text-slate-600">Standard PDFs convert in seconds. Scanned PDFs (OCR) may take 1-2 minutes depending on complexity.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200">
+                    <h3 class="font-bold text-lg text-slate-800 mb-2">Can I edit the Word file?</h3>
+                    <p class="text-slate-600">Yes! The output file is a standard .docx file that works in Microsoft Word, Google Docs, and LibreOffice.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-white py-12 text-center border-t border-gray-200">
         <p class="font-bold text-2xl tracking-tight text-slate-900 mb-4">Mint<span class="text-mint-600">PDF</span></p>
         <p class="text-slate-400 text-xs">&copy; 2025 MintPDF Tools. All rights reserved.</p>
@@ -160,113 +198,151 @@
 
         const fileInput = document.getElementById('file-input');
         const btnConvert = document.getElementById('btn-convert');
+        const ocrCheck = document.getElementById('ocr-check');
         
+        // UI Elements
         const stepUpload = document.getElementById('step-upload');
         const stepProcess = document.getElementById('step-process');
         const stepSuccess = document.getElementById('step-success');
-        const downloadLink = document.getElementById('download-link');
         
         const statusTitle = document.getElementById('status-title');
         const statusText = document.getElementById('status-text');
         const progressBar = document.getElementById('progress-bar');
         const progressPercent = document.getElementById('progress-percent');
+        const downloadLink = document.getElementById('download-link');
 
         let selectedFile = null;
+        let processTimer = null;
+        let isWorking = false;
 
-        // 1. Handle File Selection
+        // 1. PREVENT ACCIDENTAL REFRESH
+        window.addEventListener('beforeunload', function (e) {
+            if (isWorking) { e.preventDefault(); e.returnValue = ''; }
+        });
+
+        // 2. FILE SELECTION (Button Styling)
         fileInput.addEventListener('change', (e) => {
             selectedFile = e.target.files[0];
             if (selectedFile) {
                 btnConvert.innerHTML = `Convert <strong>${selectedFile.name}</strong> Now`;
-                btnConvert.style.backgroundColor = "#059669"; // Mint-600
+                btnConvert.style.backgroundColor = "#059669"; 
                 btnConvert.style.color = "white";
                 btnConvert.classList.add('shadow-xl', 'scale-105');
             }
         });
 
-        // 2. Handle Conversion (XHR for Progress)
+        // 3. MAIN CONVERSION LOGIC
         btnConvert.addEventListener('click', () => {
             if (!selectedFile) {
                 alert("Please select a PDF file first.");
                 return;
             }
 
-            // UI Switch
+            isWorking = true;
             stepUpload.classList.add('hidden');
             stepProcess.classList.remove('hidden');
+            progressBar.style.width = "0%";
+            progressBar.className = "bg-green-500 h-full rounded-full transition-all duration-200";
 
             const formData = new FormData();
             formData.append("file", selectedFile);
+            
+            // Handle OCR
+            if (ocrCheck && ocrCheck.checked) {
+                formData.append("use_ocr", "true");
+            } else {
+                formData.append("use_ocr", "false");
+            }
 
-            // Use XMLHttpRequest for Real Upload Progress
             const xhr = new XMLHttpRequest();
             xhr.open('POST', SERVER_URL, true);
+            xhr.responseType = "blob";
 
-            // A. UPLOAD PROGRESS
+            // A. UPLOAD PROGRESS (Real)
             xhr.upload.onprogress = function(e) {
                 if (e.lengthComputable) {
-                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    statusTitle.innerText = "Step 1: Uploading";
+                    statusText.innerText = `Sending file... (${(e.loaded/1024/1024).toFixed(1)} MB)`;
+                    progressBar.style.width = percent + "%";
+                    progressPercent.innerText = percent + "%";
                     
-                    if (percentComplete < 100) {
-                        statusTitle.innerText = "Uploading File...";
-                        statusText.innerText = "Sending to secure server...";
-                        progressBar.style.width = percentComplete + "%";
-                        progressPercent.innerText = percentComplete + "%";
-                    } else {
-                        statusTitle.innerText = "Processing...";
-                        statusText.innerText = "Converting PDF structure to Word...";
-                        progressBar.style.width = "100%";
-                        progressPercent.innerText = "100% (Upload Complete)";
-                        
-                        // Start "Fake" Processing Progress Bar (since backend doesn't stream progress)
-                        startProcessingAnimation();
-                    }
+                    if (percent === 100) startProcessingTimer();
                 }
             };
 
-            // B. ON SUCCESS
+            // B. DOWNLOAD PROGRESS (Real)
+            xhr.onprogress = function(e) {
+                if (processTimer) clearInterval(processTimer);
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    statusTitle.innerText = "Step 3: Downloading";
+                    statusText.innerText = "Receiving Word document...";
+                    progressBar.className = "bg-blue-600 h-full rounded-full transition-all duration-200";
+                    progressBar.style.width = percent + "%";
+                    progressPercent.innerText = percent + "%";
+                } else {
+                    statusTitle.innerText = "Step 3: Downloading Result";
+                    statusText.innerText = "File is being transferred...";
+                    progressBar.className = "bg-blue-600 h-full rounded-full animate-pulse";
+                    progressBar.style.width = "100%";
+                }
+            };
+
+            // C. SUCCESS
             xhr.onload = function() {
+                if (processTimer) clearInterval(processTimer);
+                isWorking = false;
+
                 if (xhr.status === 200) {
-                    // Complete!
                     const blob = new Blob([xhr.response], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
                     const url = window.URL.createObjectURL(blob);
                     
                     downloadLink.href = url;
-                    downloadLink.download = selectedFile.name.replace(".pdf", ".docx");
+                    // Append _editable if OCR was used
+                    let suffix = ocrCheck.checked ? "_editable.docx" : ".docx";
+                    downloadLink.download = selectedFile.name.replace(".pdf", suffix);
 
                     stepProcess.classList.add('hidden');
                     stepSuccess.classList.remove('hidden');
                 } else {
-                    alert("Conversion failed. Please try a different file.");
+                    alert("Server Error. The file might be too complex for the free server.");
                     location.reload();
                 }
             };
 
-            // C. ON ERROR
+            // D. ERROR
             xhr.onerror = function() {
-                alert("Network Error. Please check your connection.");
+                if (processTimer) clearInterval(processTimer);
+                isWorking = false;
+                alert("Network Error.");
                 location.reload();
             };
 
-            xhr.responseType = "blob"; // Important for file download
             xhr.send(formData);
         });
 
-        // Helper: Simulate "Processing" bar so user doesn't think it froze
-        function startProcessingAnimation() {
-            let width = 0;
-            progressBar.style.width = "0%";
-            progressBar.className = "bg-blue-500 h-full rounded-full transition-all duration-1000 ease-linear"; // Change color to blue for processing phase
+        // 4. SMART TIMER (Visual Feedback)
+        function startProcessingTimer() {
+            let seconds = 0;
+            statusTitle.innerText = "Step 2: Processing";
+            progressBar.className = "bg-yellow-500 h-full rounded-full animate-pulse";
+            progressBar.style.width = "100%"; 
             
-            const interval = setInterval(() => {
-                if (width >= 90) {
-                    clearInterval(interval); // Stop at 90% and wait for actual response
+            processTimer = setInterval(() => {
+                seconds++;
+                // Check if OCR is active for different messages
+                if(ocrCheck && ocrCheck.checked) {
+                    if (seconds < 10) statusText.innerText = `Scanning images (OCR)... (${seconds}s)`;
+                    else if (seconds < 40) statusText.innerText = `Analyzing text layers... (${seconds}s)`;
+                    else statusText.innerText = `Finalizing document... (${seconds}s)`;
                 } else {
-                    width += 5; // Increment slowly
-                    progressBar.style.width = width + "%";
-                    progressPercent.innerText = width + "% (Converting...)";
+                    if (seconds < 10) statusText.innerText = `Analyzing PDF structure... (${seconds}s)`;
+                    else if (seconds < 30) statusText.innerText = `Converting pages... (${seconds}s)`;
+                    else statusText.innerText = `Server is waking up (Cold Boot)... (${seconds}s)`;
                 }
-            }, 800);
+                progressPercent.innerText = "Working...";
+            }, 1000);
         }
     </script>
 </body>
