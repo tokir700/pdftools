@@ -73,13 +73,13 @@
 
                 <div class="relative opacity-50" id="group-convert">
                     <div class="flex justify-between text-sm font-bold mb-1">
-                        <span id="label-convert" class="text-slate-400">2. Waking Server & Converting...</span>
-                        <span id="icon-convert" class="text-slate-400"><i class="fa-solid fa-clock"></i></span>
+                        <span id="label-convert" class="text-slate-400">2. Converting...</span>
+                        <span id="percent-convert" class="text-blue-600">0%</span>
                     </div>
                     <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                        <div id="bar-convert" class="bg-blue-500 h-2.5 rounded-full transition-all duration-[10s] w-0"></div>
+                        <div id="bar-convert" class="bg-blue-500 h-2.5 rounded-full w-0 transition-all duration-300"></div>
                     </div>
-                    <p class="text-xs text-slate-400 mt-1 italic">Note: The first run may take ~50 seconds to wake up the server.</p>
+                    <p class="text-xs text-slate-400 mt-1 italic">Please wait, this may take 10-20 seconds...</p>
                 </div>
 
                 <div class="relative opacity-50" id="group-download">
@@ -101,7 +101,7 @@
 
     <script>
         // ========================================================
-        // YOUR RENDER SERVER URL
+        // YOUR SERVER URL
         // ========================================================
         const TUNNEL_URL = "https://pdftools-nhgx.onrender.com/convert"; 
         // ========================================================
@@ -110,13 +110,14 @@
         const stepUpload = document.getElementById('step-upload');
         const stepProcess = document.getElementById('step-process');
         
+        let conversionInterval; // Store the timer so we can stop it
+
         fileInput.addEventListener('change', startProcess);
 
         function startProcess(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Setup UI
             stepUpload.classList.add('hidden');
             stepProcess.classList.remove('hidden');
             document.getElementById('filename').innerText = file.name;
@@ -130,7 +131,7 @@
             const formData = new FormData();
             formData.append("file", file);
 
-            // 1. TRACK UPLOAD PROGRESS
+            // 1. TRACK REAL UPLOAD PROGRESS
             xhr.upload.addEventListener("progress", (e) => {
                 if (e.lengthComputable) {
                     const percent = Math.round((e.loaded / e.total) * 100);
@@ -139,36 +140,57 @@
                 }
             });
 
-            // 2. UPLOAD COMPLETE -> START CONVERSION UI
+            // 2. UPLOAD COMPLETE -> START SIMULATED CONVERSION PROGRESS
             xhr.upload.addEventListener("load", () => {
                 document.getElementById('label-upload').innerText = "✅ Upload Complete";
                 document.getElementById('label-upload').className = "text-green-600 font-bold";
                 
-                // Activate Conversion Step
+                // Wake up the conversion UI
                 document.getElementById('group-convert').classList.remove('opacity-50');
                 document.getElementById('label-convert').className = "text-blue-600 font-bold animate-pulse";
-                document.getElementById('bar-convert').className = "bg-blue-500 h-2.5 rounded-full progress-stripe w-full"; // Start striped animation
-                document.getElementById('icon-convert').innerHTML = '<i class="fa-solid fa-gear fa-spin"></i>';
+                document.getElementById('bar-convert').className = "bg-blue-500 h-2.5 rounded-full progress-stripe";
+
+                // --- START PERCENTAGE SIMULATION ---
+                let fakePercent = 0;
+                const convertBar = document.getElementById('bar-convert');
+                const convertText = document.getElementById('percent-convert');
+                
+                conversionInterval = setInterval(() => {
+                    // Fast at first, then slow down as it gets higher
+                    let increment = 0;
+                    if (fakePercent < 30) increment = 5;       // Fast start
+                    else if (fakePercent < 70) increment = 2;  // Medium middle
+                    else if (fakePercent < 90) increment = 1;  // Slow finish
+                    
+                    if (fakePercent < 90) { // Stop at 90% until server responds
+                        fakePercent += increment;
+                        convertBar.style.width = fakePercent + "%";
+                        convertText.innerText = fakePercent + "%";
+                    }
+                }, 800); // Update every 800ms
             });
 
-            // 3. HANDLE SERVER RESPONSE
+            // 3. HANDLE SERVER RESPONSE (REAL COMPLETION)
             xhr.open("POST", TUNNEL_URL, true);
-            xhr.responseType = "blob"; // Expect a file back
+            xhr.responseType = "blob";
 
             xhr.onload = function() {
+                clearInterval(conversionInterval); // Stop the fake timer
+
                 if (xhr.status === 200) {
-                    // Success!
+                    // Force bar to 100%
+                    document.getElementById('bar-convert').style.width = "100%";
+                    document.getElementById('percent-convert').innerText = "100%";
+
                     document.getElementById('label-convert').innerText = "✅ Conversion Complete";
                     document.getElementById('label-convert').className = "text-green-600 font-bold";
                     document.getElementById('bar-convert').className = "bg-green-500 h-2.5 rounded-full w-full";
-                    document.getElementById('icon-convert').innerHTML = '<i class="fa-solid fa-check"></i>';
 
-                    // Activate Download Step
+                    // Start Download UI
                     document.getElementById('group-download').classList.remove('opacity-50');
                     document.getElementById('label-download').innerText = "✅ Download Started";
                     document.getElementById('label-download').className = "text-green-600 font-bold";
 
-                    // Trigger Download
                     const blob = xhr.response;
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -185,12 +207,11 @@
             };
 
             xhr.onerror = function() { showError(); };
-            
-            // Send the file
             xhr.send(formData);
         }
 
         function showError() {
+            clearInterval(conversionInterval);
             document.getElementById('error-box').classList.remove('hidden');
             document.getElementById('label-convert').innerText = "❌ Conversion Failed";
             document.getElementById('label-convert').className = "text-red-600 font-bold";
