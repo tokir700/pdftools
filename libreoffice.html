@@ -3,92 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to DOCX Converter</title>
+    <title>PDF to Word Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; }
-        .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 350px; }
-        h2 { color: #333; }
-        .file-input { margin: 20px 0; }
-        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-        #status { margin-top: 15px; font-size: 14px; color: #555; }
-        .loader { display: none; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 10px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* --- General Reset & Layout --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2c2c2c;
+        }
+        p.subtitle {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* --- Main Card Container --- */
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Icons --- */
+        .icon-large {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        
+        /* --- Upload State --- */
+        .upload-area {
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #e5322d;
+            background-color: #fffdfd;
+        }
+        
+        /* --- Buttons --- */
+        .btn {
+            background-color: #e5322d; /* iLovePDF Red */
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-block;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .btn:hover { background-color: #d12b27; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background-color: #ffcccc; cursor: not-allowed; }
+
+        /* --- File Selected State --- */
+        #file-info {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e5322d;
+        }
+        .file-name { font-weight: 600; color: #333; word-break: break-all; }
+        .file-size { font-size: 0.85rem; color: #777; }
+
+        /* --- Progress Bar --- */
+        .progress-container {
+            display: none; /* Hidden by default */
+            margin-top: 30px;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+        }
+        .progress-track {
+            background-color: #eee;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e5322d, #ff6b6b);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.2s ease;
+        }
+        /* Animated stripes for "Converting" state */
+        .progress-fill.converting {
+            background: repeating-linear-gradient(
+                45deg,
+                #e5322d,
+                #e5322d 10px,
+                #ff5252 10px,
+                #ff5252 20px
+            );
+            animation: stripe-animation 1s linear infinite;
+        }
+        @keyframes stripe-animation {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* --- Hidden Input --- */
+        input[type="file"] { display: none; }
+
+        /* --- Success/Error Messages --- */
+        .status-msg { margin-top: 20px; font-weight: 600; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+
+        /* SVG Icons */
+        svg { fill: #e5322d; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>PDF to DOCX</h2>
-    <p>Upload a PDF to convert it to Word.</p>
-    
-    <input type="file" id="pdfInput" accept=".pdf" class="file-input">
-    <br>
-    <button id="convertBtn" onclick="convertFile()">Convert & Download</button>
-    
-    <div class="loader" id="loader"></div>
-    <div id="status"></div>
-</div>
+    <header>
+        <h1>PDF to WORD</h1>
+        <p class="subtitle">Convert your PDF files to editable DOCX documents accurately.</p>
+    </header>
+
+    <div class="card">
+        
+        <div id="select-screen">
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <svg class="icon-large" viewBox="0 0 24 24">
+                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                </svg>
+                <h3>Select PDF file</h3>
+                <p style="color:#888; margin-top:5px; font-size:0.9rem;">or drop PDF here</p>
+            </div>
+            
+            <input type="file" id="fileInput" accept=".pdf" onchange="handleFileSelect()">
+
+            <div id="file-info">
+                <div class="file-name" id="fileName">document.pdf</div>
+                <div class="file-size" id="fileSize">1.2 MB</div>
+            </div>
+
+            <button id="convertBtn" class="btn" onclick="startConversion()" disabled>
+                Convert to WORD
+            </button>
+        </div>
+
+        <div class="progress-container" id="progress-screen">
+            <div class="progress-label">
+                <span id="progress-text">Uploading...</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+            <p id="wait-message" style="margin-top:15px; font-size:0.9rem; color:#777;">Please wait, this might take a moment.</p>
+        </div>
+
+        <div id="status-area"></div>
+
+    </div>
 
 <script>
-    // REPLACE THIS WITH YOUR HUGGING FACE DIRECT URL
-    // Ensure there is NO trailing slash. Example: https://username-project.hf.space
-    const API_URL = "https://YOUR_HF_USERNAME-SPACE_NAME.hf.space"; 
+    // YOUR BACKEND URL
+    const API_URL = "https://toukir700-libreoffice.hf.space";
 
-    async function convertFile() {
-        const fileInput = document.getElementById('pdfInput');
-        const statusDiv = document.getElementById('status');
-        const btn = document.getElementById('convertBtn');
-        const loader = document.getElementById('loader');
+    const fileInput = document.getElementById('fileInput');
+    const convertBtn = document.getElementById('convertBtn');
+    const fileInfo = document.getElementById('file-info');
+    const fileNameDisplay = document.getElementById('fileName');
+    const fileSizeDisplay = document.getElementById('fileSize');
+    
+    // Screens
+    const selectScreen = document.getElementById('select-screen');
+    const progressScreen = document.getElementById('progress-screen');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const progressPercent = document.getElementById('progress-percent');
+    const statusArea = document.getElementById('status-area');
 
-        if (fileInput.files.length === 0) {
-            statusDiv.textContent = "Please select a file first.";
-            statusDiv.style.color = "red";
-            return;
+    function handleFileSelect() {
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            
+            // Validate PDF
+            if(file.type !== "application/pdf") {
+                alert("Please select a valid PDF file.");
+                return;
+            }
+
+            fileNameDisplay.textContent = file.name;
+            fileSizeDisplay.textContent = (file.size / 1024 / 1024).toFixed(2) + " MB";
+            
+            fileInfo.style.display = 'block';
+            convertBtn.disabled = false;
         }
+    }
 
+    function startConversion() {
         const file = fileInput.files[0];
+        if (!file) return;
+
+        // UI Transition
+        convertBtn.style.display = 'none';
+        fileInfo.style.display = 'none'; // Hide file info to focus on progress
+        progressScreen.style.display = 'block';
+        statusArea.innerHTML = ""; // Clear previous messages
+
         const formData = new FormData();
         formData.append("file", file);
 
-        // UI Updates
-        btn.disabled = true;
-        loader.style.display = "block";
-        statusDiv.textContent = "Uploading and converting...";
-        statusDiv.style.color = "#555";
+        // We use XMLHttpRequest instead of fetch to track Upload Progress
+        const xhr = new XMLHttpRequest();
 
-        try {
-            const response = await fetch(`${API_URL}/convert`, {
-                method: "POST",
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error("Conversion failed on server.");
+        // 1. UPLOAD PROGRESS
+        xhr.upload.addEventListener("progress", (event) => {
+            if (event.lengthComputable) {
+                const percentComplete = Math.round((event.loaded / event.total) * 100);
+                progressBar.style.width = percentComplete + "%";
+                progressPercent.textContent = percentComplete + "%";
+                
+                if (percentComplete === 100) {
+                    // Switch to "Converting" mode visually
+                    progressText.textContent = "Converting...";
+                    progressPercent.textContent = "";
+                    progressBar.classList.add('converting'); // Adds stripe animation
+                }
             }
+        });
 
-            // Handle the binary file response
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = downloadUrl;
-            // Use original name but replace .pdf with .docx
-            a.download = file.name.replace(".pdf", ".docx"); 
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
+        // 2. COMPLETE / RESPONSE HANDLER
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Success
+                    progressBar.style.width = "100%";
+                    progressText.textContent = "Completed!";
+                    progressBar.classList.remove('converting');
+                    
+                    // Create Download Link
+                    const blob = xhr.response;
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = downloadUrl;
+                    a.download = file.name.replace(".pdf", ".docx");
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
 
-            statusDiv.textContent = "Success! Download started.";
-            statusDiv.style.color = "green";
+                    // Show Download Button / Success Message
+                    statusArea.innerHTML = `
+                        <div class="status-msg success">
+                            <svg style="width:40px;height:40px;fill:#28a745;margin-bottom:10px;" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg><br>
+                            Your document is ready and downloading.
+                            <br><br>
+                            <button class="btn" onclick="location.reload()" style="font-size:1rem; padding:10px 20px;">Convert Another</button>
+                        </div>
+                    `;
+                    progressScreen.style.display = 'none';
 
-        } catch (error) {
-            console.error(error);
-            statusDiv.textContent = "Error: " + error.message;
-            statusDiv.style.color = "red";
-        } finally {
-            btn.disabled = false;
-            loader.style.display = "none";
-        }
+                } else {
+                    // Error
+                    progressBar.classList.remove('converting');
+                    progressBar.style.backgroundColor = "#dc3545";
+                    progressText.textContent = "Error";
+                    
+                    statusArea.innerHTML = `
+                        <div class="status-msg error">
+                            Server Error (${xhr.status}). <br>
+                            Please check your file and try again.
+                            <br><br>
+                            <button class="btn" onclick="location.reload()">Try Again</button>
+                        </div>
+                    `;
+                }
+            }
+        };
+
+        xhr.open("POST", `${API_URL}/convert`, true);
+        xhr.responseType = "blob"; // Important for file download
+        xhr.send(formData);
     }
 </script>
 
