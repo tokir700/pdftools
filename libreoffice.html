@@ -3,325 +3,812 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Word Converter</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>PDF to DOC Converter with OCR</title>
     <style>
-        /* --- General Reset & Layout --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fa;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            padding: 20px;
         }
 
-        /* --- Header --- */
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
         header {
             text-align: center;
-            margin-bottom: 40px;
+            color: white;
+            margin-bottom: 30px;
         }
-        h1 {
+
+        header h1 {
             font-size: 2.5rem;
-            font-weight: 700;
             margin-bottom: 10px;
-            color: #2c2c2c;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        p.subtitle {
+
+        .subtitle {
             font-size: 1.1rem;
-            color: #666;
+            opacity: 0.9;
         }
 
-        /* --- Main Card Container --- */
-        .card {
+        main {
             background: white;
-            width: 100%;
-            max-width: 480px;
+            border-radius: 20px;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        /* --- Icons --- */
-        .icon-large {
-            width: 80px;
-            height: 80px;
+        /* Upload Section */
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9ff;
+        }
+
+        .upload-zone:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.drag-over {
+            border-color: #764ba2;
+            background: #e8ebff;
+            transform: scale(1.02);
+        }
+
+        .upload-zone svg {
+            color: #667eea;
             margin-bottom: 20px;
         }
-        
-        /* --- Upload State --- */
-        .upload-area {
-            border: 2px dashed #e0e0e0;
+
+        .upload-zone h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .upload-zone p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 15px;
+        }
+
+        .settings-panel h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-group label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .setting-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            padding: 40px 20px;
+            font-size: 1rem;
+            background: white;
             cursor: pointer;
             transition: border-color 0.3s;
         }
-        .upload-area:hover {
-            border-color: #e5322d;
-            background-color: #fffdfd;
+
+        .setting-group select:focus {
+            outline: none;
+            border-color: #667eea;
         }
-        
-        /* --- Buttons --- */
-        .btn {
-            background-color: #e5322d; /* iLovePDF Red */
+
+        .setting-group input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 16px 32px;
-            font-size: 1.2rem;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: 600;
-            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: inline-block;
-            margin-top: 20px;
-            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-        .btn:hover { background-color: #d12b27; }
-        .btn:active { transform: scale(0.98); }
-        .btn:disabled { background-color: #ffcccc; cursor: not-allowed; }
 
-        /* --- File Selected State --- */
-        #file-info {
-            display: none;
-            margin-top: 20px;
-            text-align: left;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #e5322d;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
-        .file-name { font-weight: 600; color: #333; word-break: break-all; }
-        .file-size { font-size: 0.85rem; color: #777; }
 
-        /* --- Progress Bar --- */
-        .progress-container {
-            display: none; /* Hidden by default */
-            margin-top: 30px;
+        .btn-primary:active {
+            transform: translateY(0);
         }
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-large {
+            padding: 18px 48px;
+            font-size: 1.1rem;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            text-align: center;
+        }
+
+        .file-info {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
             color: #555;
         }
-        .progress-track {
-            background-color: #eee;
-            border-radius: 10px;
-            height: 12px;
-            overflow: hidden;
-            width: 100%;
+
+        .progress-container {
+            margin: 30px 0;
         }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #e5322d, #ff6b6b);
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
             width: 0%;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        #progressPercent {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .status-details {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9ff;
             border-radius: 10px;
-            transition: width 0.2s ease;
-        }
-        /* Animated stripes for "Converting" state */
-        .progress-fill.converting {
-            background: repeating-linear-gradient(
-                45deg,
-                #e5322d,
-                #e5322d 10px,
-                #ff5252 10px,
-                #ff5252 20px
-            );
-            animation: stripe-animation 1s linear infinite;
-        }
-        @keyframes stripe-animation {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
+            text-align: left;
+            color: #666;
+            font-size: 0.9rem;
         }
 
-        /* --- Hidden Input --- */
-        input[type="file"] { display: none; }
+        /* Download Section */
+        .download-section {
+            text-align: center;
+        }
 
-        /* --- Success/Error Messages --- */
-        .status-msg { margin-top: 20px; font-weight: 600; }
-        .success { color: #28a745; }
-        .error { color: #dc3545; }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: scaleIn 0.5s ease;
+        }
 
-        /* SVG Icons */
-        svg { fill: #e5322d; }
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .download-section h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .download-section p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Error Section */
+        .error-section {
+            text-align: center;
+        }
+
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            background: #e74c3c;
+            color: white;
+            font-size: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .error-section h2 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .error-section p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* LibreOffice Converter Section */
+        .converter-option {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .converter-option h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .converter-option p {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .converter-option a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .converter-option a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            main {
+                padding: 30px 20px;
+            }
+            
+            .upload-zone {
+                padding: 40px 20px;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>📄 PDF to DOC Converter</h1>
+            <p class="subtitle">Advanced OCR-powered conversion</p>
+        </header>
 
-    <header>
-        <h1>PDF to WORD</h1>
-        <p class="subtitle">Convert your PDF files to editable DOCX documents accurately.</p>
-    </header>
+        <main>
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-zone" id="uploadZone">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h2>Drop PDF file here</h2>
+                    <p>or click to browse</p>
+                    <input type="file" id="fileInput" accept=".pdf" hidden>
+                    <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
+                </div>
 
-    <div class="card">
-        
-        <div id="select-screen">
-            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <svg class="icon-large" viewBox="0 0 24 24">
-                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                </svg>
-                <h3>Select PDF file</h3>
-                <p style="color:#888; margin-top:5px; font-size:0.9rem;">or drop PDF here</p>
-            </div>
-            
-            <input type="file" id="fileInput" accept=".pdf" onchange="handleFileSelect()">
+                <!-- Settings -->
+                <div class="settings-panel" id="settingsPanel" style="display: none;">
+                    <h3>Conversion Settings</h3>
+                    
+                    <div class="setting-group">
+                        <label for="language">OCR Language</label>
+                        <select id="language">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                        </select>
+                    </div>
 
-            <div id="file-info">
-                <div class="file-name" id="fileName">document.pdf</div>
-                <div class="file-size" id="fileSize">1.2 MB</div>
-            </div>
+                    <div class="setting-group">
+                        <label for="quality">OCR Quality</label>
+                        <select id="quality">
+                            <option value="fast">Fast (Lower accuracy)</option>
+                            <option value="balanced" selected>Balanced</option>
+                            <option value="high">High Quality (Slower)</option>
+                        </select>
+                    </div>
 
-            <button id="convertBtn" class="btn" onclick="startConversion()" disabled>
-                Convert to WORD
-            </button>
-        </div>
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="preserveLayout" checked>
+                            Preserve Layout & Tables
+                        </label>
+                    </div>
 
-        <div class="progress-container" id="progress-screen">
-            <div class="progress-label">
-                <span id="progress-text">Uploading...</span>
-                <span id="progress-percent">0%</span>
-            </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="progress-bar"></div>
-            </div>
-            <p id="wait-message" style="margin-top:15px; font-size:0.9rem; color:#777;">Please wait, this might take a moment.</p>
-        </div>
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="preserveImages" checked>
+                            Preserve Images
+                        </label>
+                    </div>
 
-        <div id="status-area"></div>
+                    <button class="btn-primary btn-full" onclick="startConversion()">
+                        Start Conversion
+                    </button>
+                </div>
 
+                <!-- LibreOffice Converter Option -->
+                <div class="converter-option">
+                    <h3>🚀 Need Advanced Conversion?</h3>
+                    <p>Try our LibreOffice-powered converter for enhanced compatibility and features</p>
+                    <a href="https://toukir700-libreoffice.hf.space" target="_blank">
+                        Open LibreOffice Converter →
+                    </a>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="file-info" id="fileInfo"></div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progressPercent">0%</span>
+                        <span id="progressMessage">Initializing...</span>
+                    </div>
+                </div>
+
+                <div class="status-details" id="statusDetails"></div>
+            </section>
+
+            <!-- Download Section -->
+            <section class="download-section" id="downloadSection" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h2>Conversion Complete!</h2>
+                <p id="downloadMessage">Your document is ready for download</p>
+                
+                <div class="download-buttons">
+                    <button class="btn-primary btn-large" id="downloadBtn">
+                        Download DOCX
+                    </button>
+                    <button class="btn-secondary" onclick="resetConverter()">
+                        Convert Another File
+                    </button>
+                </div>
+
+                <!-- LibreOffice Option in Success -->
+                <div class="converter-option" style="margin-top: 30px;">
+                    <h3>Need Different Format?</h3>
+                    <p>LibreOffice converter supports PDF → DOC, DOCX, ODT, RTF, TXT</p>
+                    <a href="https://toukir700-libreoffice.hf.space" target="_blank">
+                        Try LibreOffice Converter →
+                    </a>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="error-icon">✕</div>
+                <h2>Conversion Failed</h2>
+                <p id="errorMessage"></p>
+                <button class="btn-secondary" onclick="resetConverter()">
+                    Try Again
+                </button>
+
+                <!-- LibreOffice Alternative on Error -->
+                <div class="converter-option" style="margin-top: 30px; background: #e8f4fd; border-color: #2196F3;">
+                    <h3>Try Alternative Converter</h3>
+                    <p>If this conversion failed, try our LibreOffice-based converter</p>
+                    <a href="https://toukir700-libreoffice.hf.space" target="_blank" style="color: #1976D2;">
+                        Open LibreOffice Converter →
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                Powered by EasyOCR & FastAPI | 
+                <a href="https://toukir700-libreoffice.hf.space" target="_blank">LibreOffice Converter</a> | 
+                Free & Secure Conversion
+            </p>
+        </footer>
     </div>
 
-<script>
-    // YOUR BACKEND URL
-    const API_URL = "https://toukir700-libreoffice.hf.space";
+    <script>
+        let selectedFile = null;
+        let currentJobId = null;
+        let statusCheckInterval = null;
 
-    const fileInput = document.getElementById('fileInput');
-    const convertBtn = document.getElementById('convertBtn');
-    const fileInfo = document.getElementById('file-info');
-    const fileNameDisplay = document.getElementById('fileName');
-    const fileSizeDisplay = document.getElementById('fileSize');
-    
-    // Screens
-    const selectScreen = document.getElementById('select-screen');
-    const progressScreen = document.getElementById('progress-screen');
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-    const progressPercent = document.getElementById('progress-percent');
-    const statusArea = document.getElementById('status-area');
-
-    function handleFileSelect() {
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            
-            // Validate PDF
-            if(file.type !== "application/pdf") {
-                alert("Please select a valid PDF file.");
-                return;
-            }
-
-            fileNameDisplay.textContent = file.name;
-            fileSizeDisplay.textContent = (file.size / 1024 / 1024).toFixed(2) + " MB";
-            
-            fileInfo.style.display = 'block';
-            convertBtn.disabled = false;
-        }
-    }
-
-    function startConversion() {
-        const file = fileInput.files[0];
-        if (!file) return;
-
-        // UI Transition
-        convertBtn.style.display = 'none';
-        fileInfo.style.display = 'none'; // Hide file info to focus on progress
-        progressScreen.style.display = 'block';
-        statusArea.innerHTML = ""; // Clear previous messages
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        // We use XMLHttpRequest instead of fetch to track Upload Progress
-        const xhr = new XMLHttpRequest();
-
-        // 1. UPLOAD PROGRESS
-        xhr.upload.addEventListener("progress", (event) => {
-            if (event.lengthComputable) {
-                const percentComplete = Math.round((event.loaded / event.total) * 100);
-                progressBar.style.width = percentComplete + "%";
-                progressPercent.textContent = percentComplete + "%";
-                
-                if (percentComplete === 100) {
-                    // Switch to "Converting" mode visually
-                    progressText.textContent = "Converting...";
-                    progressPercent.textContent = "";
-                    progressBar.classList.add('converting'); // Adds stripe animation
-                }
-            }
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUploadZone();
+            initializeFileInput();
         });
 
-        // 2. COMPLETE / RESPONSE HANDLER
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Success
-                    progressBar.style.width = "100%";
-                    progressText.textContent = "Completed!";
-                    progressBar.classList.remove('converting');
-                    
-                    // Create Download Link
-                    const blob = xhr.response;
-                    const downloadUrl = window.URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = downloadUrl;
-                    a.download = file.name.replace(".pdf", ".docx");
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-
-                    // Show Download Button / Success Message
-                    statusArea.innerHTML = `
-                        <div class="status-msg success">
-                            <svg style="width:40px;height:40px;fill:#28a745;margin-bottom:10px;" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                            </svg><br>
-                            Your document is ready and downloading.
-                            <br><br>
-                            <button class="btn" onclick="location.reload()" style="font-size:1rem; padding:10px 20px;">Convert Another</button>
-                        </div>
-                    `;
-                    progressScreen.style.display = 'none';
-
-                } else {
-                    // Error
-                    progressBar.classList.remove('converting');
-                    progressBar.style.backgroundColor = "#dc3545";
-                    progressText.textContent = "Error";
-                    
-                    statusArea.innerHTML = `
-                        <div class="status-msg error">
-                            Server Error (${xhr.status}). <br>
-                            Please check your file and try again.
-                            <br><br>
-                            <button class="btn" onclick="location.reload()">Try Again</button>
-                        </div>
-                    `;
+        function initializeUploadZone() {
+            const uploadZone = document.getElementById('uploadZone');
+            
+            // Click to upload
+            uploadZone.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') {
+                    document.getElementById('fileInput').click();
                 }
+            });
+            
+            // Drag and drop
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('drag-over');
+            });
+            
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('drag-over');
+            });
+            
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0]);
+                }
+            });
+        }
+
+        function initializeFileInput() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+        }
+
+        function handleFileSelect(file) {
+            // Validate file
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('Please select a PDF file');
+                return;
             }
-        };
+            
+            // Check file size (max 50MB)
+            const maxSize = 50 * 1024 * 1024; // 50MB
+            if (file.size > maxSize) {
+                alert('File is too large. Maximum size is 50MB');
+                return;
+            }
+            
+            selectedFile = file;
+            
+            // Show settings panel
+            document.getElementById('settingsPanel').style.display = 'block';
+            
+            // Update upload zone
+            const uploadZone = document.getElementById('uploadZone');
+            uploadZone.innerHTML = `
+                <div style="color: #667eea; margin-bottom: 10px;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                </div>
+                <h3 style="color: #333; margin-bottom: 5px;">${file.name}</h3>
+                <p style="color: #666;">${formatFileSize(file.size)}</p>
+                <button class="btn-secondary" onclick="resetConverter()" style="margin-top: 15px;">
+                    Change File
+                </button>
+            `;
+        }
 
-        xhr.open("POST", `${API_URL}/convert`, true);
-        xhr.responseType = "blob"; // Important for file download
-        xhr.send(formData);
-    }
-</script>
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
 
+        async function startConversion() {
+            if (!selectedFile) {
+                alert('Please select a file first');
+                return;
+            }
+            
+            // Get settings
+            const language = document.getElementById('language').value;
+            const quality = document.getElementById('quality').value;
+            const preserveLayout = document.getElementById('preserveLayout').checked;
+            const preserveImages = document.getElementById('preserveImages').checked;
+            
+            // Hide upload section, show progress
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'block';
+            
+            // Update file info
+            document.getElementById('fileInfo').innerHTML = `
+                <strong>File:</strong> ${selectedFile.name}<br>
+                <strong>Size:</strong> ${formatFileSize(selectedFile.size)}<br>
+                <strong>Language:</strong> ${language.toUpperCase()}<br>
+                <strong>Quality:</strong> ${quality}
+            `;
+            
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('language', language);
+            formData.append('ocr_quality', quality);
+            formData.append('preserve_layout', preserveLayout);
+            formData.append('preserve_images', preserveImages);
+            
+            try {
+                // Upload and start conversion
+                const response = await fetch('/api/convert', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                
+                const data = await response.json();
+                currentJobId = data.job_id;
+                
+                // Start checking status
+                startStatusCheck();
+                
+            } catch (error) {
+                showError('Failed to start conversion: ' + error.message);
+            }
+        }
+
+        function startStatusCheck() {
+            statusCheckInterval = setInterval(checkStatus, 2000); // Check every 2 seconds
+        }
+
+        async function checkStatus() {
+            if (!currentJobId) return;
+            
+            try {
+                const response = await fetch(`/api/status/${currentJobId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Status check failed');
+                }
+                
+                const status = await response.json();
+                
+                // Update progress
+                updateProgress(status.progress, status.message);
+                
+                // Update status details
+                document.getElementById('statusDetails').innerHTML = `
+                    <strong>Status:</strong> ${status.status}<br>
+                    <strong>Progress:</strong> ${status.progress}%<br>
+                    <strong>Message:</strong> ${status.message}
+                `;
+                
+                // Check if completed
+                if (status.status === 'completed') {
+                    clearInterval(statusCheckInterval);
+                    showDownload();
+                } else if (status.status === 'failed') {
+                    clearInterval(statusCheckInterval);
+                    showError(status.error || 'Conversion failed');
+                }
+                
+            } catch (error) {
+                clearInterval(statusCheckInterval);
+                showError('Failed to check status: ' + error.message);
+            }
+        }
+
+        function updateProgress(percent, message) {
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressMessage').textContent = message;
+        }
+
+        function showDownload() {
+            document.getElementById('progressSection').style.display = 'none';
+            document.getElementById('downloadSection').style.display = 'block';
+            
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.onclick = () => downloadFile();
+        }
+
+        function downloadFile() {
+            if (!currentJobId) return;
+            
+            // Create download link
+            const downloadUrl = `/api/download/${currentJobId}`;
+            
+            // Trigger download
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = selectedFile.name.replace('.pdf', '.docx');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Cleanup after download
+            setTimeout(() => {
+                fetch(`/api/cleanup/${currentJobId}`, { method: 'DELETE' });
+            }, 5000);
+        }
+
+        function showError(message) {
+            document.getElementById('progressSection').style.display = 'none';
+            document.getElementById('errorSection').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function resetConverter() {
+            // Clear state
+            selectedFile = null;
+            currentJobId = null;
+            if (statusCheckInterval) {
+                clearInterval(statusCheckInterval);
+            }
+            
+            // Reset UI
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'none';
+            document.getElementById('downloadSection').style.display = 'none';
+            document.getElementById('errorSection').style.display = 'none';
+            document.getElementById('settingsPanel').style.display = 'none';
+            
+            // Reset upload zone
+            document.getElementById('uploadZone').innerHTML = `
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <h2>Drop PDF file here</h2>
+                <p>or click to browse</p>
+                <input type="file" id="fileInput" accept=".pdf" hidden>
+                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Choose File
+                </button>
+            `;
+            
+            // Re-initialize
+            initializeFileInput();
+            
+            // Reset progress
+            updateProgress(0, 'Initializing...');
+        }
+
+        // Add keyboard shortcut (Escape to reset)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                resetConverter();
+            }
+        });
+    </script>
 </body>
 </html>
