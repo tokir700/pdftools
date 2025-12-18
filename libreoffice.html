@@ -3,342 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free PDF to Word Converter | Professional Doc Tool</title>
-    <meta name="description" content="Convert PDF to Editable Word (DOCX) instantly using our free, high-quality converter powered by LibreOffice. No sign-up required.">
-    <meta name="keywords" content="PDF to Word, PDF Converter, Free PDF Tool, LibreOffice Online, Convert PDF to DOCX">
-    <meta name="author" content="Dr. Toukir Ahmed">
-    <meta name="robots" content="index, follow">
-
+    <title>PDF to DOCX Converter</title>
     <style>
-        :root {
-            --primary: #4A90E2; /* Professional Blue */
-            --primary-dark: #357ABD;
-            --bg: #F5F7FA;
-            --surface: #FFFFFF;
-            --text: #333333;
-            --text-light: #666666;
-            --success: #2ECC71;
-            --error: #E74C3C;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            margin-top: 20px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        p.subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Main Card */
-        .converter-card {
-            background: var(--surface);
-            width: 100%;
-            max-width: 500px;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: transform 0.2s;
-        }
-
-        .upload-area {
-            border: 2px dashed #cfd8dc;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            background: #fafafa;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .upload-area:hover {
-            border-color: var(--primary);
-            background: #f0f7ff;
-        }
-
-        .file-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Hidden File Input */
-        input[type="file"] {
-            display: none;
-        }
-
-        /* Buttons */
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            margin-top: 20px;
-            display: none; /* Hidden by default */
-            text-align: left;
-        }
-
-        .progress-label {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .progress-bar-bg {
-            background: #e0e0e0;
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar-fill {
-            background: var(--primary);
-            height: 100%;
-            width: 0%;
-            border-radius: 5px;
-            transition: width 0.4s ease;
-        }
-
-        /* Indeterminate Animation (Stripes) */
-        .progress-bar-fill.loading {
-            width: 100%;
-            background-image: linear-gradient(
-                45deg,
-                rgba(255, 255, 255, 0.15) 25%,
-                transparent 25%,
-                transparent 50%,
-                rgba(255, 255, 255, 0.15) 50%,
-                rgba(255, 255, 255, 0.15) 75%,
-                transparent 75%,
-                transparent
-            );
-            background-size: 40px 40px;
-            animation: moveStripes 1s linear infinite;
-        }
-
-        @keyframes moveStripes {
-            0% { background-position: 40px 0; }
-            100% { background-position: 0 0; }
-        }
-
-        /* Results */
-        #result-area {
-            margin-top: 25px;
-            display: none;
-        }
-
-        .download-btn {
-            display: inline-block;
-            background-color: var(--success);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
-        }
-
-        .download-btn:hover {
-            background-color: #27ae60;
-        }
-
-        .error-msg {
-            color: var(--error);
-            margin-top: 15px;
-            font-size: 0.9rem;
-            background: #fde8e7;
-            padding: 10px;
-            border-radius: 6px;
-            display: none;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: auto;
-            color: #999;
-            font-size: 0.8rem;
-            padding-top: 40px;
-        }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; }
+        .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        h2 { color: #333; }
+        .file-input { margin: 20px 0; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        #status { margin-top: 15px; font-size: 14px; color: #555; }
+        .loader { display: none; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>PDF to Word Converter</h1>
-        <p class="subtitle">Preserve your layout with our LibreOffice-powered engine.</p>
-    </header>
+<div class="container">
+    <h2>PDF to DOCX</h2>
+    <p>Upload a PDF to convert it to Word.</p>
+    
+    <input type="file" id="pdfInput" accept=".pdf" class="file-input">
+    <br>
+    <button id="convertBtn" onclick="convertFile()">Convert & Download</button>
+    
+    <div class="loader" id="loader"></div>
+    <div id="status"></div>
+</div>
 
-    <main class="converter-card">
-        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-            <span class="file-icon">📄</span>
-            <p id="fileName">Click to Select PDF File</p>
-            <input type="file" id="fileInput" accept=".pdf" onchange="handleFileSelect(this)">
-        </div>
+<script>
+    // REPLACE THIS WITH YOUR HUGGING FACE DIRECT URL
+    // Ensure there is NO trailing slash. Example: https://username-project.hf.space
+    const API_URL = "https://YOUR_HF_USERNAME-SPACE_NAME.hf.space"; 
 
-        <button id="convertBtn" class="btn" onclick="startConversion()">Convert Now</button>
+    async function convertFile() {
+        const fileInput = document.getElementById('pdfInput');
+        const statusDiv = document.getElementById('status');
+        const btn = document.getElementById('convertBtn');
+        const loader = document.getElementById('loader');
 
-        <div class="progress-container" id="progressContainer">
-            <span class="progress-label" id="progressText">Connecting to server...</span>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-        </div>
-
-        <div id="errorArea" class="error-msg"></div>
-
-        <div id="result-area">
-            <p style="color: var(--success); font-weight: bold;">Conversion Successful!</p>
-            <a id="downloadLink" href="#" class="download-btn" download>Download Word Document</a>
-        </div>
-    </main>
-
-    <footer>
-        &copy; 2025 Dr. Toukir Ahmed. Powered by Hugging Face & LibreOffice.
-    </footer>
-
-    <script type="module">
-        import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
-
-        let selectedFile = null;
-
-        // Expose function to global scope
-        window.handleFileSelect = function(input) {
-            if (input.files.length > 0) {
-                selectedFile = input.files[0];
-                document.getElementById('fileName').innerText = "Selected: " + selectedFile.name;
-                document.getElementById('fileName').style.fontWeight = "bold";
-                document.getElementById('fileName').style.color = "#333";
-                
-                // Hide previous results
-                resetUI();
-            }
-        };
-
-        window.startConversion = async function() {
-            if (!selectedFile) {
-                showError("Please select a PDF file first.");
-                return;
-            }
-
-            // UI State: converting
-            const btn = document.getElementById('convertBtn');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressBar = document.getElementById('progressBar');
-            const progressText = document.getElementById('progressText');
-            const errorArea = document.getElementById('errorArea');
-
-            resetUI();
-            btn.disabled = true;
-            btn.innerText = "Processing...";
-            progressContainer.style.display = "block";
-            
-            // Start "Indeterminate" animation (stripes)
-            progressBar.className = "progress-bar-fill loading";
-            progressText.innerText = "Uploading & Initializing Engine...";
-
-            try {
-                // 1. Connect to Space
-                // Make sure this matches your Space name exactly: username/space-name
-                const app = await Client.connect("toukir700/libreoffice");
-
-                progressText.innerText = "Converting PDF (This may take 10-20s)...";
-
-                // 2. Send Prediction
-                // We use standard array input. If this fails, we will try named arguments.
-                const result = await app.predict("/predict", [ selectedFile ]);
-
-                // 3. Success
-                const downloadUrl = result.data[0].url;
-                
-                // Show Result
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = downloadUrl;
-                
-                // Use the original filename but change ext to docx
-                const newName = selectedFile.name.replace(/\.pdf$/i, ".docx");
-                downloadLink.setAttribute('download', newName);
-
-                document.getElementById('result-area').style.display = "block";
-                
-                // Complete Bar
-                progressBar.className = "progress-bar-fill"; // stop animation
-                progressBar.style.width = "100%";
-                progressText.innerText = "Done!";
-
-            } catch (error) {
-                console.error("Conversion Error:", error);
-                
-                let msg = error.message;
-                if (msg.includes("Failed to fetch")) {
-                    msg = "Connection blocked. Please ensure your Hugging Face Space is Public.";
-                } else if (msg.includes("504")) {
-                    msg = "Server timed out (it might be waking up). Please try again.";
-                }
-                
-                showError("Error: " + msg);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Convert Another";
-            }
-        };
-
-        function showError(msg) {
-            const errorArea = document.getElementById('errorArea');
-            errorArea.innerText = msg;
-            errorArea.style.display = "block";
-            // Hide progress
-            document.getElementById('progressContainer').style.display = "none";
+        if (fileInput.files.length === 0) {
+            statusDiv.textContent = "Please select a file first.";
+            statusDiv.style.color = "red";
+            return;
         }
 
-        function resetUI() {
-            document.getElementById('result-area').style.display = "none";
-            document.getElementById('errorArea').style.display = "none";
-            document.getElementById('progressContainer').style.display = "none";
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // UI Updates
+        btn.disabled = true;
+        loader.style.display = "block";
+        statusDiv.textContent = "Uploading and converting...";
+        statusDiv.style.color = "#555";
+
+        try {
+            const response = await fetch(`${API_URL}/convert`, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error("Conversion failed on server.");
+            }
+
+            // Handle the binary file response
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            // Use original name but replace .pdf with .docx
+            a.download = file.name.replace(".pdf", ".docx"); 
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            statusDiv.textContent = "Success! Download started.";
+            statusDiv.style.color = "green";
+
+        } catch (error) {
+            console.error(error);
+            statusDiv.textContent = "Error: " + error.message;
+            statusDiv.style.color = "red";
+        } finally {
+            btn.disabled = false;
+            loader.style.display = "none";
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
