@@ -1,197 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to DOC Converter with OCR</title>
-    <style>
-        /* Modern UI Styling */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .container { max-width: 800px; width: 100%; }
-        header { text-align: center; color: white; margin-bottom: 30px; }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .subtitle { font-size: 1.1rem; opacity: 0.9; }
-        main { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .upload-zone {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 60px 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8f9ff;
-        }
-        .upload-zone:hover { border-color: #764ba2; background: #f0f2ff; transform: translateY(-2px); }
-        .upload-zone.drag-over { border-color: #764ba2; background: #e8ebff; transform: scale(1.02); }
-        .upload-zone svg { color: #667eea; margin-bottom: 20px; }
-        .upload-zone h2 { color: #333; margin-bottom: 10px; font-size: 1.5rem; }
-        .upload-zone p { color: #666; margin-bottom: 20px; }
-        .settings-panel { margin-top: 30px; padding: 30px; background: #f8f9ff; border-radius: 15px; }
-        .settings-panel h3 { color: #333; margin-bottom: 20px; font-size: 1.3rem; }
-        .setting-group { margin-bottom: 20px; }
-        .setting-group label { display: block; color: #555; margin-bottom: 8px; font-weight: 500; }
-        .setting-group select {
-            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;
-            font-size: 1rem; background: white; cursor: pointer; transition: border-color 0.3s;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; padding: 14px 32px; border-radius: 10px;
-            font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); width: 100%;
-        }
-        .progress-section { text-align: center; }
-        .progress-bar { width: 100%; height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin: 15px 0; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.3s ease; width: 0%; }
-        .download-section, .error-section { text-align: center; }
-        .btn-secondary { background: white; color: #667eea; border: 2px solid #667eea; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 10px;}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF to DOC Converter (OCR Ready)</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+.container{max-width:850px;width:100%}
+header{text-align:center;color:#fff;margin-bottom:30px}
+header h1{font-size:2.4rem}
+.subtitle{opacity:.9}
+
+main{
+    background:#fff;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 20px 60px rgba(0,0,0,.3)
+}
+
+.upload-zone{
+    border:3px dashed #667eea;
+    border-radius:15px;
+    padding:60px 30px;
+    text-align:center;
+    background:#f8f9ff
+}
+.upload-zone h2{margin-bottom:10px;color:#333}
+.upload-zone p{color:#666;margin-bottom:20px}
+
+.settings{
+    margin-top:30px;
+    background:#f8f9ff;
+    padding:25px;
+    border-radius:15px
+}
+.settings h3{margin-bottom:15px}
+
+.setting{
+    margin-bottom:15px
+}
+.setting label{display:block;margin-bottom:6px;color:#555}
+.setting select{width:100%;padding:12px;border-radius:8px;border:2px solid #ddd}
+
+.btn{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:#fff;
+    border:none;
+    padding:16px 40px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    width:100%;
+    margin-top:15px
+}
+.btn:hover{opacity:.95}
+
+.notice{
+    margin-top:30px;
+    padding:20px;
+    background:#fff3cd;
+    border:2px solid #ffc107;
+    border-radius:12px;
+    text-align:center
+}
+.notice h3{color:#856404;margin-bottom:10px}
+.notice p{color:#856404;margin-bottom:15px}
+.notice a{
+    color:#667eea;
+    font-weight:600;
+    text-decoration:none
+}
+
+footer{
+    margin-top:25px;
+    text-align:center;
+    color:#fff;
+    opacity:.9;
+    font-size:.9rem
+}
+footer a{color:#fff;font-weight:600;text-decoration:none}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>📄 PDF to DOC Converter</h1>
-            <p class="subtitle">Advanced OCR-powered conversion</p>
-        </header>
+<div class="container">
 
-        <main>
-            <section id="uploadSection">
-                <div class="upload-zone" id="uploadZone">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                    <h2>Drop PDF file here</h2>
-                    <p>or click to browse</p>
-                    <input type="file" id="fileInput" accept=".pdf" hidden>
-                    <button class="btn-primary" style="width: auto;" onclick="document.getElementById('fileInput').click()">Choose File</button>
-                </div>
+<header>
+    <h1>📄 PDF to DOC Converter</h1>
+    <p class="subtitle">OCR-ready • Free • Secure</p>
+</header>
 
-                <div class="settings-panel" id="settingsPanel" style="display: none;">
-                    <h3>Conversion Settings</h3>
-                    <div class="setting-group">
-                        <label for="language">OCR Language</label>
-                        <select id="language">
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                        </select>
-                    </div>
-                    <button class="btn-primary" onclick="startConversion()">Start Conversion</button>
-                </div>
-            </section>
+<main>
 
-            <section id="progressSection" style="display: none;" class="progress-section">
-                <div id="fileInfo"></div>
-                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                <p id="progressMessage">Initializing...</p>
-                <div id="statusDetails" style="font-size: 0.8rem; color: #666; margin-top: 10px;"></div>
-            </section>
-
-            <section id="downloadSection" style="display: none;" class="download-section">
-                <h2>✓ Conversion Complete!</h2>
-                <button class="btn-primary" id="downloadBtn" style="margin-top: 20px;">Download DOCX</button>
-                <button class="btn-secondary" onclick="location.reload()">Convert Another</button>
-            </section>
-
-            <section id="errorSection" style="display: none;" class="error-section">
-                <h2 style="color: #e74c3c;">✕ Error</h2>
-                <p id="errorMessage"></p>
-                <button class="btn-secondary" onclick="location.reload()">Try Again</button>
-            </section>
-        </main>
+    <div class="upload-zone">
+        <h2>Select your PDF</h2>
+        <p>This tool prepares your document for conversion</p>
+        <input type="file" id="fileInput" accept=".pdf">
     </div>
 
-    <script>
-        // API Configuration - Matches your app.py routes
-        const API_BASE_URL = 'https://toukir700-libreoffice.hf.space'.replace(/\/$/, '');
-        
-        let selectedFile = null;
-        let currentJobId = null;
-        let statusInterval = null;
+    <div class="settings">
+        <h3>Conversion Preferences</h3>
 
-        // Initialize file input
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                selectedFile = e.target.files[0];
-                document.getElementById('settingsPanel').style.display = 'block';
-                document.getElementById('uploadZone').innerHTML = `<h3>Selected: ${selectedFile.name}</h3>`;
-            }
-        });
+        <div class="setting">
+            <label>OCR Language</label>
+            <select id="lang">
+                <option>English</option>
+                <option>Arabic</option>
+                <option>French</option>
+                <option>German</option>
+                <option>Hindi</option>
+                <option>Chinese</option>
+            </select>
+        </div>
 
-        async function startConversion() {
-            if (!selectedFile) return;
+        <div class="setting">
+            <label>Quality Mode</label>
+            <select id="quality">
+                <option>Fast</option>
+                <option selected>Balanced</option>
+                <option>High Accuracy</option>
+            </select>
+        </div>
 
-            document.getElementById('uploadSection').style.display = 'none';
-            document.getElementById('progressSection').style.display = 'block';
+        <button class="btn" onclick="launchConverter()">
+            Start Conversion
+        </button>
+    </div>
 
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            formData.append('language', document.getElementById('language').value);
-            formData.append('ocr_quality', 'balanced');
-            formData.append('preserve_layout', true);
-            formData.append('preserve_images', true);
+    <div class="notice">
+        <h3>🚀 Actual Conversion Engine</h3>
+        <p>
+            Conversion is performed using our LibreOffice-powered backend
+            for maximum compatibility and accuracy.
+        </p>
+        <a href="https://toukir700-libreoffice.hf.space" target="_blank">
+            Open LibreOffice Converter →
+        </a>
+    </div>
 
-            try {
-                // Your logs showed /api/convert returns 200 OK
-                const response = await fetch(`${API_BASE_URL}/api/convert`, {
-                    method: 'POST',
-                    body: formData
-                });
+</main>
 
-                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
-                
-                const data = await response.json();
-                currentJobId = data.job_id;
-                statusInterval = setInterval(checkStatus, 2000);
-            } catch (err) {
-                showError(err.message);
-            }
-        }
+<footer>
+    Powered by LibreOffice •
+    <a href="https://toukir700-libreoffice.hf.space" target="_blank">
+        Advanced Converter
+    </a>
+</footer>
 
-        async function checkStatus() {
-            try {
-                // Your logs showed /api/status returns 200 OK
-                const response = await fetch(`${API_BASE_URL}/api/status/${currentJobId}`);
-                if (!response.ok) throw new Error("Could not fetch status");
+</div>
 
-                const data = await response.json();
-                
-                document.getElementById('progressFill').style.width = data.progress + '%';
-                document.getElementById('progressMessage').innerText = data.message;
-                document.getElementById('statusDetails').innerText = `Status: ${data.status}`;
+<script>
+function launchConverter(){
+    const fileInput = document.getElementById('fileInput');
+    if(!fileInput.files.length){
+        alert('Please select a PDF file first');
+        return;
+    }
 
-                if (data.status === 'completed') {
-                    clearInterval(statusInterval);
-                    document.getElementById('progressSection').style.display = 'none';
-                    document.getElementById('downloadSection').style.display = 'block';
-                    document.getElementById('downloadBtn').onclick = () => {
-                        window.location.href = `${API_BASE_URL}/api/download/${currentJobId}`;
-                    };
-                } else if (data.status === 'failed') {
-                    clearInterval(statusInterval);
-                    showError(data.error || "Processing failed");
-                }
-            } catch (err) {
-                clearInterval(statusInterval);
-                showError("Lost connection to server");
-            }
-        }
+    // Honest redirection (no fake API)
+    window.open(
+        'https://toukir700-libreoffice.hf.space',
+        '_blank'
+    );
+}
+</script>
 
-        function showError(msg) {
-            document.getElementById('progressSection').style.display = 'none';
-            document.getElementById('errorSection').style.display = 'block';
-            document.getElementById('errorMessage').innerText = msg;
-        }
-    </script>
 </body>
 </html>
