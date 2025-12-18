@@ -50,7 +50,6 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        /* Upload Section */
         .upload-zone {
             border: 3px dashed #667eea;
             border-radius: 15px;
@@ -89,7 +88,6 @@
             margin-bottom: 20px;
         }
 
-        /* Settings Panel */
         .settings-panel {
             margin-top: 30px;
             padding: 30px;
@@ -137,7 +135,6 @@
             cursor: pointer;
         }
 
-        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -187,7 +184,6 @@
             font-size: 1.1rem;
         }
 
-        /* Progress Section */
         .progress-section {
             text-align: center;
         }
@@ -242,7 +238,6 @@
             font-size: 0.9rem;
         }
 
-        /* Download Section */
         .download-section {
             text-align: center;
         }
@@ -287,7 +282,6 @@
             flex-wrap: wrap;
         }
 
-        /* Error Section */
         .error-section {
             text-align: center;
         }
@@ -315,7 +309,6 @@
             margin-bottom: 30px;
         }
 
-        /* LibreOffice Converter Section */
         .converter-option {
             margin-top: 30px;
             padding: 20px;
@@ -345,7 +338,6 @@
             text-decoration: underline;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             color: white;
@@ -364,7 +356,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
         @media (max-width: 600px) {
             header h1 {
                 font-size: 2rem;
@@ -396,7 +387,6 @@
         </header>
 
         <main>
-            <!-- Upload Section -->
             <section class="upload-section" id="uploadSection">
                 <div class="upload-zone" id="uploadZone">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -412,7 +402,6 @@
                     </button>
                 </div>
 
-                <!-- Settings -->
                 <div class="settings-panel" id="settingsPanel" style="display: none;">
                     <h3>Conversion Settings</h3>
                     
@@ -457,17 +446,15 @@
                     </button>
                 </div>
 
-                <!-- LibreOffice Converter Option -->
                 <div class="converter-option">
                     <h3>🚀 Need Advanced Conversion?</h3>
-                    <p>Try our LibreOffice-powered converter for enhanced compatibility and features</p>
+                    <p>Try our LibreOffice-powered converter for enhanced compatibility</p>
                     <a href="https://toukir700-libreoffice.hf.space" target="_blank">
                         Open LibreOffice Converter →
                     </a>
                 </div>
             </section>
 
-            <!-- Progress Section -->
             <section class="progress-section" id="progressSection" style="display: none;">
                 <div class="file-info" id="fileInfo"></div>
                 
@@ -484,7 +471,6 @@
                 <div class="status-details" id="statusDetails"></div>
             </section>
 
-            <!-- Download Section -->
             <section class="download-section" id="downloadSection" style="display: none;">
                 <div class="success-icon">✓</div>
                 <h2>Conversion Complete!</h2>
@@ -499,7 +485,6 @@
                     </button>
                 </div>
 
-                <!-- LibreOffice Option in Success -->
                 <div class="converter-option" style="margin-top: 30px;">
                     <h3>Need Different Format?</h3>
                     <p>LibreOffice converter supports PDF → DOC, DOCX, ODT, RTF, TXT</p>
@@ -509,7 +494,6 @@
                 </div>
             </section>
 
-            <!-- Error Section -->
             <section class="error-section" id="errorSection" style="display: none;">
                 <div class="error-icon">✕</div>
                 <h2>Conversion Failed</h2>
@@ -518,7 +502,6 @@
                     Try Again
                 </button>
 
-                <!-- LibreOffice Alternative on Error -->
                 <div class="converter-option" style="margin-top: 30px; background: #e8f4fd; border-color: #2196F3;">
                     <h3>Try Alternative Converter</h3>
                     <p>If this conversion failed, try our LibreOffice-based converter</p>
@@ -533,17 +516,19 @@
             <p>
                 Powered by EasyOCR & FastAPI | 
                 <a href="https://toukir700-libreoffice.hf.space" target="_blank">LibreOffice Converter</a> | 
-                Free & Secure Conversion
+                Free & Secure
             </p>
         </footer>
     </div>
 
     <script>
+        // Backend API URL (Hugging Face Space)
+        const API_BASE_URL = 'https://toukir700-pdf-to-doc.hf.space';
+        
         let selectedFile = null;
         let currentJobId = null;
         let statusCheckInterval = null;
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initializeUploadZone();
             initializeFileInput();
@@ -552,14 +537,12 @@
         function initializeUploadZone() {
             const uploadZone = document.getElementById('uploadZone');
             
-            // Click to upload
             uploadZone.addEventListener('click', (e) => {
                 if (e.target.tagName !== 'BUTTON') {
                     document.getElementById('fileInput').click();
                 }
             });
             
-            // Drag and drop
             uploadZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 uploadZone.classList.add('drag-over');
@@ -590,25 +573,20 @@
         }
 
         function handleFileSelect(file) {
-            // Validate file
             if (!file.name.toLowerCase().endsWith('.pdf')) {
                 alert('Please select a PDF file');
                 return;
             }
             
-            // Check file size (max 50MB)
-            const maxSize = 50 * 1024 * 1024; // 50MB
+            const maxSize = 50 * 1024 * 1024;
             if (file.size > maxSize) {
                 alert('File is too large. Maximum size is 50MB');
                 return;
             }
             
             selectedFile = file;
-            
-            // Show settings panel
             document.getElementById('settingsPanel').style.display = 'block';
             
-            // Update upload zone
             const uploadZone = document.getElementById('uploadZone');
             uploadZone.innerHTML = `
                 <div style="color: #667eea; margin-bottom: 10px;">
@@ -637,17 +615,14 @@
                 return;
             }
             
-            // Get settings
             const language = document.getElementById('language').value;
             const quality = document.getElementById('quality').value;
             const preserveLayout = document.getElementById('preserveLayout').checked;
             const preserveImages = document.getElementById('preserveImages').checked;
             
-            // Hide upload section, show progress
             document.getElementById('uploadSection').style.display = 'none';
             document.getElementById('progressSection').style.display = 'block';
             
-            // Update file info
             document.getElementById('fileInfo').innerHTML = `
                 <strong>File:</strong> ${selectedFile.name}<br>
                 <strong>Size:</strong> ${formatFileSize(selectedFile.size)}<br>
@@ -655,7 +630,6 @@
                 <strong>Quality:</strong> ${quality}
             `;
             
-            // Prepare form data
             const formData = new FormData();
             formData.append('file', selectedFile);
             formData.append('language', language);
@@ -664,8 +638,7 @@
             formData.append('preserve_images', preserveImages);
             
             try {
-                // Upload and start conversion
-                const response = await fetch('/api/convert', {
+                const response = await fetch(`${API_BASE_URL}/api/convert`, {
                     method: 'POST',
                     body: formData
                 });
@@ -676,8 +649,6 @@
                 
                 const data = await response.json();
                 currentJobId = data.job_id;
-                
-                // Start checking status
                 startStatusCheck();
                 
             } catch (error) {
@@ -686,32 +657,28 @@
         }
 
         function startStatusCheck() {
-            statusCheckInterval = setInterval(checkStatus, 2000); // Check every 2 seconds
+            statusCheckInterval = setInterval(checkStatus, 2000);
         }
 
         async function checkStatus() {
             if (!currentJobId) return;
             
             try {
-                const response = await fetch(`/api/status/${currentJobId}`);
+                const response = await fetch(`${API_BASE_URL}/api/status/${currentJobId}`);
                 
                 if (!response.ok) {
                     throw new Error('Status check failed');
                 }
                 
                 const status = await response.json();
-                
-                // Update progress
                 updateProgress(status.progress, status.message);
                 
-                // Update status details
                 document.getElementById('statusDetails').innerHTML = `
                     <strong>Status:</strong> ${status.status}<br>
                     <strong>Progress:</strong> ${status.progress}%<br>
                     <strong>Message:</strong> ${status.message}
                 `;
                 
-                // Check if completed
                 if (status.status === 'completed') {
                     clearInterval(statusCheckInterval);
                     showDownload();
@@ -743,10 +710,8 @@
         function downloadFile() {
             if (!currentJobId) return;
             
-            // Create download link
-            const downloadUrl = `/api/download/${currentJobId}`;
+            const downloadUrl = `${API_BASE_URL}/api/download/${currentJobId}`;
             
-            // Trigger download
             const a = document.createElement('a');
             a.href = downloadUrl;
             a.download = selectedFile.name.replace('.pdf', '.docx');
@@ -754,9 +719,8 @@
             a.click();
             document.body.removeChild(a);
             
-            // Cleanup after download
             setTimeout(() => {
-                fetch(`/api/cleanup/${currentJobId}`, { method: 'DELETE' });
+                fetch(`${API_BASE_URL}/api/cleanup/${currentJobId}`, { method: 'DELETE' });
             }, 5000);
         }
 
@@ -767,21 +731,18 @@
         }
 
         function resetConverter() {
-            // Clear state
             selectedFile = null;
             currentJobId = null;
             if (statusCheckInterval) {
                 clearInterval(statusCheckInterval);
             }
             
-            // Reset UI
             document.getElementById('uploadSection').style.display = 'block';
             document.getElementById('progressSection').style.display = 'none';
             document.getElementById('downloadSection').style.display = 'none';
             document.getElementById('errorSection').style.display = 'none';
             document.getElementById('settingsPanel').style.display = 'none';
             
-            // Reset upload zone
             document.getElementById('uploadZone').innerHTML = `
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -796,14 +757,10 @@
                 </button>
             `;
             
-            // Re-initialize
             initializeFileInput();
-            
-            // Reset progress
             updateProgress(0, 'Initializing...');
         }
 
-        // Add keyboard shortcut (Escape to reset)
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 resetConverter();
