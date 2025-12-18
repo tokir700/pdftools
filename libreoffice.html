@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF to DOC Converter with OCR</title>
     <style>
+        /* Modern UI Styling */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -42,64 +43,17 @@
             width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;
             font-size: 1rem; background: white; cursor: pointer; transition: border-color 0.3s;
         }
-        .setting-group select:focus { outline: none; border-color: #667eea; }
-        .setting-group input[type="checkbox"] { margin-right: 10px; width: 18px; height: 18px; cursor: pointer; }
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white; border: none; padding: 14px 32px; border-radius: 10px;
             font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); width: 100%;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
-        .btn-secondary {
-            background: white; color: #667eea; border: 2px solid #667eea;
-            padding: 14px 32px; border-radius: 10px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: all 0.3s ease;
-        }
-        .btn-secondary:hover { background: #667eea; color: white; }
-        .btn-full { width: 100%; margin-top: 10px; }
-        .btn-large { padding: 18px 48px; font-size: 1.1rem; }
         .progress-section { text-align: center; }
-        .file-info { background: #f8f9ff; padding: 20px; border-radius: 10px; margin-bottom: 30px; color: #555; }
-        .progress-container { margin: 30px 0; }
-        .progress-bar { width: 100%; height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
+        .progress-bar { width: 100%; height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin: 15px 0; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.3s ease; width: 0%; }
-        .progress-text { display: flex; justify-content: space-between; color: #555; font-size: 0.95rem; }
-        #progressPercent { font-weight: 600; color: #667eea; }
-        .status-details { margin-top: 20px; padding: 20px; background: #f8f9ff; border-radius: 10px; text-align: left; color: #666; font-size: 0.9rem; }
-        .download-section { text-align: center; }
-        .success-icon {
-            width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; font-size: 3rem; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; margin: 0 auto 20px; animation: scaleIn 0.5s ease;
-        }
-        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
-        .download-section h2 { color: #333; margin-bottom: 10px; }
-        .download-section p { color: #666; margin-bottom: 30px; }
-        .download-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-        .error-section { text-align: center; }
-        .error-icon {
-            width: 80px; height: 80px; background: #e74c3c; color: white;
-            font-size: 3rem; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; margin: 0 auto 20px;
-        }
-        .error-section h2 { color: #e74c3c; margin-bottom: 10px; }
-        .error-section p { color: #666; margin-bottom: 30px; }
-        .converter-option { margin-top: 30px; padding: 20px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; text-align: center; }
-        .converter-option h3 { color: #856404; margin-bottom: 10px; }
-        .converter-option p { color: #856404; margin-bottom: 15px; }
-        .converter-option a { color: #667eea; text-decoration: none; font-weight: 600; }
-        .converter-option a:hover { text-decoration: underline; }
-        footer { text-align: center; color: white; margin-top: 30px; opacity: 0.9; font-size: 0.9rem; }
-        footer a { color: white; text-decoration: none; font-weight: 600; }
-        footer a:hover { text-decoration: underline; }
-        @media (max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            main { padding: 30px 20px; }
-            .upload-zone { padding: 40px 20px; }
-            .download-buttons { flex-direction: column; }
-            .btn-primary, .btn-secondary { width: 100%; }
-        }
+        .download-section, .error-section { text-align: center; }
+        .btn-secondary { background: white; color: #667eea; border: 2px solid #667eea; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 10px;}
     </style>
 </head>
 <body>
@@ -110,7 +64,7 @@
         </header>
 
         <main>
-            <section class="upload-section" id="uploadSection">
+            <section id="uploadSection">
                 <div class="upload-zone" id="uploadZone">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -120,9 +74,7 @@
                     <h2>Drop PDF file here</h2>
                     <p>or click to browse</p>
                     <input type="file" id="fileInput" accept=".pdf" hidden>
-                    <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
-                        Choose File
-                    </button>
+                    <button class="btn-primary" style="width: auto;" onclick="document.getElementById('fileInput').click()">Choose File</button>
                 </div>
 
                 <div class="settings-panel" id="settingsPanel" style="display: none;">
@@ -132,183 +84,114 @@
                         <select id="language">
                             <option value="en">English</option>
                             <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                            <option value="de">German</option>
-                            <option value="zh">Chinese</option>
-                            <option value="ar">Arabic</option>
-                            <option value="hi">Hindi</option>
                         </select>
                     </div>
-                    <div class="setting-group">
-                        <label for="quality">OCR Quality</label>
-                        <select id="quality">
-                            <option value="fast">Fast (Lower accuracy)</option>
-                            <option value="balanced" selected>Balanced</option>
-                            <option value="high">High Quality (Slower)</option>
-                        </select>
-                    </div>
-                    <div class="setting-group">
-                        <label><input type="checkbox" id="preserveLayout" checked> Preserve Layout & Tables</label>
-                    </div>
-                    <div class="setting-group">
-                        <label><input type="checkbox" id="preserveImages" checked> Preserve Images</label>
-                    </div>
-                    <button class="btn-primary btn-full" onclick="startConversion()">Start Conversion</button>
-                </div>
-
-                <div class="converter-option">
-                    <h3>🚀 Need Advanced Conversion?</h3>
-                    <p>Try our LibreOffice-powered converter for enhanced compatibility</p>
-                    <a href="https://toukir700-libreoffice.hf.space" target="_blank">Open LibreOffice Converter →</a>
+                    <button class="btn-primary" onclick="startConversion()">Start Conversion</button>
                 </div>
             </section>
 
-            <section class="progress-section" id="progressSection" style="display: none;">
-                <div class="file-info" id="fileInfo"></div>
-                <div class="progress-container">
-                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                    <div class="progress-text">
-                        <span id="progressPercent">0%</span>
-                        <span id="progressMessage">Initializing...</span>
-                    </div>
-                </div>
-                <div class="status-details" id="statusDetails"></div>
+            <section id="progressSection" style="display: none;" class="progress-section">
+                <div id="fileInfo"></div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <p id="progressMessage">Initializing...</p>
+                <div id="statusDetails" style="font-size: 0.8rem; color: #666; margin-top: 10px;"></div>
             </section>
 
-            <section class="download-section" id="downloadSection" style="display: none;">
-                <div class="success-icon">✓</div>
-                <h2>Conversion Complete!</h2>
-                <p id="downloadMessage">Your document is ready for download</p>
-                <div class="download-buttons">
-                    <button class="btn-primary btn-large" id="downloadBtn">Download DOCX</button>
-                    <button class="btn-secondary" onclick="resetConverter()">Convert Another File</button>
-                </div>
+            <section id="downloadSection" style="display: none;" class="download-section">
+                <h2>✓ Conversion Complete!</h2>
+                <button class="btn-primary" id="downloadBtn" style="margin-top: 20px;">Download DOCX</button>
+                <button class="btn-secondary" onclick="location.reload()">Convert Another</button>
             </section>
 
-            <section class="error-section" id="errorSection" style="display: none;">
-                <div class="error-icon">✕</div>
-                <h2>Conversion Failed</h2>
+            <section id="errorSection" style="display: none;" class="error-section">
+                <h2 style="color: #e74c3c;">✕ Error</h2>
                 <p id="errorMessage"></p>
-                <button class="btn-secondary" onclick="resetConverter()">Try Again</button>
+                <button class="btn-secondary" onclick="location.reload()">Try Again</button>
             </section>
         </main>
-
-        <footer>
-            <p>Powered by EasyOCR & FastAPI | Free & Secure</p>
-        </footer>
     </div>
 
     <script>
-        // Cleaned up URL for Hugging Face
+        // API Configuration - Matches your app.py routes
         const API_BASE_URL = 'https://toukir700-libreoffice.hf.space'.replace(/\/$/, '');
         
         let selectedFile = null;
         let currentJobId = null;
-        let statusCheckInterval = null;
+        let statusInterval = null;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeUploadZone();
-            initializeFileInput();
+        // Initialize file input
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                selectedFile = e.target.files[0];
+                document.getElementById('settingsPanel').style.display = 'block';
+                document.getElementById('uploadZone').innerHTML = `<h3>Selected: ${selectedFile.name}</h3>`;
+            }
         });
-
-        function initializeUploadZone() {
-            const uploadZone = document.getElementById('uploadZone');
-            uploadZone.addEventListener('click', (e) => {
-                if (e.target.tagName !== 'BUTTON') document.getElementById('fileInput').click();
-            });
-            uploadZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadZone.classList.add('drag-over');
-            });
-            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-            uploadZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadZone.classList.remove('drag-over');
-                const files = e.dataTransfer.files;
-                if (files.length > 0) handleFileSelect(files[0]);
-            });
-        }
-
-        function initializeFileInput() {
-            document.getElementById('fileInput').addEventListener('change', (e) => {
-                if (e.target.files.length > 0) handleFileSelect(e.target.files[0]);
-            });
-        }
-
-        function handleFileSelect(file) {
-            if (!file.name.toLowerCase().endsWith('.pdf')) { alert('Please select a PDF file'); return; }
-            if (file.size > 50 * 1024 * 1024) { alert('File is too large (Max 50MB)'); return; }
-            
-            selectedFile = file;
-            document.getElementById('settingsPanel').style.display = 'block';
-            document.getElementById('uploadZone').innerHTML = `
-                <div style="color: #667eea; margin-bottom: 10px;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                    </svg>
-                </div>
-                <h3>${file.name}</h3>
-                <p>${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
-                <button class="btn-secondary" onclick="resetConverter()" style="margin-top: 15px;">Change File</button>`;
-        }
 
         async function startConversion() {
             if (!selectedFile) return;
-            
+
             document.getElementById('uploadSection').style.display = 'none';
             document.getElementById('progressSection').style.display = 'block';
-            
+
             const formData = new FormData();
             formData.append('file', selectedFile);
             formData.append('language', document.getElementById('language').value);
-            formData.append('ocr_quality', document.getElementById('quality').value);
-            formData.append('preserve_layout', document.getElementById('preserveLayout').checked);
-            formData.append('preserve_images', document.getElementById('preserveImages').checked);
-            
+            formData.append('ocr_quality', 'balanced');
+            formData.append('preserve_layout', true);
+            formData.append('preserve_images', true);
+
             try {
-                // FIXED: Direct call to /convert instead of /api/convert for HF alignment
-                const response = await fetch(`${API_BASE_URL}/convert`, { method: 'POST', body: formData });
-                if (!response.ok) throw new Error('Upload failed (Status ' + response.status + ')');
+                // Your logs showed /api/convert returns 200 OK
+                const response = await fetch(`${API_BASE_URL}/api/convert`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
                 
                 const data = await response.json();
                 currentJobId = data.job_id;
-                statusCheckInterval = setInterval(checkStatus, 2000);
-            } catch (error) { showError(error.message); }
+                statusInterval = setInterval(checkStatus, 2000);
+            } catch (err) {
+                showError(err.message);
+            }
         }
 
         async function checkStatus() {
             try {
-                // FIXED: Direct call to /status
-                const response = await fetch(`${API_BASE_URL}/status/${currentJobId}`);
-                if (!response.ok) throw new Error('Status check failed');
+                // Your logs showed /api/status returns 200 OK
+                const response = await fetch(`${API_BASE_URL}/api/status/${currentJobId}`);
+                if (!response.ok) throw new Error("Could not fetch status");
+
+                const data = await response.json();
                 
-                const status = await response.json();
-                document.getElementById('progressFill').style.width = status.progress + '%';
-                document.getElementById('progressPercent').textContent = status.progress + '%';
-                document.getElementById('progressMessage').textContent = status.message;
-                
-                if (status.status === 'completed') {
-                    clearInterval(statusCheckInterval);
+                document.getElementById('progressFill').style.width = data.progress + '%';
+                document.getElementById('progressMessage').innerText = data.message;
+                document.getElementById('statusDetails').innerText = `Status: ${data.status}`;
+
+                if (data.status === 'completed') {
+                    clearInterval(statusInterval);
                     document.getElementById('progressSection').style.display = 'none';
                     document.getElementById('downloadSection').style.display = 'block';
                     document.getElementById('downloadBtn').onclick = () => {
-                        window.location.href = `${API_BASE_URL}/download/${currentJobId}`;
+                        window.location.href = `${API_BASE_URL}/api/download/${currentJobId}`;
                     };
-                } else if (status.status === 'failed') {
-                    clearInterval(statusCheckInterval);
-                    showError(status.error || 'Conversion failed');
+                } else if (data.status === 'failed') {
+                    clearInterval(statusInterval);
+                    showError(data.error || "Processing failed");
                 }
-            } catch (error) { clearInterval(statusCheckInterval); showError(error.message); }
+            } catch (err) {
+                clearInterval(statusInterval);
+                showError("Lost connection to server");
+            }
         }
 
         function showError(msg) {
             document.getElementById('progressSection').style.display = 'none';
             document.getElementById('errorSection').style.display = 'block';
-            document.getElementById('errorMessage').textContent = msg;
+            document.getElementById('errorMessage').innerText = msg;
         }
-
-        function resetConverter() { window.location.reload(); }
     </script>
 </body>
 </html>
