@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Word Converter | Powered by LibreOffice</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        input[type="file"] {
+            margin-bottom: 1.5rem;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+        button {
+            background-color: #ff4747; /* iLovePDF red style */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #e03e3e;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #ff4747;
+            animation: spin 1s ease-in-out infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Convert PDF to Word</h2>
+    <p style="color: #666; font-size: 0.9rem;">Powered by LibreOffice & Hugging Face</p>
+    
+    <input type="file" id="pdfInput" accept=".pdf">
+    
+    <button id="convertBtn" onclick="convertFile()">
+        <span class="spinner" id="loadingSpinner"></span>
+        <span id="btnText">Convert to DOCX</span>
+    </button>
+    
+    <div id="status"></div>
+</div>
+
+<script type="module">
+    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+
+    window.convertFile = async function() {
+        const fileInput = document.getElementById("pdfInput");
+        const statusDiv = document.getElementById("status");
+        const btn = document.getElementById("convertBtn");
+        const spinner = document.getElementById("loadingSpinner");
+        const btnText = document.getElementById("btnText");
+
+        if (fileInput.files.length === 0) {
+            statusDiv.style.color = "red";
+            statusDiv.innerText = "Please select a PDF file first.";
+            return;
+        }
+
+        // UI: Set Loading State
+        btn.disabled = true;
+        spinner.style.display = "inline-block";
+        btnText.innerText = "Processing...";
+        statusDiv.innerText = "";
+
+        try {
+            // Connect to your specific Hugging Face Space
+            // Based on your URL: https://toukir700-libreoffice.hf.space
+            const app = await Client.connect("toukir700/libreoffice");
+
+            // Send the file to the API
+            const result = await app.predict("/predict", [ fileInput.files[0] ]);
+
+            // Success: Get the download URL
+            const downloadUrl = result.data[0].url;
+            
+            // Show Download Button
+            statusDiv.innerHTML = `<a href="${downloadUrl}" class="download-link" download="converted_document.docx">Download Word Document</a>`;
+            
+            // UI: Reset Button
+            btn.disabled = false;
+            spinner.style.display = "none";
+            btnText.innerText = "Convert Another";
+
+        } catch (error) {
+            console.error("Conversion failed:", error);
+            statusDiv.style.color = "red";
+            
+            // Handle "Space Sleeping" or Error
+            if (error.message.includes("504") || error.message.includes("timeout")) {
+                statusDiv.innerText = "Server is waking up... Please click Convert again in 30 seconds.";
+            } else {
+                statusDiv.innerText = "Error: " + error.message;
+            }
+
+            // UI: Reset Button
+            btn.disabled = false;
+            spinner.style.display = "none";
+            btnText.innerText = "Try Again";
+        }
+    }
+</script>
+
+</body>
+</html>
