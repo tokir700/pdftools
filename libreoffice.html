@@ -4,42 +4,86 @@
 <meta charset="UTF-8">
 <title>Facebook Video Downloader</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-body{font-family:sans-serif;background:#111;color:#fff;text-align:center;padding:20px}
-input{width:90%;padding:10px}
-button{padding:10px 20px;margin-top:10px}
-a{color:#0f0;display:block;margin:5px}
+body {
+  font-family: system-ui, Arial;
+  background: #0f172a;
+  color: #fff;
+  text-align: center;
+  padding: 30px;
+}
+input {
+  width: 90%;
+  max-width: 600px;
+  padding: 12px;
+  font-size: 16px;
+}
+button {
+  margin-top: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+a {
+  display: block;
+  margin: 8px;
+  color: #22c55e;
+}
+#error {
+  color: #f87171;
+}
 </style>
 </head>
+
 <body>
 
 <h2>Facebook Video Downloader</h2>
 
-<input id="fburl" placeholder="Paste Facebook video / reel link">
+<input id="url" placeholder="Paste full Facebook video link">
 <br>
-<button onclick="download()">Fetch</button>
+<button onclick="fetchVideo()">Fetch Video</button>
 
 <div id="result"></div>
+<div id="error"></div>
 
 <script>
-async function download() {
-  const url = document.getElementById("fburl").value;
-  const api = "https://toukir700-fbdown.hf.space/download?url=" 
-              + encodeURIComponent(url);
+async function fetchVideo() {
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("error").innerText = "Loading...";
 
-  document.getElementById("result").innerHTML = "Loading...";
+  const url = document.getElementById("url").value;
+  const api =
+    "http://103.6.168.203:7860/download?url=" +
+    encodeURIComponent(url);
 
-  const res = await fetch(api);
-  const data = await res.json();
+  try {
+    const res = await fetch(api);
+    const data = await res.json();
 
-  let html = `<h3>${data.title}</h3>`;
-  data.formats.forEach(f => {
-    html += `<a href="${f.url}" target="_blank">Download ${f.quality}</a>`;
-  });
+    if (!res.ok) {
+      throw new Error(data.detail || "Failed");
+    }
 
-  document.getElementById("result").innerHTML = html;
+    document.getElementById("error").innerText = "";
+
+    let html = `<h3>${data.title}</h3>`;
+    data.formats.forEach(f => {
+      html += `<a href="${f.url}" target="_blank">
+        Download ${f.quality}
+      </a>`;
+    });
+
+    document.getElementById("result").innerHTML = html;
+  } catch (e) {
+    document.getElementById("error").innerText = e.message;
+  }
 }
 </script>
+
+<p style="margin-top:20px;font-size:13px;color:#9ca3af">
+For personal use only.
+</p>
 
 </body>
 </html>
